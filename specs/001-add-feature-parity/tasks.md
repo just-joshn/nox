@@ -76,6 +76,7 @@
 - [X] T123 [US1] Observe one normal TOOL-002 Glob call in `reference/harness/loopback_probe.py` with a synthetic `*.txt` pattern under the localhost-only sandbox; test result redaction/classification, retain only fixture-match and error booleans, and record the redacted trace. Depend on [TOOL-GLOB-NORMAL](reference/scenarios.md); leave empty/invalid patterns and nox comparison open.
 - [X] T124 [US1] Observe one normal TOOL-003 Grep call in `reference/harness/loopback_probe.py` with a synthetic `alpha` query under the localhost-only sandbox; retain only fixture-match and error booleans and a redacted trace. Depend on [TOOL-GREP-NORMAL](reference/scenarios.md); leave no-match/invalid queries and nox comparison open.
 - [X] T125 [US1] Observe TOOL-002 Glob no-match behavior with a synthetic `absent-*.zzz` pattern in the same sandboxed fixture; test the redacted no-match classification and retain the error/result-state trace. Depend on [TOOL-GLOB-NO-MATCH](reference/scenarios.md); leave invalid patterns and nox comparison open.
+- [X] T126 [US1] Observe TOOL-003 Grep no-match behavior with a synthetic `absent-sentinel` query in the same sandboxed fixture; retain the redacted error/result-state trace. Depend on [TOOL-GREP-NO-MATCH](reference/scenarios.md); leave invalid queries and nox comparison open.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
