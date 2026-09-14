@@ -38,13 +38,14 @@ SEARCH_MODES = frozenset({
     "grep-count-no-match-offset",
     "grep-count-no-match-page",
     "grep-count-offset-zero",
+    "grep-type-invalid",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
 UNRESTRICTED_TOOLS_MODES = SEARCH_MODES | {"outside", "glob-tools", "grep-tools"}
 NO_MATCH_MODES = {"glob-no-match", "grep-no-match", "grep-count-no-match", "grep-offset-end", "grep-multiline-no-match", "grep-files-offset-end", "grep-files-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-no-match-offset", "grep-count-no-match-page"}
 NON_TXT_MATCH_MODES = {"grep-type-filter", "grep-content-page", "grep-files-page", "grep-count-page", "grep-count-offset-end"}
-INVALID_MODES = {"glob-invalid", "grep-invalid"}
+INVALID_MODES = {"glob-invalid", "grep-invalid", "grep-type-invalid"}
 FIXTURE_MATCH_MODES = SEARCH_MODES - NO_MATCH_MODES - INVALID_MODES - NON_TXT_MATCH_MODES
 VALID_MODES = CATALOG_MODES | {"missing", "outside"}
 
@@ -390,7 +391,7 @@ def main(executable: str, mode: str = "normal") -> int:
                            file_glob="*.txt" if mode == "grep-glob-filter" else None,
                            head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-content-page", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero"} else None,
                            offset=1 if mode in {"grep-offset", "grep-files-offset", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-offset", "grep-count-offset-end", "grep-count-no-match-offset"} else 2 if mode in {"grep-offset-end", "grep-files-offset-end"} else 0 if mode in {"grep-offset-zero", "grep-count-offset-zero"} else None,
-                           file_type="py" if mode == "grep-type-filter" else None,
+                           file_type="py" if mode == "grep-type-filter" else "notatype" if mode == "grep-type-invalid" else None,
                            context_alias=1 if mode == "grep-context-alias" else None,
                            multiline=mode in {"grep-multiline", "grep-multiline-no-match", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"})
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
