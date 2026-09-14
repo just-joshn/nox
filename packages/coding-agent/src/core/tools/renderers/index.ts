@@ -43,6 +43,7 @@ export function createAllToolRenderers(): Record<ToolName, ToolRenderers> {
 		Grep: grepRenderers,
 		Read: readRenderers,
 		Edit: editRenderers,
+		Bash: createShellRenderers("$"),
 	};
 }
 

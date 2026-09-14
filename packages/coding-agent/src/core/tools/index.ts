@@ -82,6 +82,7 @@ export {
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import type { ToolDefinition } from "../extensions/types.ts";
 import { type BashToolOptions, createBashTool, createBashToolDefinition } from "./bash.ts";
+import { createClaudeBashToolDefinition } from "./claude-bash.ts";
 import { createClaudeEditToolDefinition } from "./claude-edit.ts";
 import { createClaudeReadToolDefinition } from "./claude-read.ts";
 import { createClaudeGlobToolDefinition, createClaudeGrepToolDefinition } from "./claude-search.ts";
@@ -108,7 +109,8 @@ export type ToolName =
 	| "Glob"
 	| "Grep"
 	| "Read"
-	| "Edit";
+	| "Edit"
+	| "Bash";
 export const allToolNames: Set<ToolName> = new Set([
 	"read",
 	"bash",
@@ -122,6 +124,7 @@ export const allToolNames: Set<ToolName> = new Set([
 	"Grep",
 	"Read",
 	"Edit",
+	"Bash",
 ]);
 
 export interface ToolsOptions {
@@ -161,6 +164,8 @@ export function createToolDefinition(toolName: ToolName, cwd: string, options?: 
 			return createClaudeReadToolDefinition(cwd, options?.read);
 		case "Edit":
 			return createClaudeEditToolDefinition(cwd);
+		case "Bash":
+			return createClaudeBashToolDefinition(cwd, options?.bash);
 		default:
 			throw new Error(`Unknown tool name: ${toolName}`);
 	}
@@ -192,6 +197,8 @@ export function createTool(toolName: ToolName, cwd: string, options?: ToolsOptio
 			return wrapToolDefinition(createClaudeReadToolDefinition(cwd, options?.read));
 		case "Edit":
 			return wrapToolDefinition(createClaudeEditToolDefinition(cwd));
+		case "Bash":
+			return wrapToolDefinition(createClaudeBashToolDefinition(cwd, options?.bash));
 		default:
 			throw new Error(`Unknown tool name: ${toolName}`);
 	}
@@ -229,6 +236,7 @@ export function createAllToolDefinitions(cwd: string, options?: ToolsOptions): R
 		Grep: createClaudeGrepToolDefinition(cwd),
 		Read: createClaudeReadToolDefinition(cwd, options?.read),
 		Edit: createClaudeEditToolDefinition(cwd),
+		Bash: createClaudeBashToolDefinition(cwd, options?.bash),
 	};
 }
 
@@ -264,5 +272,6 @@ export function createAllTools(cwd: string, options?: ToolsOptions): Record<Tool
 		Grep: wrapToolDefinition(createClaudeGrepToolDefinition(cwd)),
 		Read: wrapToolDefinition(createClaudeReadToolDefinition(cwd, options?.read)),
 		Edit: wrapToolDefinition(createClaudeEditToolDefinition(cwd)),
+		Bash: wrapToolDefinition(createClaudeBashToolDefinition(cwd, options?.bash)),
 	};
 }

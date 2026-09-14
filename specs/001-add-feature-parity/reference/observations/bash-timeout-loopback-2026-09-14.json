@@ -1,0 +1,42 @@
+{
+  "exit_code": 0,
+  "tool_input": {
+    "command": "sleep 5",
+    "timeout": 500
+  },
+  "tool_result": {
+    "type": "tool_result",
+    "content": "Exit code 143\nCommand timed out after 0s",
+    "is_error": true,
+    "tool_use_id": "tool_1"
+  },
+  "requests": [
+    {
+      "model": "claude-sonnet-5",
+      "kind": "tool"
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "type": "tool_result",
+        "content": "Exit code 143\nCommand timed out after 0s",
+        "is_error": true,
+        "tool_use_id": "tool_1",
+        "cache_control": {
+          "type": "ephemeral"
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "type": "tool_result",
+        "content": "Exit code 143\nCommand timed out after 0s",
+        "is_error": true,
+        "tool_use_id": "tool_1"
+      }
+    }
+  ]
+}

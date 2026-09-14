@@ -1,0 +1,41 @@
+{
+  "exit_code": 0,
+  "tool_input": {
+    "command": "echo hello"
+  },
+  "tool_result": {
+    "tool_use_id": "tool_1",
+    "type": "tool_result",
+    "content": "hello",
+    "is_error": false
+  },
+  "requests": [
+    {
+      "model": "claude-sonnet-5",
+      "kind": "tool"
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "tool_use_id": "tool_1",
+        "type": "tool_result",
+        "content": "hello",
+        "is_error": false,
+        "cache_control": {
+          "type": "ephemeral"
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "tool_use_id": "tool_1",
+        "type": "tool_result",
+        "content": "hello",
+        "is_error": false
+      }
+    }
+  ]
+}
