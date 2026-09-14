@@ -129,5 +129,16 @@
 | SUR-INT-012 | Diagnostic and notebook tool authorization unobserved | Synthetic Problems panel and disposable notebook kernel |
 | SUR-INT-013 | Editor/CLI shared history and conflict handling unobserved | Disposable session, resume from both surfaces, reload fixture |
 | SUR-INT-014 | Named terminal context and missing/stale output unobserved | Synthetic terminal logs only; missing title and redaction cases |
+| SUR-MAINT-001 | Login modes and callback recovery unobserved | Disposable account or authorized test login; no credential values recorded |
+| SUR-MAINT-002 | Logout persistence and idempotence unobserved | Isolated credential store with synthetic login; do not alter user login |
+| SUR-MAINT-003 | Status JSON/text shape and expired-token redaction unobserved | Isolated home with synthetic credential states |
+| SUR-MAINT-004 | CLI doctor report and trust behavior unobserved | Isolated project with valid/invalid settings and no private files |
+| SUR-MAINT-005 | Interactive repair flow unobserved | Disposable installation/configuration and explicit fix refusal |
+| SUR-MAINT-006 | Import preview and invalid source behavior unobserved | Isolated home with synthetic source configuration |
+| SUR-MAINT-007 | Confirmed import, conflict, and stale digest unobserved | Disposable destination and synthetic source; no real user settings |
+| SUR-MAINT-008 | Installer/update success and interrupted rollback unobserved | Disposable binary location and controlled package source |
+| SUR-MAINT-009 | Purge preview and no-match behavior unobserved | Isolated home with synthetic project state; preview only |
+| SUR-MAINT-010 | Purge removal and confirmation behavior unobserved | Isolated home with synthetic state; explicit disposable path only |
+| SUR-MAINT-011 | Token generation and redaction unobserved | Eligible disposable account or approved token test; never record token bytes |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.

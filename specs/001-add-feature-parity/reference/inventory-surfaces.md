@@ -205,3 +205,23 @@ Sources: [current browser guide](https://code.claude.com/docs/en/chrome) and [cu
 | SUR-INT-014 | Reference `@terminal:<name>` in editor prompt | Named terminal output enters prompt context | Missing terminal, stale output, sensitive logs | Editor gate; nox terminal context |
 
 Detailed VS Code layout, themes, shortcuts, focus/accessibility, browser tool list, and other editor/browser variants remain to be split. The editor bridge's local token and selected-text disclosure are security-sensitive observations requiring synthetic data.
+
+## Local account and maintenance leaves (SUR-010)
+
+Sources: [current CLI reference](https://code.claude.com/docs/en/cli-usage), [local-state guide](https://code.claude.com/docs/en/claude-directory), and installed help for [authentication](observations/help-auth-2026-09-14.txt), [import](observations/help-import-2026-09-14.txt), [diagnostics](observations/help-doctor-2026-09-14.txt), and [project purge](observations/help-project-purge-2026-09-14.txt). Help reveals the command tree, not side-effect behavior; no credentials or user state were changed.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-MAINT-001 | Run `auth login` with optional email, SSO, or console mode | Account login stored for future sessions | Browser callback failure, pasted-code recovery, denied account | Account/network gate; `nox auth login` |
+| SUR-MAINT-002 | Run `auth logout` | Saved login cleared without deleting project sessions | Already logged out, storage failure | Account gate; `nox auth logout` |
+| SUR-MAINT-003 | Run `auth status` with JSON or text output | Auth state shown; exit 0 when logged in, 1 otherwise | Expired credentials and redaction | Local; `nox auth status` |
+| SUR-MAINT-004 | Run CLI `doctor` in a project | Read-only health report, including settings read before trust | Invalid settings, unavailable dependency | Local; `nox doctor` |
+| SUR-MAINT-005 | Run interactive `/doctor` | Guided full checkup may propose repairs | Declined fix, failed repair, repeated check | Local/account conditions; Pi command |
+| SUR-MAINT-006 | Run `import [source] --dry-run` | Preview candidate configuration without writes | Unknown source, malformed source settings | Local; `nox import --dry-run` |
+| SUR-MAINT-007 | Confirm `import [source]`, optionally with digest | Selected configuration copied into nox scope | Conflict, cancellation, stale digest, partial import | Local; `nox import` |
+| SUR-MAINT-008 | Run `update`/`upgrade` or `install [target]` | Binary version changes after download and verification | No update, invalid target, interrupted install | Network/platform gate; `nox update` |
+| SUR-MAINT-009 | Run `project purge [path] --dry-run` | List project-scoped transcripts, tasks, file history, and config entry without deleting | No match exits 1; global-only paths excluded | Local; `nox project purge --dry-run` |
+| SUR-MAINT-010 | Confirm `project purge` with `--yes`, `--interactive`, or `--all` | Selected project data removed; all-project mode also removes history file | Cancel, item failure, unmatched path, protected data retention | Local destructive action; `nox project purge` |
+| SUR-MAINT-011 | Run `setup-token` | Long-lived token printed without saving it | Ineligible subscription, interrupted flow, output disclosure | Account gate; `nox setup-token` |
+
+Auth provider variants, installer channels, project-state diagnostic details, import source mappings, and state-redaction scenarios still need separate leaves before SUR-010 is complete. Purge and token generation were deliberately not invoked on the user's real home.
