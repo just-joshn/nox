@@ -663,7 +663,7 @@ The [official CLI reference](https://code.claude.com/docs/en/cli-usage) also dis
 
 | ID | Input | Documented decision | State |
 |----|-------|---------------------|-------|
-| CLI-519 | Misspelled CLI subcommand with a close match | Suggest the closest subcommand and exit without starting a session | [Installed typo probe](observations/cli-typo-2026-09-14.txt): exit 1, empty stdout, suggestion on stderr; temporary-home config entries created; nox mapping pending |
+| CLI-519 | Misspelled CLI subcommand with a close match | Suggest the closest subcommand and exit without starting a session | [Installed typo probe](observations/cli-typo-2026-09-14.txt): exit 1, empty stdout, suggestion on stderr; temporary-home config entries created. Nox early decision passes, but diagnostic and side effects differ as [DISC-002](discrepancies.md) |
 | CLI-520 | Leading `--dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | [Isolated dispatch probe](observations/cli-daemon-leading-flags-2026-09-14.txt): daemon status reached; exit 1 because supervisor absent |
 | CLI-521 | Leading `--allow-dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | [Isolated dispatch probe](observations/cli-daemon-leading-flags-2026-09-14.txt): daemon status reached; exit 1 because supervisor absent |
 | CLI-522 | Other leading flag before `daemon <subcommand>` | Start an interactive session rather than dispatching the daemon subcommand | [Isolated `--bare` probe](observations/cli-daemon-leading-flags-2026-09-14.txt): interactive startup reached login check, not daemon status |

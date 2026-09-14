@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -31,6 +31,7 @@ function runCli(args: string[]) {
 			stdout: result.stdout,
 			stderr: result.stderr,
 			sessionCreated: existsSync(sessionDir),
+			homeEntries: readdirSync(root),
 		};
 	} finally {
 		rmSync(root, { recursive: true, force: true });
@@ -45,6 +46,7 @@ describe("command typo preflight", () => {
 		expect(result.stderr).toContain(`Did you mean ${APP_NAME} update?`);
 		expect(result.stderr).not.toContain("No API key found");
 		expect(result.sessionCreated).toBe(false);
+		expect(result.homeEntries).toEqual([]);
 	});
 
 	test("leaves an unrelated prompt on the existing path", () => {
