@@ -1,124 +1,266 @@
-# Development Rules
+# Karpathy Coding Guidelines
 
-## Conversational Style
+Behavioral guidelines to reduce common LLM coding mistakes, derived from Andrej Karpathy's observations on LLM coding pitfalls. These principles bias toward caution over speed — for trivial tasks, use judgment.
 
-- Keep answers short and concise
-- No emojis in commits, issues, PR comments, or code
-- No fluff or cheerful filler text (e.g., "Thanks @user" not "Thanks so much @user!")
-- Technical prose only, be direct
-- Use concise, clear, simple language. Define unavoidable jargon before using it.
-- Explain non-trivial designs and problems as: problem, concrete example or short trace, then solution. State why the solution is necessary and distinguish it from optional complexity.
-- Prefer concrete behavior and small illustrations over abstract summaries, dense terminology, or unexplained lists of changes.
-- When the user asks a question, answer it first before making edits or running implementation commands.
-- When responding to user feedback or an analysis, explicitly say whether you agree or disagree before saying what you changed.
+## 1. Think Before Coding
 
-## Code Quality
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
 
-- Read files in full before wide-ranging changes, before editing files you have not fully inspected, and when asked to investigate or audit. Do not rely on search snippets for broad changes.
-- No `any` unless absolutely necessary.
-- Inline single-line helpers that have only one call site.
-- Check node_modules for external API types; don't guess.
-- **No inline imports** (`await import()`, `import("pkg").Type`, dynamic type imports). Top-level imports only.
-- Never remove or downgrade code to fix type errors from outdated deps; upgrade the dep instead.
-- Use only erasable TypeScript syntax (Node strip-only mode) in code checked by the root config (`packages/*/src`, `packages/*/test`, `packages/coding-agent/examples`): no parameter properties, `enum`, `namespace`/`module`, `import =`, `export =`, or other constructs needing JS emit. Use explicit fields with constructor assignments.
-- Always ask before removing functionality or code that appears intentional.
-- Do not preserve backward compatibility unless the user asks for it.
-- Never hardcode key checks (e.g. `matchesKey(keyData, "ctrl+x")`). Add defaults to `DEFAULT_EDITOR_KEYBINDINGS` or `DEFAULT_APP_KEYBINDINGS` so they stay configurable.
-- Never modify `packages/ai/src/models.generated.ts` directly; update `packages/ai/scripts/generate-models.ts` instead, then regenerate. Including the resulting `models.generated.ts` diff is always OK, even if regeneration includes unrelated upstream model metadata changes.
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them — don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
-## Commands
+## 2. Simplicity First
 
-- After code changes (not docs): `npm run check` (full output, no tail). Fix all errors, warnings, and infos before committing. Does not run tests.
-- Never run `npm run build` or `npm test` unless requested by the user.
-- Never run the full vitest suite directly: it includes e2e tests that activate when endpoint/auth env vars are present. For all non-e2e tests, run `./test.sh` from the repo root. Otherwise run specific tests from the package root:
-  - Vitest: `node "$(git rev-parse --show-toplevel)/node_modules/vitest/dist/cli.js" --run test/specific.test.ts`
-  - `packages/tui` (`node:test`): `node --test test/specific.test.ts`
-- If you create or modify a test file, run it and iterate on test or implementation until it passes.
-- For `packages/coding-agent/test/suite/`, use `test/suite/harness.ts` + the faux provider. No real provider APIs, keys, or paid tokens.
-- When regressions tests for fixing a github issue, add a comment with the github issue number next to the test.
-- For ad-hoc scripts, `write` them to a temp file (e.g. `/tmp`), run, edit if needed, remove when done. Don't embed multi-line scripts in `bash` commands.
-- Never commit unless the user asks.
+**Minimum code that solves the problem. Nothing speculative.**
 
-## Dependency and Install Security
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
 
-- Treat npm dep and lockfile changes as reviewed code. Direct external deps stay pinned to exact versions.
-- When updating `undici`, you MUST read its changelog/release notes for the target version and evaluate whether any changes may affect functionality before applying the update.
-- Hydrate/update locally with `npm install --ignore-scripts`; clean/CI-style with `npm ci --ignore-scripts`. Don't run lifecycle scripts unless the user asks.
-- If dep metadata changes, refresh `package-lock.json` with `npm install --package-lock-only --ignore-scripts`.
-- If `packages/coding-agent/npm-shrinkwrap.json` needs regen, run `node scripts/generate-coding-agent-shrinkwrap.mjs` (verify with `--check` or `npm run check`). New deps with lifecycle scripts require review and an explicit allowlist entry in that script; never add one silently.
-- Pre-commit blocks lockfile commits unless `PI_ALLOW_LOCKFILE_CHANGE=1`. Don't bypass unless the user wants the lockfile change committed.
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-## Git
+## 3. Surgical Changes
 
-Multiple pi sessions may be running in this cwd at the same time, each modifying different files. Git operations that touch unstaged, staged, or untracked files outside your own changes will stomp on other sessions' work. Follow these rules:
+**Touch only what you must. Clean up only your own mess.**
 
-Committing:
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it — don't delete it.
 
-- Only commit files YOU changed in THIS session.
-- Stage explicit paths (`git add <path1> <path2>`); never `git add -A` / `git add .`.
-- Before committing, run `git status` and verify you are only staging your files.
-- `packages/ai/src/models.generated.ts` may always be included alongside your files.
-- Message format: `{feat,fix,docs}[(ai,tui,agent,coding-agent)]: <commit message> (optionally multiple lines)`. Message is informative and concise.
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
 
-Never run (destroys other agents' work or bypasses checks):
+The test: Every changed line should trace directly to the user's request.
 
-- `git reset --hard`, `git checkout .`, `git clean -fd`, `git stash`, `git add -A`, `git add .`, `git commit --no-verify`.
+## 4. Goal-Driven Execution
 
-If rebase conflicts occur:
+**Define success criteria. Loop until verified.**
 
-- Resolve conflicts only in files you modified.
-- If a conflict is in a file you did not modify, abort and ask the user.
-- Never force push.
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
 
-## Issues and PRs
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
 
-See `CONTRIBUTING.md` for the contributor gate (auto-close workflows, `lgtm`/`lgtmi`, quality bar).
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-When reviewing PRs:
+# Coding Style Rules
 
-- Do not run `gh pr checkout`, `git switch`, or otherwise move the worktree to the PR branch unless the user explicitly asks.
-- Use `gh pr view`, `gh pr diff`, `gh api`, and local `git show`/`git diff` against fetched refs to inspect PR metadata, commits, and patches without changing branches.
-- If you need PR file contents, fetch/read them into temporary files or use `git show <ref>:<path>` without switching branches.
+## Immutability (CRITICAL)
 
-When creating issues:
+ALWAYS create new objects, NEVER mutate:
 
-- Add `pkg:*` labels for affected packages (`pkg:agent`, `pkg:ai`, `pkg:coding-agent`, `pkg:tui`); use all that apply.
+```javascript
+// WRONG: Mutation
+function updateUser(user, name) {
+  user.name = name  // MUTATION!
+  return user
+}
 
-When posting issue/PR comments:
+// CORRECT: Immutability
+function updateUser(user, name) {
+  return { ...user, name }
+}
+```
 
-- Write the comment to a temp file and post with `gh issue/pr comment --body-file` (never multi-line markdown via `--body`).
-- Keep comments concise, technical, in the user's tone.
-- End every AI-posted comment with the AI-generated disclaimer line specified by the originating prompt (e.g. `This comment is AI-generated by `/wr``).
+## File Organization
 
-When closing issues via commit:
+MANY SMALL FILES > FEW LARGE FILES:
+- High cohesion, low coupling
+- 200-400 lines typical, 800 max
+- Extract utilities from large components
+- Organize by feature/domain, not by type
 
-- Include `fixes #<number>` or `closes #<number>` in the message so merging auto-closes the issue. For multiple issues, repeat the keyword per issue (`closes #1, closes #2`); a shared keyword (`closes #1, #2`) only closes the first.
+## Error Handling
 
-## Testing pi Interactive Mode with tmux
+ALWAYS handle errors comprehensively:
 
-For testing pi's interactive mode, load and follow [.pi/skills/interactive-testing.md](.pi/skills/interactive-testing.md).
+```typescript
+try {
+  const result = await riskyOperation()
+  return result
+} catch (error) {
+  console.error('Operation failed:', error)
+  throw new Error('User-friendly error message')
+}
+```
 
-## Changelog
+## Input Validation
 
-Location: `packages/*/CHANGELOG.md` (one per package).
+ALWAYS validate user input:
 
-Sections under `## [Unreleased]`: `### Breaking Changes` (API changes requiring migration), `### Added`, `### Changed`, `### Fixed`, `### Removed`.
+```typescript
+import { z } from 'zod'
 
-Rules:
+const schema = z.object({
+  email: z.string().email(),
+  age: z.number().int().min(0).max(150)
+})
 
-- All new entries go under `## [Unreleased]`. Read the full section first and append to existing subsections; never duplicate them.
-- Released version sections (e.g. `## [0.12.2]`) are immutable; never modify them.
-- Do not create changelog entries when working on a branch other than `main` or pull request
+const validated = schema.parse(input)
+```
 
-Attribution:
+## Code Quality Checklist
 
-- Internal (from issues): `Fixed foo bar ([#123](https://github.com/earendil-works/pi/issues/123))`
-- External contributions: `Added feature X ([#456](https://github.com/earendil-works/pi/pull/456) by [@username](https://github.com/username))`
+Before marking work complete:
+- [ ] Code is readable and well-named
+- [ ] Functions are small (<50 lines)
+- [ ] Files are focused (<800 lines)
+- [ ] No deep nesting (>4 levels)
+- [ ] Proper error handling
+- [ ] No console.log statements
+- [ ] No hardcoded values
+- [ ] Immutable patterns used
 
-## Releasing
+# Git Workflow Rules
 
-For release preparation, publishing, verification, or recovery, load and follow [.pi/skills/release.md](.pi/skills/release.md).
+## Commit Message Format
 
-## User Override
+```
+<type>: <description>
 
-If the user's instructions conflict with any rule in this document, ask for explicit confirmation before overriding. Only then execute their instructions.
+<optional body>
+```
+
+Types: feat, fix, refactor, docs, test, chore, perf, ci
+
+## Pull Request Workflow
+
+When creating PRs:
+1. Analyze full commit history (not just latest commit)
+2. Use `git diff [base-branch]...HEAD` to see all changes
+3. Draft comprehensive PR summary
+4. Include test plan with TODOs
+5. Push with `-u` flag if new branch
+
+## Feature Implementation Workflow
+
+1. **Plan First** - Use `planner` agent
+2. **TDD Approach** - Use `tdd-guide` agent
+3. **Code Review** - Use `code-reviewer` agent after writing code
+4. **Commit** - Follow conventional commits format
+
+## Branch Naming
+
+- `feature/` - New features
+- `fix/` - Bug fixes
+- `refactor/` - Code refactoring
+- `docs/` - Documentation changes
+
+# Performance Rules
+
+## Model Selection Strategy
+
+**Haiku** (90% of Sonnet capability, 3x cost savings):
+- Lightweight agents with frequent invocation
+- Code generation and exploration
+- Worker agents in multi-agent systems
+
+**Sonnet** (Best coding model):
+- Main development work
+- Orchestrating multi-agent workflows
+- Complex coding tasks
+
+**Opus** (Deepest reasoning):
+- Complex architectural decisions
+- Maximum reasoning requirements
+- Research and analysis tasks
+
+## Context Window Management
+
+Avoid last 20% of context window for:
+- Large-scale refactoring
+- Feature implementation spanning multiple files
+- Debugging complex interactions
+
+## Algorithm Efficiency
+
+Before implementing:
+- [ ] Consider time complexity
+- [ ] Avoid O(n^2) when O(n log n) possible
+- [ ] Use appropriate data structures
+- [ ] Cache expensive computations
+
+# Security Rules
+
+## Mandatory Security Checks
+
+Before ANY commit:
+- [ ] No hardcoded secrets (API keys, passwords, tokens)
+- [ ] All user inputs validated
+- [ ] SQL injection prevention (parameterized queries)
+- [ ] XSS prevention (sanitized HTML)
+- [ ] CSRF protection enabled
+- [ ] Authentication/authorization verified
+- [ ] Rate limiting on all endpoints
+- [ ] Error messages don't leak sensitive data
+
+## Secret Management
+
+```typescript
+// NEVER: Hardcoded secrets
+const apiKey = "sk-proj-xxxxx"
+
+// ALWAYS: Environment variables
+const apiKey = process.env.API_KEY
+if (!apiKey) throw new Error('API_KEY not configured')
+```
+
+## Security Response Protocol
+
+If security issue found:
+1. STOP immediately
+2. Use `security-reviewer` agent
+3. Fix CRITICAL issues before continuing
+4. Rotate any exposed secrets
+5. Review entire codebase for similar issues
+
+# Testing Rules
+
+## Minimum Test Coverage: 80%
+
+Test Types (ALL required):
+1. **Unit Tests** - Individual functions, utilities, components
+2. **Integration Tests** - API endpoints, database operations
+3. **E2E Tests** - Critical user flows
+
+## Test-Driven Development
+
+MANDATORY workflow:
+1. Write test first (RED)
+2. Run test - it should FAIL
+3. Write minimal implementation (GREEN)
+4. Run test - it should PASS
+5. Refactor (IMPROVE)
+6. Verify coverage (80%+)
+
+## Edge Cases to Test
+
+Every function must be tested with:
+- [ ] Null/undefined inputs
+- [ ] Empty arrays/strings
+- [ ] Invalid types
+- [ ] Boundary values (min/max)
+- [ ] Error conditions
+
+## Test Quality Checklist
+
+- [ ] Tests are independent (no shared state)
+- [ ] Test names describe behavior
+- [ ] Mocks used for external dependencies
+- [ ] Both happy path and error paths tested
+- [ ] No flaky tests
