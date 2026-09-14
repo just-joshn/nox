@@ -155,6 +155,52 @@ The [raw nested help captures](snapshot.md#snapshot-refresh-2026-09-14) establis
 | CAND-014 | `auto-mode config`, `defaults`, `critique`, `reset` | observed-help | Pending | Pending |
 | CAND-015 | `project purge` | observed-help | Pending | Pending |
 
+## Nested command leaves
+
+These IDs distinguish independently invokable paths. Their options still require separate leaves and scenarios; listing a path does not verify its effect.
+
+| ID | Surface | Discovery | Behavior evidence |
+|----|---------|-----------|-------------------|
+| CLI-102 | `auth login` | observed-help | Pending |
+| CLI-103 | `auth logout` | observed-help | Pending |
+| CLI-104 | `auth status` | observed-help | Pending |
+| CLI-105 | `mcp add` | observed-help | Pending |
+| CLI-106 | `mcp add-json` | observed-help | Pending |
+| CLI-107 | `mcp get` | observed-help | Pending |
+| CLI-108 | `mcp list` | observed-help | Pending |
+| CLI-109 | `mcp login` | observed-help | Pending |
+| CLI-110 | `mcp logout` | observed-help | Pending |
+| CLI-111 | `mcp remove` | observed-help | Pending |
+| CLI-112 | `mcp reset-project-choices` | observed-help | Pending |
+| CLI-113 | `mcp serve` | observed-help | Pending |
+| CLI-114 | `plugin details` | observed-help | Pending |
+| CLI-115 | `plugin disable` | observed-help | Pending |
+| CLI-116 | `plugin enable` | observed-help | Pending |
+| CLI-117 | `plugin eval` | observed-help | Pending |
+| CLI-118 | `plugin init|new` | observed-help | Pending |
+| CLI-119 | `plugin install|i` | observed-help | Pending |
+| CLI-120 | `plugin list` | observed-help | Pending |
+| CLI-121 | `plugin marketplace` | observed-help | Pending |
+| CLI-122 | `plugin prune|autoremove` | observed-help | Pending |
+| CLI-123 | `plugin tag` | observed-help | Pending |
+| CLI-124 | `plugin uninstall|remove` | observed-help | Pending |
+| CLI-125 | `plugin update` | observed-help | Pending |
+| CLI-126 | `plugin validate` | observed-help | Pending |
+| CLI-127 | `project purge` | observed-help | Pending |
+| CLI-128 | `auto-mode config` | observed-help | Pending |
+| CLI-129 | `auto-mode critique` | observed-help | Pending |
+| CLI-130 | `auto-mode defaults` | observed-help | Pending |
+| CLI-131 | `auto-mode reset` | observed-help | Pending |
+| CLI-132 | `plugin marketplace add` | observed-help | Pending |
+| CLI-133 | `plugin marketplace list` | observed-help | Pending |
+| CLI-134 | `plugin marketplace remove|rm` | observed-help | Pending |
+| CLI-135 | `plugin marketplace update` | observed-help | Pending |
+| CLI-136 | `plugin eval init` | observed-help | Pending |
+| CLI-137 | `daemon run` | observed-help | Pending |
+| CLI-138 | `daemon logs` | observed-help | Pending |
+| CLI-139 | `daemon uninstall` | observed-help | Pending |
+| CLI-140 | `daemon stop` | observed-help | Pending |
+
 ## Missing discovery work
 
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) says help is incomplete. This table has not been reconciled against every documented flag and command, nor every command-specific option, alias, combination, and failure. Do not mark T002 complete.
