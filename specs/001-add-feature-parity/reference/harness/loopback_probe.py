@@ -21,7 +21,7 @@ SEARCH_MODES = frozenset({
     "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context",
     "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
     "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
-    "grep-context-alias", "grep-multiline", "grep-multiline-no-match",
+    "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -313,7 +313,7 @@ def main(executable: str, mode: str = "normal") -> int:
         state = ProbeState(read_path=read_path,
                            catalog=mode in CATALOG_MODES,
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
-                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode == "grep-multiline" else None,
+                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files"} else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
                            output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
                            ignore_case=mode == "grep-ignore-case",
@@ -326,7 +326,7 @@ def main(executable: str, mode: str = "normal") -> int:
                            offset=1 if mode == "grep-offset" else 2 if mode == "grep-offset-end" else 0 if mode == "grep-offset-zero" else None,
                            file_type="py" if mode == "grep-type-filter" else None,
                            context_alias=1 if mode == "grep-context-alias" else None,
-                           multiline=mode in {"grep-multiline", "grep-multiline-no-match"})
+                           multiline=mode in {"grep-multiline", "grep-multiline-no-match", "grep-multiline-files"})
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
