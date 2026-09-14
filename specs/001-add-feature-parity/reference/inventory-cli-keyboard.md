@@ -80,4 +80,64 @@
 | KBL-074 | Space, voice enabled in hold mode | Record while held |
 | KBL-075 | Space, voice enabled in tap mode | Toggle voice recording |
 
-These rows cover the general, editing, display, transcript, and voice key actions in the documentation. Vim NORMAL/VISUAL motions, operator combinations, search-dialog controls, command completion, and custom keybinding actions still need separate leaves. No row is a parity verification.
+## Vim-mode leaves
+
+The following actions require Vim editor mode. Unless stated otherwise, the entry condition is NORMAL mode. Operator motions, text objects, and VISUAL actions have separate IDs because they can fail independently.
+
+| ID | Input and entry condition | Documented effect |
+|----|---------------------------|-------------------|
+| KBL-076 | `Esc` or `Ctrl+[`, INSERT/VISUAL mode | Enter NORMAL mode |
+| KBL-077 | `i` | Insert before cursor |
+| KBL-078 | `I` | Insert at line start |
+| KBL-079 | `a` | Insert after cursor |
+| KBL-080 | `A` | Insert at line end |
+| KBL-081 | `o` | Open line below |
+| KBL-082 | `O` | Open line above |
+| KBL-083 | `v` | Enter character-wise VISUAL mode |
+| KBL-084 | `V` | Enter line-wise VISUAL mode |
+| KBL-085 | configured two-key INSERT remap within one second | Remove first character and enter NORMAL mode |
+| KBL-086 | configured two-key INSERT remap after one second or wrong second key | Preserve literal characters |
+| KBL-087 | `h`/`j`/`k`/`l` | Move left/down/up/right |
+| KBL-088 | Space | Move right |
+| KBL-089 | `w`/`e`/`b` | Move to next word/end of word/previous word |
+| KBL-090 | `0`/`$`/`^` | Move to line start/end/first nonblank |
+| KBL-091 | `gg`/`G` | Move to start/end of input |
+| KBL-092 | `f{char}`/`F{char}` | Find next/previous character |
+| KBL-093 | `t{char}`/`T{char}` | Move just before next/after previous character |
+| KBL-094 | `;`/`,` after character motion | Repeat motion forward/reverse |
+| KBL-095 | `/` | Open reverse history search |
+| KBL-096 | `j`/`k` or up/down at input boundary | Navigate prompt history |
+| KBL-097 | Left arrow on empty prompt | Open agent view |
+| KBL-098 | `x` | Delete character |
+| KBL-099 | `dd`/`D` | Delete line/to line end |
+| KBL-100 | `dw`/`de`/`db` | Delete word/to end/back |
+| KBL-101 | `df{char}`/`dt{char}` | Delete through/up to next matching character |
+| KBL-102 | `cc`/`C` | Change line/to line end |
+| KBL-103 | `cw`/`ce`/`cb` | Change word/to end/back |
+| KBL-104 | `s`/`S` | Substitute character/line and enter INSERT mode |
+| KBL-105 | `yy`/`Y` | Yank line |
+| KBL-106 | `yw`/`ye`/`yb` | Yank word/to end/back |
+| KBL-107 | `p`/`P` | Paste after/before cursor |
+| KBL-108 | `>>`/`<<` | Indent/dedent line |
+| KBL-109 | `J` | Join lines |
+| KBL-110 | `u`/`.` | Undo/repeat last change |
+| KBL-111 | `iw`/`aw` after `d`, `c`, or `y` | Apply operator to inner/around word |
+| KBL-112 | `iW`/`aW` after `d`, `c`, or `y` | Apply operator to inner/around whitespace WORD |
+| KBL-113 | `i"`/`a"` after `d`, `c`, or `y` | Apply operator inside/around double quotes |
+| KBL-114 | `i'`/`a'` after `d`, `c`, or `y` | Apply operator inside/around single quotes |
+| KBL-115 | `i(`/`a(` after `d`, `c`, or `y` | Apply operator inside/around parentheses |
+| KBL-116 | `i[`/`a[` after `d`, `c`, or `y` | Apply operator inside/around brackets |
+| KBL-117 | `i{`/`a{` after `d`, `c`, or `y` | Apply operator inside/around braces |
+| KBL-118 | `d`/`x`, VISUAL selection | Delete selected text |
+| KBL-119 | `y`, VISUAL selection | Yank selected text |
+| KBL-120 | `c`/`s`, VISUAL selection | Change selected text |
+| KBL-121 | `p`, VISUAL selection | Replace selection with register content |
+| KBL-122 | `r{char}`, VISUAL selection | Replace each selected character |
+| KBL-123 | `~`/`u`/`U`, VISUAL selection | Toggle/lowercase/uppercase selection |
+| KBL-124 | `>`/`<`, VISUAL selection | Indent/dedent selected lines |
+| KBL-125 | `J`, VISUAL selection | Join selected lines |
+| KBL-126 | `o`, VISUAL selection | Swap cursor and anchor |
+| KBL-127 | text object, VISUAL selection | Select named object |
+| KBL-128 | `v`/`V`, VISUAL selection | Toggle character/line selection or exit |
+
+The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mode) explicitly excludes block-wise `Ctrl+V` visual selection. These rows still contain grouped alternatives that need individual option/transition leaves under T002/T006. History-search controls, command completion, and custom keybinding actions also remain to be split. No row is a parity verification.
