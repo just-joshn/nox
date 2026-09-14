@@ -2,14 +2,14 @@
   "version": "1.0.6",
   "integration_state_schema": 1,
   "installed_integrations": [
-    "agy"
+    "pi"
   ],
   "integration_settings": {
-    "agy": {
+    "pi": {
       "script": "py",
-      "invoke_separator": "-"
+      "invoke_separator": "."
     }
   },
-  "integration": "agy",
-  "default_integration": "agy"
+  "integration": "pi",
+  "default_integration": "pi"
 }

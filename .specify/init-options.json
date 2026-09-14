@@ -1,9 +1,8 @@
 {
-  "ai": "agy",
-  "ai_skills": true,
+  "ai": "pi",
   "feature_numbering": "sequential",
   "here": false,
-  "integration": "agy",
+  "integration": "pi",
   "script": "py",
   "speckit_version": "1.0.6"
 }
