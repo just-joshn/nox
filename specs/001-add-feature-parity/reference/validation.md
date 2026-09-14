@@ -58,3 +58,5 @@ Nine documented `--environment` combinations were probed in separate logged-out 
 ## Synthetic loopback prompt composition (2026-09-14)
 
 The `prompt_probe.py` harness used a disposable home, a synthetic key, and a localhost-only Messages endpoint. Its two sentinel-summary tests and the nine existing Read harness tests passed. The [redacted trace](observations/prompt-compose-loopback-2026-09-14.json) records one request whose system field contains the replacement marker before the append marker, then synthetic completion with exit 0 and empty stderr. No raw system prompt or request body was retained. This observes CLI-557 ordering under a mock provider; no nox request comparison or real-service claim has been made.
+
+The file-backed mode repeated the observation with two synthetic prompt files. All 12 harness tests passed. The [redacted file trace](observations/prompt-files-loopback-2026-09-14.json) records one request with the file markers in replacement-then-append order, synthetic completion, exit 0, empty stderr, and unchanged fixture files. CLI-558 still needs a matched nox request comparison and real-service verification.

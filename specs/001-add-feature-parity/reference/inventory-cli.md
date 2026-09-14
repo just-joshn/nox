@@ -171,7 +171,7 @@ The [CLI reference](https://code.claude.com/docs/en/cli-usage) specifies these o
 | CLI-555 | `--bare` without explicit snapshot setting | Leave system-prompt recording off | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags-in-resumed-conversations); documented only, loopback trace pending |
 | CLI-556 | `--bare --system-prompt-snapshot on` | Record and reuse the first request's prompt | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags-in-resumed-conversations); documented only, loopback trace pending |
 | CLI-557 | `--system-prompt` with `--append-system-prompt` | Replace default prompt, then append supplied text | [Synthetic loopback observation](observations/prompt-compose-loopback-2026-09-14.json): both markers in system field, replacement before append; real-service behavior pending |
-| CLI-558 | `--system-prompt-file` with `--append-system-prompt-file` | Replace default prompt from file, then append additional file contents | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags); documented only, loopback trace pending |
+| CLI-558 | `--system-prompt-file` with `--append-system-prompt-file` | Replace default prompt from file, then append additional file contents | [Synthetic loopback observation](observations/prompt-files-loopback-2026-09-14.json): file markers in system field, replacement before append, files unchanged; real-service behavior pending |
 
 These rows cover only interactions the reference states explicitly. Other independently failing combinations, parse errors, and precedence cases remain to be discovered and split.
 

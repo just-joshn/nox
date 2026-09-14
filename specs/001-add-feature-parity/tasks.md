@@ -58,6 +58,7 @@
 - [X] T105 [US4] Render the observed three-part typo diagnostic in `packages/coding-agent/src/cli.ts`, using `APP_NAME` for the executable and the input token for the explicit prompt fallback. Preserve exit and session behavior.
 - [X] T106 [US4] Run the focused CLI process test, neighboring CLI regression tests, and `npm run check`; update `reference/validation.md` and DISC-002 to narrow the remaining mismatch to startup side effects, then commit locally.
 - [X] T107 [US4] Observe CLI-557 without account usage in a disposable loopback Messages fixture under `reference/harness/prompt_probe.py`: compare replacement and appended sentinel presence in the request's system field, redact all raw prompt text, and retain the normalized trace under `reference/observations/`. Depend on [CLI-557-PROMPT-COMPOSE](reference/scenarios.md); do not assert a nox parity result from documentation alone.
+- [X] T108 [US4] Extend `reference/harness/prompt_probe.py` with a file-backed mode for CLI-558, test its bounded argument construction in `reference/harness/test_prompt_probe.py`, and capture only redacted marker order through the local Messages endpoint. Depend on [CLI-558-PROMPT-FILES](reference/scenarios.md).
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

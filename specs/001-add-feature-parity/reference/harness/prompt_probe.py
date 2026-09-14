@@ -8,12 +8,20 @@ import sys
 import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 from loopback_probe import EXPECTED_COMPLETION, message_response
 
 
 REPLACE = "REPLACE_SENTINEL"
 APPEND = "APPEND_SENTINEL"
+
+
+def prompt_flags(mode: str, home: str) -> list[str]:
+    if mode == "files":
+        return ["--system-prompt-file", str(Path(home, "replacement.txt")),
+                "--append-system-prompt-file", str(Path(home, "append.txt"))]
+    return ["--system-prompt", REPLACE, "--append-system-prompt", APPEND]
 
 
 def summarize_system(system: object) -> dict[str, bool]:
@@ -67,12 +75,15 @@ def make_handler(observations: queue.Queue):
     return Handler
 
 
-def main(executable: str) -> int:
+def main(executable: str, mode: str = "inline") -> int:
     observations = queue.Queue()
     server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(observations))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     try:
         with tempfile.TemporaryDirectory(prefix="nox-loopback-prompt-") as home:
+            if mode == "files":
+                Path(home, "replacement.txt").write_text(REPLACE)
+                Path(home, "append.txt").write_text(APPEND)
             env = {
                 "HOME": home,
                 "XDG_CONFIG_HOME": home,
@@ -82,8 +93,10 @@ def main(executable: str) -> int:
                 "ANTHROPIC_BASE_URL": f"http://127.0.0.1:{server.server_port}",
             }
             command = [executable, "--bare", "-p", "noop", "--model", "sonnet", "--output-format", "json",
-                       "--system-prompt", REPLACE, "--append-system-prompt", APPEND]
+                       *prompt_flags(mode, home)]
             process = subprocess.run(command, cwd=home, env=env, capture_output=True, text=True, timeout=30)
+            fixture_unchanged = (Path(home, "replacement.txt").read_text() == REPLACE and
+                                 Path(home, "append.txt").read_text() == APPEND) if mode == "files" else None
         try:
             result = json.loads(process.stdout)
         except json.JSONDecodeError:
@@ -95,10 +108,12 @@ def main(executable: str) -> int:
             "exit_code": process.returncode,
             "result_matches_fixture": result.get("result") == EXPECTED_COMPLETION,
             "stderr_empty": not process.stderr,
+            "fixture_unchanged": fixture_unchanged,
             "requests": requests,
         }
         print(json.dumps(summary, indent=2))
         return 0 if (summary["exit_code"] == 0 and summary["result_matches_fixture"]
+                     and (mode != "files" or fixture_unchanged)
                      and any(item["replace_before_append"] for item in requests)) else 1
     finally:
         server.shutdown()
@@ -106,6 +121,6 @@ def main(executable: str) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        raise SystemExit("Usage: prompt_probe.py <cli-executable>")
-    raise SystemExit(main(sys.argv[1]))
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] != "files"):
+        raise SystemExit("Usage: prompt_probe.py <cli-executable> [files]")
+    raise SystemExit(main(sys.argv[1], mode=sys.argv[2] if len(sys.argv) == 3 else "inline"))
