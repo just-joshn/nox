@@ -139,7 +139,9 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 					content: [
 						{
 							type: "text" as const,
-							text: pagination ? `${limited}\n\n[Showing results with pagination = ${pagination}]` : limited,
+							text: pagination
+								? `${limited || "No entries at this offset"}\n\n[Showing results with pagination = ${pagination}]`
+								: limited,
 						},
 					],
 				};

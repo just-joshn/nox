@@ -94,6 +94,21 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep offset past all matches reports no entries", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 1, offset: 2 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "No entries at this offset\n\n[Showing results with pagination = offset: 2]" },
+		]);
+	});
+
 	it.each([
 		[undefined, "nested/fixture.txt:1:alpha"],
 		["files_with_matches", "Found 1 file\nnested/fixture.txt"],
