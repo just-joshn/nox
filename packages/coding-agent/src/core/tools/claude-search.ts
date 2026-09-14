@@ -112,6 +112,8 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const outputMode = selected.output_mode;
 			if (outputMode !== undefined && !["files_with_matches", "content", "count"].includes(outputMode))
 				throw new Error("Invalid Grep output_mode");
+			if (selected.head_limit !== undefined && (!Number.isInteger(selected.head_limit) || selected.head_limit < 0))
+				throw new Error("Invalid Grep head_limit");
 			if (selected.multiline && outputMode !== "count")
 				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal, outputMode !== "content");
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
