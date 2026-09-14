@@ -18,7 +18,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Testing**: Write a failing behavior test before each application change, then make it pass and refactor; use focused unit, integration, end-to-end, and isolated black-box comparison fixtures; add an offline aggregate coverage command spanning every production workspace package and session backend shipped or imported by nox, counting each owned source file once with documented exclusions; require aggregate lines, statements, functions, and branches each to reach 80%, treating zero-denominator or unmeasured metrics as failures; capture and rerun a functional Pi baseline for unrelated workflows affected by parity changes; run `npm run check` after code changes
 
-**Target Platform**: Existing Pi-supported terminal platforms. Desktop, web, mobile, editor, browser, chat, and CI workflows are reached through nox terminal or CLI controls and connected-service bridges, with equivalent functional outcomes. Platform, account, policy, and service-gated features remain inventory items with explicit availability conditions. The authoritative supported terminal-width, theme, platform, and workflow matrix is maintained in `reference/pi-visuals.md`; SC-003's denominator is the predeclared matrix cell count recorded there. Newly discovered affected states expand that denominator before their implementation can be called complete.
+**Target Platform**: Existing Pi-supported terminal platforms. Desktop, web, mobile, editor, browser, chat, and CI workflows are reached through nox terminal or CLI controls and connected-service bridges, with equivalent functional outcomes. Platform, account, policy, and service-gated features remain inventory items with explicit availability conditions. The authoritative supported terminal-width, theme, platform, and workflow matrix is maintained in `specs/001-add-feature-parity/reference/pi-visuals.md`; SC-003's denominator is the predeclared matrix cell count recorded there. Newly discovered affected states expand that denominator before their implementation can be called complete.
 
 **Project Type**: Monorepo terminal coding agent with CLI, interactive TUI, RPC, model transport, and extensibility packages
 
@@ -63,17 +63,17 @@ For each leaf, the plan requires: surface and availability conditions; normal, d
 
 | Principle | Design gate | Current result |
 |-----------|-------------|----------------|
-| Pi visual fidelity | Use existing TUI components and compare Pi reference states; obtain a constitution amendment before any intentional visual departure | Pass as a plan; no implementation verified |
-| Complete feature coverage | Inventory all CLI, interactive, settings, extension, and gated surfaces before declaring coverage | Pending evidence; first execution gate |
-| Behavioral parity | Define observable state, output, error, side-effect, and interaction cases per item | Pass as a method; no item verified |
-| Parity verification | Pin release and retain evidence, scenarios, and discrepancy status | Pass as a method; evidence incomplete |
-| Preserve Pi foundation | Map each change to an inventory item and compare both Pi visual states and unrelated functional workflows against captured baselines | Pass as a method; no change verified |
-| Evidence before changes | State assumptions, observed contract, simplest viable design, and a verifiable result before each leaf implementation | Pass as a method; leaf evidence pending |
-| Small and immutable changes | Change only the owning path, use replacement state, and check function/file size and algorithmic cost | Pass as a design rule; source not yet audited |
-| Security by default | Validate input and authorization before side effects; test redaction and abuse cases with synthetic data; stop on critical findings | Pass as a design rule; security scenarios pending |
-| Test-first completion | Run a failing behavior test before source changes, then unit/integration/end-to-end checks and an 80% project coverage audit | Pending verification; coverage unmeasured |
+| Pi visual fidelity | Use existing TUI components and compare Pi reference states; obtain a constitution amendment before any intentional visual departure | Baseline and selected fixtures recorded; complete matrix verification pending |
+| Complete feature coverage | Inventory all CLI, interactive, settings, extension, and gated surfaces before declaring coverage | Partial inventory recorded; complete reconciliation pending |
+| Behavioral parity | Define observable state, output, error, side-effect, and interaction cases per item | Selected leaves have local comparison evidence; complete inventory verification pending |
+| Parity verification | Pin release and retain evidence, scenarios, and discrepancy status | Selected evidence and discrepancies recorded; final reconciliation pending |
+| Preserve Pi foundation | Map each change to an inventory item and compare both Pi visual states and unrelated functional workflows against captured baselines | Functional baseline recorded; per-slice and final regression audits pending |
+| Evidence before changes | State assumptions, observed contract, simplest viable design, and a verifiable result before each leaf implementation | T320 passed 2026-09-14 (14/14 `pass`, 0 reopen, 0 unresolved) in `reference/validation.md`; later slices use per-slice T013 |
+| Small and immutable changes | Change only the owning path, use replacement state, and check function/file size and algorithmic cost | Selected source changes verified locally; T320 passed; final size/immutability audit remains in T049 |
+| Security by default | Validate input and authorization before side effects; test redaction and abuse cases with synthetic data; stop on critical findings | Selected isolated security scenarios recorded; final T092 audit pending |
+| Test-first completion | Run a failing behavior test before source changes, then unit/integration/end-to-end checks and an 80% project coverage audit | Latest recorded aggregate baseline remains below the required threshold; see the dated `Aggregate production coverage` section in `specs/001-add-feature-parity/reference/validation.md`. T049 remains open |
 
-No constitutional exception is proposed. The missing inventory and unmeasured coverage are unfinished work, not waived requirements. A reachable implementation task may begin after its leaf inventory, observed contract, and failing behavior test exist. Inaccessible features stay tracked and prevent a complete-parity claim.
+No constitutional exception is proposed. The missing inventory and below-threshold aggregate coverage are unfinished work, not waived requirements. T320 has passed with zero current-reopened and current-unresolved results. A reachable implementation task may begin when its leaf inventory, observed contract, and failing behavior test exist. Inaccessible features stay tracked and prevent a complete-parity claim.
 
 ## Project Structure
 
@@ -82,7 +82,10 @@ No constitutional exception is proposed. The missing inventory and unmeasured co
 ```text
 specs/001-add-feature-parity/
 ├── spec.md
-├── checklists/requirements.md
+├── checklists/
+│   ├── parity.md
+│   ├── requirements.md
+│   └── security.md
 ├── plan.md
 ├── research.md
 ├── data-model.md
@@ -91,6 +94,7 @@ specs/001-add-feature-parity/
 │   ├── inventory.md
 │   ├── observable-behavior.md
 │   └── surface-map.md
+├── reference/               # Evidence, inventory, visual baselines, and validation
 └── tasks.md                 # Only task document for all feature families
 ```
 
@@ -128,8 +132,10 @@ complete or a full-parity release can be claimed.
 
 ## Delivery Sequence and Gates
 
+**Historical compliance gate**: T320 passed (see `reference/validation.md` Historical implementation audit). Newly checked application tasks remain subject to per-slice T013. Reopen T320 only if a frozen row leaves `pass`.
+
 1. **Inventory gate**: Enumerate the installed release with CLI output, official documentation, interactive inspection, and safe probes. Remotely inspect the older restored source map for candidate features and edge cases without cloning or copying it. Record each item and gated condition in the inventory contract. Split broad categories into independently testable leaf items. Reconcile every official documentation page, installed command, and source-map candidate against the inventory; open gaps for every unmatched entry and date any obsolete rationale. For each surface-specific leaf, record the reference interaction sequence and proposed nox control before declaring it implementable.
 2. **Reference-evidence gate**: For each reachable leaf selected for implementation, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures before source work on that leaf. For externally supplied input, identify the protected side effect, authorization decision, and sensitive values before probing. Mark inaccessible features `gated-unverified`, record the access or observation needed, and do not infer behavior from names alone. Gated leaves do not block source work on independently observed leaves, but they block a complete-parity claim.
-3. **Task execution**: State assumptions and a minimal design for each leaf; use the constitution's planner and test-guidance roles when available; write and run its failing behavior test first. A source slice may begin only when every affected leaf has a stable inventory ID, current observed evidence, a nox-native surface mapping, a failing behavior test that was run and failed, a leaf-specific implementation task, a leaf-specific verification task, and applicable Pi and security scenarios. Complete discovery remains required before a complete-parity claim, but undiscovered or gated leaves do not block an independently evidenced slice. Follow the dependencies in `tasks.md`; changes to shared modules must be serialized or isolated. Use focused immutable changes, validate input before protected actions, and compare credential storage, redaction, permission scope, and remote or extension data exposure against observed contracts. Use code review after source work and security review for critical findings. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
+3. **Task execution**: T320 has passed. Each new source slice is governed by its per-leaf T013 validation. State assumptions and a minimal design for each leaf; use the constitution's planner and tdd-guide roles when available. A source slice may begin only when every affected leaf has a stable inventory ID, current observed evidence, a nox-native surface mapping, an executable test-first implementation sequence, verification coverage, and applicable Pi and security scenarios. The sequence may use separate tasks, an explicitly ordered task set, or one task, but it MUST require: (1) writing and running a behavior test that fails for the expected reason; (2) implementing only after that failure is recorded; and (3) running and recording the required verification. Every task used by that mapping must be leaf-specific; family checkpoints do not substitute for executable work. Complete discovery remains required before a complete-parity claim, but undiscovered or gated leaves do not block an independently evidenced slice. Follow the dependencies in `tasks.md`; changes to shared modules must be serialized or isolated. Use focused immutable changes, validate input before protected actions, and compare credential storage, redaction, permission scope, and remote or extension data exposure against observed contracts. Use code review after source work and security review for critical findings. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
 4. **Verification gate**: Compare normalized observable results for each leaf item, including intermediate interactions, side effects, and failure behavior. Predeclare the Pi visual matrix by affected workflow, normal/denial/error/recovery state, supported terminal width, and theme; compare every required state. Capture unrelated Pi functional workflows before source changes and rerun them after each affected slice and for the final integrated state. Run relevant unit, integration, and end-to-end tests, check invalid/empty/boundary/failure inputs, and require aggregate lines, statements, functions, and branches coverage each to reach 80%; zero-denominator and unmeasured metrics fail. Check immutable updates, function and file limits, and absence of production debug logging. Inspect the diff for secrets, applicable injection and request-forgery defenses, authorization, rate limits, and data leaks. Close discrepancies only with evidence.
 5. **Release gate**: Refresh the reference version, inventory, and affected traces. Require every inventoried item to pass, zero known discrepancies, and the security and coverage gates before an unqualified complete-parity claim. Report gated-unverified items separately; each prevents that claim.

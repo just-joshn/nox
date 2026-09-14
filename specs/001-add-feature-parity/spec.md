@@ -1,8 +1,10 @@
 # Feature Specification: Complete Coding Assistant Parity
 
-**Feature Branch**: `none (current branch)`
+**Feature Branch**: `main`
 
 **Created**: 2026-09-13
+
+**Updated**: 2026-09-14
 
 **Status**: Active — approved for per-leaf implementation; complete scope remains under inventory reconciliation
 
@@ -26,9 +28,10 @@ A user starts nox in a repository, asks it to inspect or change files, reviews p
 
 **Acceptance Scenarios**:
 
-1. **Given** a repository and a new session, **When** the user asks for a code change, **Then** nox discovers context, presents tool activity, applies approved edits, and reports the result with the reference assistant's observable behavior.
+1. **Given** a repository and a new session, **When** the user asks for a code change, **Then** nox presents tool activity, applies approved edits, and reports the result with the reference assistant's observable behavior. Context discovery and prompt assembly are required by FR-004 but are a separate delivery slice, not this story's core coding loop.
 2. **Given** equivalent terminal width, theme, and interaction state, **When** the user performs the same action in Pi and nox, **Then** nox's layout, colors, text treatment, and interaction feedback match Pi; any intentional exception has an approved constitution amendment.
 3. **Given** a tool failure or denied action, **When** execution ends, **Then** the user sees the same decision and recovery options as in the reference assistant.
+4. **Given** a new session in a repository with project instructions present, **When** the user sends the first prompt, **Then** nox loads the same context sources and prompt-assembly order as the reference (delivery slice `US1-CONTEXT-*`, not `US1-CORE-2026-09-14`).
 
 ---
 
@@ -97,7 +100,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 ### Functional Requirements
 
 - **FR-001**: The parity inventory MUST enumerate every user-visible feature, command, option, setting, shortcut, protocol, and integration available in the installed reference release and identify its availability conditions. Each inventory item MUST have an evidence source, expected behavior, nox status, and verification scenarios.
-- **FR-002**: For every applicable inventory item, nox MUST match the reference's observable inputs, defaults, outputs, errors, state transitions, permissions, persistence, and side effects. No item may be marked complete based on interface similarity alone.
+- **FR-002**: For every applicable inventory item, as defined in Scope Terminology below, nox MUST match the reference's observable inputs, defaults, outputs, errors, state transitions, permissions, persistence, and side effects. No item may be marked complete based on interface similarity alone.
 - **FR-003**: nox MUST retain Pi's visual presentation across terminal views and interactions. Added controls MUST use Pi's visual language. Any intentional visual departure from Pi MUST receive a constitution amendment before implementation.
 - **FR-004**: nox MUST support the reference's interactive conversation lifecycle, including context discovery, prompt handling, tool use, interruption, compaction, session naming, continuation, resumption, and forking.
 - **FR-005**: nox MUST support the reference's file, search, command, web, and other built-in tool capabilities with equivalent availability, approval, execution, and result behavior.
@@ -115,6 +118,13 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **FR-017**: The complete-parity effort MUST be governed by this one specification, one plan, and one task document. All feature families and delivery increments MUST remain within those artifacts; a newly discovered capability MUST be added there rather than scoped into a separate feature specification.
 - **FR-018**: nox MUST validate externally supplied commands, paths, settings, and integration payloads before protected side effects; enforce authorization for the action they request; and avoid disclosing credentials or private session data in rejection messages, output, or logs. Where the reference's observable behavior and these security guarantees differ, the inventory MUST record the discrepancy and MUST NOT count the item as parity-complete.
 
+### Scope Terminology
+
+- **Applicable inventory item**: A capability whose recorded availability conditions match the comparison environment.
+- **Reachable leaf**: An applicable leaf that can be exercised safely using the authorized accounts, services, platform, and isolated fixtures available for the recorded snapshot.
+- **Delivery slice**: An immutable, explicitly named set of leaf IDs selected for one delivery increment. Newly discovered leaves do not silently alter an existing slice; they require a new slice ID or an explicit versioned amendment.
+- **Gated-unverified leaf**: A discovered leaf that cannot currently be observed under authorized conditions. It remains in scope and blocks an unqualified complete-parity claim but does not block independently reachable slices after all other applicable gates pass.
+
 ### Key Entities *(include if feature involves data)*
 
 - **Parity inventory item**: A discrete capability with reference release, availability conditions, evidence, expected behavior, implementation state, and verification results.
@@ -130,7 +140,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **SC-001**: An unqualified 100% parity claim requires every inventoried feature, including platform-, account-, policy-, and service-gated features, to have passing normal, failure, and relevant interaction scenarios against the recorded reference release. An inaccessible or unverified item prevents that claim.
 - **SC-002**: 0 known behavioral discrepancies remain for items marked complete.
 - **SC-003**: 100% of required Pi terminal states in a predeclared visual matrix match their approved references. The matrix MUST cover every affected workflow and its relevant normal, denial, error, and recovery states across supported terminal widths and themes. Any necessary departure is governed by an approved constitution amendment; an omitted required state prevents this criterion from passing.
-- **SC-004**: 100% of documented reference command and option behaviors applicable to the tested environment are discoverable and produce equivalent outcomes through nox-specific names.
+- **SC-004**: 100% of documented reference command and option behaviors that are applicable inventory items under Scope Terminology are discoverable and produce equivalent outcomes through nox-specific names.
 - **SC-005**: All four end-to-end journeys in User Stories 1–4 have passing matched-environment acceptance scenarios, including each story's stated error or recovery cases; a gated or unverified journey prevents a complete-parity claim.
 - **SC-006**: A release audit finds 0 mentions of the reference product in developed nox application code, user-facing strings, command names, and configuration filenames and paths.
 - **SC-007**: Before performance measurement, every inventory leaf MUST be marked timing-sensitive or not, with a reason. A leaf is timing-sensitive when its user-visible completion time affects an interactive response, tool result, or non-interactive command. For every timing-sensitive leaf, after warm-up and under matched workload, hardware, and network conditions, nox's p95 user-visible completion time across 30 runs is at most 110% of the reference p95. An unclassified, inaccessible, or unmeasured leaf cannot pass this criterion.
