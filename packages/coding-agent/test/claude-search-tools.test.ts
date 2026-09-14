@@ -853,6 +853,18 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep direct-file default reports no matching files", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", path: "fixture.txt" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "No files found" }]);
+	});
+
 	it("Grep count mode names a direct file once", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute(
