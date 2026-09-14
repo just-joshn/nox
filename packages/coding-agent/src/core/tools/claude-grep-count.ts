@@ -47,7 +47,8 @@ export async function executeClaudeGrepCount(cwd: string, input: CountInput, sig
 	const total = counts.reduce((sum, entry) => sum + entry.count, 0);
 	const summary = `Found ${total} total occurrence${total === 1 ? "" : "s"} across ${counts.length} file${counts.length === 1 ? "" : "s"}.`;
 	const offset = input.offset ?? 0;
-	const page = counts.slice(offset, input.head_limit ? offset + input.head_limit : undefined);
+	const ordered = [...counts].sort((left, right) => (left.file < right.file ? 1 : left.file > right.file ? -1 : 0));
+	const page = ordered.slice(offset, input.head_limit ? offset + input.head_limit : undefined);
 	const files = counts.length
 		? page.length
 			? page.map(({ file, count }) => `${file}:${count}`).join("\n")

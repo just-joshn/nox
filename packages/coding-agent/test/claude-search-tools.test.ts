@@ -652,6 +652,8 @@ describe("explicit Claude search tools", () => {
 
 	it("Grep count mode marks a limited file page while keeping whole-result totals", async () => {
 		writeFileSync(join(cwd, "second.txt"), "alpha\n");
+		utimesSync(join(cwd, "fixture.txt"), 1_700_000_000, 1_700_000_000);
+		utimesSync(join(cwd, "second.txt"), 1_600_000_000, 1_600_000_000);
 		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute(
 			"call-1",
@@ -707,6 +709,19 @@ describe("explicit Claude search tools", () => {
 			tool.execute(
 				"call-1",
 				{ pattern: "alpha", output_mode: "content", head_limit: -1 },
+				undefined,
+				undefined,
+				{} as never,
+			),
+		).rejects.toThrow();
+	});
+
+	it("Grep rejects a negative offset", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		await expect(
+			tool.execute(
+				"call-1",
+				{ pattern: "alpha", output_mode: "content", offset: -1 },
 				undefined,
 				undefined,
 				{} as never,

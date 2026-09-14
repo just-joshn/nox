@@ -201,9 +201,9 @@
 - [X] T248 [US1] Observe Grep content with `head_limit: -1` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
 - [X] T249 [US1] Compare nox's negative Grep head-limit behavior with T248; write a failing test and reject the invalid value before searching, verify focused tests and `npm run check`, then commit locally.
 - [X] T250 [US1] Observe Grep content with `offset: -1` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
-- [ ] T251 [US1] Compare nox's negative Grep offset behavior with T250; write a failing test and reject the invalid value before searching, verify focused tests and `npm run check`, then commit locally.
+- [X] T251 [US1] Compare nox's negative Grep offset behavior with T250; write a failing test and reject the invalid value before searching, verify focused tests and `npm run check`, then commit locally.
 - [X] T252 [US1] Resolve unstable count-page ordering exposed during T251 by observing controlled-mtime and reverse-creation two-file reference fixtures under localhost-only isolation; retain exact allowlisted pages and unchanged state, then commit locally.
-- [ ] T253 [US1] Make nox count-page file ordering deterministic according to T252, verify pagination tests and `npm run check`, then commit locally with the T251 numeric guard.
+- [X] T253 [US1] Make nox count-page file ordering deterministic according to T252, verify pagination tests and `npm run check`, then commit locally with the T251 numeric guard.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
