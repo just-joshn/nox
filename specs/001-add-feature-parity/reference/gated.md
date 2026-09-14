@@ -16,7 +16,7 @@
 | US1-RECOVER-001 | Same-session recovery after failure unobserved | Restored usage allowance and continuation after the failing command fixture |
 | SUR-BG-001 | Agent-view trust and empty-state behavior is documentation-only | Isolated home/project; inspect trust accept/decline and empty list without dispatch |
 | SUR-BG-002 | Agent-view dispatch and row updates require model usage | Restored allowance; dispatch two harmless disposable prompts and a too-short prompt |
-| SUR-BG-003 | Background CLI launch and selected-agent behavior require model usage | Restored allowance; isolated `--bg` launch, unknown agent, and `--bg --print` rejection |
+| SUR-BG-003 | Background CLI launch and selected-agent behavior require model usage; `--bg --print` conflict observed locally | Restored allowance; isolated successful `--bg` launch and unknown-agent case |
 | SUR-BG-004 | Session `/background` transfer and refusal have no local trace | Restored allowance; disposable active session with pending and transferable work |
 | SUR-BG-005 | Left-arrow detach timing and cancellation have no local trace | Restored allowance; active tool, unsent input, and empty composer fixtures |
 | SUR-BG-006 | `/fork` copy and worktree behavior have no local trace | Restored allowance; isolated conversation fork and failure fixture; confirm installed version semantics |

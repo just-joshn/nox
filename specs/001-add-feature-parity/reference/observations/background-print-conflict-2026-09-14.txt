@@ -1,0 +1,7 @@
+Working directory: /private/tmp
+Command: claude --bare --bg -p noop
+Exit code: 1
+Stdout: empty
+Stderr: --bg and --print conflict: --print never starts the interactive session that `claude agents` attaches to, so the job would be unattachable. The prompt is the positional — drop --print: `claude --bg '<task>'`.
+
+This is a local argument-conflict observation. No background session ID or provider output was returned. It does not establish successful background launch or cancellation behavior.

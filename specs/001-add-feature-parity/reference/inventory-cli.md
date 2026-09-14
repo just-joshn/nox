@@ -146,7 +146,7 @@ The [CLI reference](https://code.claude.com/docs/en/cli-usage) specifies these o
 
 | ID | Input combination | Documented contract | Evidence state |
 |----|-------------------|---------------------|----------------|
-| CLI-246 | `--background` with `--print` | Rejected | Documented only |
+| CLI-246 | `--background` with `--print` | Rejected before session creation; exit 1, empty stdout, conflict diagnostic on stderr | [Observed locally](observations/background-print-conflict-2026-09-14.txt) |
 | CLI-247 | `--background` with `--exec` | Launch a PTY-backed shell job | Documented only |
 | CLI-248 | `--background` with `--agent` | Launch a selected subagent | Documented only |
 | CLI-249 | `--continue` with `--print` | Search includes print, SDK, and loop sessions | Documented only |
