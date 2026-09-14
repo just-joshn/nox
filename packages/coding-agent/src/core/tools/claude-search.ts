@@ -211,12 +211,14 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 						right.mtime - left.mtime || (left.file < right.file ? -1 : left.file > right.file ? 1 : 0),
 				)
 				.map(({ file }) => file);
+			const page = selected.head_limit ? orderedFiles.slice(0, selected.head_limit) : orderedFiles;
+			const limited = selected.head_limit !== undefined && orderedFiles.length > selected.head_limit;
 			return {
 				...result,
 				content: [
 					{
 						type: "text" as const,
-						text: `Found ${orderedFiles.length} file${orderedFiles.length === 1 ? "" : "s"}\n${orderedFiles.join("\n")}${notice}`,
+						text: `Found ${page.length} file${page.length === 1 ? "" : "s"}${limited ? ` limit: ${selected.head_limit}` : ""}\n${page.join("\n")}${notice}`,
 					},
 				],
 			};
