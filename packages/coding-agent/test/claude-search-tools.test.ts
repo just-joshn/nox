@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -31,6 +31,25 @@ describe("explicit Claude search tools", () => {
 		const tool = createAllToolDefinitions(cwd).Glob;
 		const result = await tool.execute("call-1", { pattern: "**/*.txt" }, undefined, undefined, {} as never);
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\nnested/fixture.txt" }]);
+	});
+
+	it.each([
+		["visible file is older", 1_600_000_000, 1_700_000_000, "fixture.txt\n.hidden.txt"],
+		["hidden file is older", 1_700_000_000, 1_600_000_000, ".hidden.txt\nfixture.txt"],
+	])("Glob orders hidden and visible matches by mtime when %s", async (_case, visibleTime, hiddenTime, expected) => {
+		writeFileSync(join(cwd, ".hidden.txt"), "alpha\nbeta\n");
+		utimesSync(join(cwd, "fixture.txt"), visibleTime, visibleTime);
+		utimesSync(join(cwd, ".hidden.txt"), hiddenTime, hiddenTime);
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "*.txt" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: expected }]);
+	});
+
+	it("Glob keeps the result-limit notice after ordering matches", async () => {
+		for (let index = 0; index < 1001; index++) writeFileSync(join(cwd, `extra-${index}.txt`), "alpha\n");
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "*.txt" }, undefined, undefined, {} as never);
+		expect(result.content[0]?.text?.includes("1000 results limit reached")).toBe(true);
 	});
 
 	it.each([

@@ -141,7 +141,7 @@
 - [X] T188 [US1] Observe reference Glob `**/*.txt` with root and nested synthetic matches under localhost-only isolation; retain exact allowlisted paths and unchanged-file state, then compare nox's explicit adapter.
 - [X] T189 [US1] Observe reference Glob `*.txt` with synthetic hidden and visible matches under localhost-only isolation; retain exact allowlisted paths and unchanged-file state, then compare nox's explicit adapter.
 - [X] T190 [US1] Observe reference Glob order with controlled synthetic modification times and hidden/visible matches under localhost-only isolation; distinguish timestamp ordering from traversal ordering before implementing a nox fix.
-- [ ] T191 [US1] Write failing nox tests for both observed Glob hidden-file orders, sort the explicit adapter by ascending modification time without changing lower-case Pi find, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T191 [US1] Write failing nox tests for both observed Glob hidden-file orders, sort the explicit adapter by ascending modification time without changing lower-case Pi find, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

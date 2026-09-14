@@ -1,3 +1,4 @@
+import { stat } from "node:fs/promises";
 import path from "node:path";
 import { Type } from "typebox";
 import { executeClaudeGrepCount } from "./claude-grep-count.ts";
@@ -53,19 +54,31 @@ export function createClaudeGlobToolDefinition(cwd: string) {
 			const [id, input, signal, onUpdate, ctx] = args;
 			const result = await find.execute(id, input, signal, onUpdate, ctx);
 			const text = resultText(result);
+			const noticeStart = result.details ? text.lastIndexOf("\n\n[") : -1;
+			const matchText = noticeStart >= 0 ? text.slice(0, noticeStart) : text;
+			const notice = noticeStart >= 0 ? text.slice(noticeStart) : "";
 			const relativePath = input.path ? path.normalize(input.path).replaceAll("\\", "/") : "";
+			const searchRoot = resolveToCwd(input.path || ".", ctx?.cwd || cwd);
+			const matches =
+				matchText === "No files found matching pattern"
+					? []
+					: await Promise.all(
+							matchText.split("\n").map(async (file, index) => ({
+								file,
+								index,
+								mtime: (await stat(path.join(searchRoot, file))).mtimeMs,
+							})),
+						);
+			const ordered = matches.toSorted((left, right) => left.mtime - right.mtime || left.index - right.index);
 			const output =
-				text === "No files found matching pattern"
+				matchText === "No files found matching pattern"
 					? "No files found"
 					: relativePath
-						? text
-								.split("\n")
-								.map((line) => path.posix.join(relativePath, line))
-								.join("\n")
-						: text;
+						? ordered.map(({ file }) => path.posix.join(relativePath, file)).join("\n")
+						: ordered.map(({ file }) => file).join("\n");
 			return {
 				...result,
-				content: [{ type: "text" as const, text: output }],
+				content: [{ type: "text" as const, text: output + notice }],
 			};
 		},
 	};
