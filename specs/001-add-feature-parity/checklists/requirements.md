@@ -32,5 +32,6 @@
 ## Notes
 
 - FR-001 and FR-016 define the bounded discovery process, but exhaustive item-level inventory and parity scenarios have not yet been produced. Account- and platform-gated features cannot be enumerated from `--help` alone. Item-level acceptance remains incomplete.
-- SC-001 through SC-008 are targets, not achieved results. No implementation or parity verification has been completed.
+- SC-001 through SC-009 are targets, not achieved results. No implementation or parity verification has been completed.
+- FR-018 and SC-009 add the user-visible invalid-input, authorization, and secret-disclosure outcomes required by the amended constitution. Their scenarios remain unverified.
 - The single specification is ready as a product-scope input for its existing plan. Item-level evidence is still required before implementation tasks and a parity claim can close.

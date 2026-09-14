@@ -61,6 +61,7 @@ A user configures project instructions, settings, skills, custom commands, agent
 1. **Given** user, project, local, and managed settings with overlapping values under nox-specific names, **When** a session starts, **Then** effective behavior and conflict resolution match the reference.
 2. **Given** a skill, agent, hook, plugin, or external-tool fixture, **When** its trigger fires, **Then** discovery, permission checks, input, output, and failure handling match the reference.
 3. **Given** a disabled or unavailable integration, **When** the user invokes it, **Then** availability and error behavior match the reference.
+4. **Given** malformed configuration or unauthorized extension input, **When** the user submits it, **Then** nox rejects the input before any protected action and discloses no credential or private session data.
 
 ---
 
@@ -89,6 +90,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - Parallel workers edit overlapping files or a background worker exits unexpectedly.
 - Input includes images, large files, binary content, malformed streams, or unsupported paths.
 - An external tool, plugin, hook, editor, browser, or remote session disconnects mid-operation.
+- An input contains a crafted command, path, or payload intended to cross an authorization boundary or expose a secret.
 
 ## Requirements *(mandatory)*
 
@@ -111,6 +113,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **FR-015**: nox MUST match observed credential storage and reuse, secret redaction in output and logs, permission-rule scope and persistence, and disclosure of local or session data to remote services and extensions. For each applicable leaf, normal use, denial, failure, and restart behavior MUST be compared with the reference; unobservable security behavior MUST remain unverified.
 - **FR-016**: The capability inventory MUST reconcile three discovery inputs: the pinned installed reference, current official documentation, and the older restored source map. Every discovered candidate MUST map to a capability item, be identified as a duplicate, or be rejected as obsolete with dated evidence. Source-map-only candidates MUST NOT be treated as current behavior without current documentation or observation.
 - **FR-017**: The complete-parity effort MUST be governed by this one specification, one plan, and one task document. All feature families and delivery increments MUST remain within those artifacts; a newly discovered capability MUST be added there rather than scoped into a separate feature specification.
+- **FR-018**: nox MUST validate externally supplied commands, paths, settings, and integration payloads before protected side effects; enforce authorization for the action they request; and avoid disclosing credentials or private session data in rejection messages, output, or logs. Where the reference's observable behavior and these security guarantees differ, the inventory MUST record the discrepancy and MUST NOT count the item as parity-complete.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -132,6 +135,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **SC-006**: A release audit finds 0 mentions of the reference product in developed nox application code, user-facing strings, command names, and configuration filenames and paths.
 - **SC-007**: For every timing-sensitive leaf, after warm-up and under matched workload, hardware, and network conditions, nox's p95 user-visible completion time across 30 runs is at most 110% of the reference p95. Inaccessible or unmeasured leaves cannot pass this criterion.
 - **SC-008**: 100% of candidate capabilities found in the installed reference, current official documentation, and older restored source map have a recorded inventory mapping, duplicate rationale, or dated obsolete rationale; no unexplained candidate remains.
+- **SC-009**: Across the predeclared invalid-input and unauthorized-action scenarios, 100% of protected actions are refused before their side effects and 0 synthetic credentials or private session values appear in user output, logs, or errors. An unrun scenario cannot pass this criterion.
 
 ## Assumptions
 
