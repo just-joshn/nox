@@ -703,12 +703,12 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow();
 	});
 
-	it("Grep rejects a negative head limit", async () => {
+	it.each([-1, 1.5])("Grep rejects an invalid head limit %s", async (head_limit) => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		await expect(
 			tool.execute(
 				"call-1",
-				{ pattern: "alpha", output_mode: "content", head_limit: -1 },
+				{ pattern: "alpha", output_mode: "content", head_limit },
 				undefined,
 				undefined,
 				{} as never,
