@@ -166,6 +166,12 @@ The [CLI reference](https://code.claude.com/docs/en/cli-usage) specifies these o
 | CLI-263 | `--permission-prompts none` in print mode | Deny requests without a prompt handler | Documented only |
 | CLI-264 | `--no-session-persistence` outside print mode | Print-mode restriction | Documented only |
 | CLI-265 | `--remote-control` with explicit name | Use supplied session name | Documented only |
+| CLI-553 | Resume with a changed system-prompt flag and default snapshot behavior | Reuse the first request's recorded prompt until compaction; new flag text applies after compaction | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags-in-resumed-conversations); documented only, loopback trace pending |
+| CLI-554 | Resume with `--system-prompt-snapshot off` | Rebuild prompt on each request, including the changed system-prompt flag text | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags-in-resumed-conversations); documented only, loopback trace pending |
+| CLI-555 | `--bare` without explicit snapshot setting | Leave system-prompt recording off | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags-in-resumed-conversations); documented only, loopback trace pending |
+| CLI-556 | `--bare --system-prompt-snapshot on` | Record and reuse the first request's prompt | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags-in-resumed-conversations); documented only, loopback trace pending |
+| CLI-557 | `--system-prompt` with `--append-system-prompt` | Replace default prompt, then append supplied text | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags); documented only, loopback trace pending |
+| CLI-558 | `--system-prompt-file` with `--append-system-prompt-file` | Replace default prompt from file, then append additional file contents | [CLI reference](https://code.claude.com/docs/en/cli-usage#system-prompt-flags); documented only, loopback trace pending |
 
 These rows cover only interactions the reference states explicitly. Other independently failing combinations, parse errors, and precedence cases remain to be discovered and split.
 
