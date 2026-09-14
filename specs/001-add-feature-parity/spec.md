@@ -8,6 +8,12 @@
 
 **Input**: User description: Create a clean-room design covering every feature of the locally installed Claude Code release, implement equivalent behavior in nox, retain Pi's visual presentation, and omit the reference product's name from developed application code.
 
+## Clarifications
+
+### Session 2026-09-13
+
+- Q: If matching an existing configuration filename or command requires the reference product's name, which rule takes priority? → A: Ban the name everywhere in nox, including compatibility paths and commands; preserve 1:1 feature behavior under nox-specific names.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Work in a familiar terminal (Priority: P1)
@@ -52,7 +58,7 @@ A user configures project instructions, settings, skills, custom commands, agent
 
 **Acceptance Scenarios**:
 
-1. **Given** user, project, local, and managed settings with overlapping values, **When** a session starts, **Then** effective behavior and conflict resolution match the reference.
+1. **Given** user, project, local, and managed settings with overlapping values under nox-specific names, **When** a session starts, **Then** effective behavior and conflict resolution match the reference.
 2. **Given** a skill, agent, hook, plugin, or external-tool fixture, **When** its trigger fires, **Then** discovery, permission checks, input, output, and failure handling match the reference.
 3. **Given** a disabled or unavailable integration, **When** the user invokes it, **Then** availability and error behavior match the reference.
 
@@ -97,9 +103,9 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **FR-008**: nox MUST support the reference's settings scopes, project instructions, memory, skills, custom commands, agents, hooks, plugins, external-tool connections, and associated discovery and precedence rules.
 - **FR-009**: nox MUST support the reference's non-interactive input and output formats, structured output validation, partial streaming, event reporting, and exit behavior.
 - **FR-010**: nox MUST support the reference's background agents, isolated worktrees, remote or hosted sessions, and supported editor and browser handoffs where available to the user.
-- **FR-011**: nox MUST support all installed-reference CLI subcommands and flags that represent user-facing behavior, including authentication, setup, diagnostics, update, import, project state, plugin and external-tool management, and hosted review, subject to the same availability conditions.
+- **FR-011**: nox MUST support the behavior of all installed-reference CLI subcommands and flags that represent user-facing features, including authentication, setup, diagnostics, update, import, project state, plugin and external-tool management, and hosted review, subject to the same availability conditions. Commands and paths MUST use nox-specific names where the reference names contain its product name.
 - **FR-012**: nox MUST preserve Pi behavior unrelated to a required parity change; every intentional divergence MUST identify the reference scenario requiring it.
-- **FR-013**: Application code and its user-facing strings MUST contain no mention of the reference product's name. Specification and verification artifacts MAY name the reference so parity remains auditable.
+- **FR-013**: Developed nox application code, user-facing strings, command names, and configuration filenames and paths MUST contain no mention of the reference product's name. Equivalent features MUST remain available through nox-specific names. Specification and verification artifacts MAY name the reference so parity remains auditable.
 - **FR-014**: The inventory MUST be refreshed against a newly installed reference release before any claim of complete parity; changed items MUST be reverified.
 
 ### Key Entities *(include if feature involves data)*
@@ -117,9 +123,9 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **SC-001**: 100% of inventory items applicable to the tested account and platform have passing normal, failure, and relevant interaction scenarios against the recorded reference release.
 - **SC-002**: 0 known behavioral discrepancies remain for items marked complete.
 - **SC-003**: 100% of compared Pi terminal states match their approved visual reference except documented controls needed for added capabilities.
-- **SC-004**: 100% of documented reference commands and options applicable to the tested environment are discoverable and produce equivalent outcomes in nox.
+- **SC-004**: 100% of documented reference command and option behaviors applicable to the tested environment are discoverable and produce equivalent outcomes through nox-specific names.
 - **SC-005**: In a representative task study, 100% of users who can complete each task in the reference can complete it in nox with the same permissions and available services.
-- **SC-006**: A release audit finds 0 mentions of the reference product in developed application code or user-facing strings.
+- **SC-006**: A release audit finds 0 mentions of the reference product in developed nox application code, user-facing strings, command names, and configuration filenames and paths.
 
 ## Assumptions
 
@@ -127,5 +133,5 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - "All features" includes features gated by account, platform, policy, or connected services; those conditions are recorded rather than silently excluding the feature.
 - "Identical" means externally observable behavior under equivalent inputs and conditions, rather than duplication of private internals or nondeterministic model wording.
 - The reference CLI and official user documentation are evidence sources. Reference program code is not copied or adapted into nox.
-- The ban on the reference product's name applies to developed application code and user-facing strings; specification and test evidence may identify the source explicitly.
+- Existing configuration paths or commands containing the reference product's name do not need to work unchanged. Users access equivalent behavior through nox-specific names and paths. Specification and verification evidence may identify the reference explicitly.
 - The existing Pi experience is the visual baseline; feature behavior takes precedence only when the new capability cannot be presented without an additional control.
