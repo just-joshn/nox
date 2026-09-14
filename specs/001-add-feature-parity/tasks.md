@@ -23,7 +23,7 @@
 - [ ] T003 [P] Enumerate settings, instruction loading, memory, permission modes, built-in tools, and model controls as leaf entries in `specs/001-add-feature-parity/reference/inventory-core.md`; record defaults, scope, precedence, and availability conditions.
 - [ ] T004 [P] Enumerate skills, custom commands, agents, teams, hooks, external connections, plugins, and marketplaces as leaf entries in `specs/001-add-feature-parity/reference/inventory-extensions.md`; include triggers, lifecycle events, and gated variants.
 - [ ] T005 [P] Enumerate background sessions, worktrees, non-interactive protocols, desktop/web/mobile/editor/browser/chat/CI workflows, diagnostics, auth, import, and update flows as leaf entries in `specs/001-add-feature-parity/reference/inventory-surfaces.md`; for each surface leaf record entry action, intermediate interactions, resulting state, side effects, failure behavior, availability conditions, and proposed nox control. Mark inaccessible observations `gated-unverified`. Identify observed non-equivalence with its leaf ID and reproduction steps; record it in `specs/001-add-feature-parity/reference/discrepancies.md` after T012 defines the register.
-- [ ] T006 Reconcile T002–T005 against the official documentation index and installed command tree in `specs/001-add-feature-parity/reference/reconciliation.md`; list every unmatched source entry and split any broad item that can fail independently.
+- [ ] T006 Reconcile T002–T005 and T062 against every page in the current official documentation index, installed command tree, and restored-source candidates in `specs/001-add-feature-parity/reference/reconciliation.md`; list every unmatched source entry and split any broad item that can fail independently.
 - [ ] T007 Map each leaf item to a nox-native command, key, configuration path, protocol, or integration in `specs/001-add-feature-parity/reference/surface-map.md`; record naming differences and flag missing nox surfaces.
 
 **Checkpoint**: Every discovered capability has a stable leaf ID and explicit availability state. The inventory is a coverage target, not a verified implementation.
@@ -34,7 +34,7 @@
 
 **Purpose**: Make each leaf item implementable and objectively comparable before story work.
 
-- [ ] T008 Define the `Reference Snapshot`, `Capability Item`, `Scenario`, `Observation`, and `Discrepancy` fields and state-transition rules from `data-model.md` in `specs/001-add-feature-parity/reference/schema.md`; preserve the constraints that a separate input, option, transition, or gated variant gets its own leaf ID and `verified` requires passing normal, failure, and relevant interaction scenarios.
+- [ ] T008 Define the `Reference Snapshot`, `Discovery Candidate`, `Capability Item`, `Scenario`, `Observation`, and `Discrepancy` fields and state-transition rules from `data-model.md` in `specs/001-add-feature-parity/reference/schema.md`; preserve the constraints that a separate input, option, transition, or gated variant gets its own leaf ID, source-only candidates need current corroboration, and `verified` requires passing normal, failure, and relevant interaction scenarios.
 - [ ] T009 Create normal, denial/error, persistence, interruption/recovery, and interaction scenarios for every reachable leaf ID in `specs/001-add-feature-parity/reference/scenarios.md`; record matched starting state, expected decisions, outputs, errors, side effects, and permitted normalization before implementation. For security leaves, use synthetic credentials and isolated user/project fixtures to observe reuse after restart, output/log/error redaction, permission-rule persistence, and data disclosed to extensions or remote services; record only redacted traces and leave inaccessible behavior unverified.
 - [ ] T010 Record the evidence gap and access needed for every gated or otherwise unobservable leaf ID in `specs/001-add-feature-parity/reference/gated.md`; keep those IDs `gated-unverified` and excluded from any unqualified complete-parity claim.
 - [ ] T011 Predeclare the required Pi visual matrix in `specs/001-add-feature-parity/reference/pi-visuals.md`: every affected workflow and its relevant normal, denial, error, and recovery states across supported terminal widths and themes, including prompts, menus, tool results, and errors. Capture reference states, identify any proposed intentional departure, and require a constitution amendment before its implementation.
@@ -147,32 +147,32 @@
 
 **Purpose**: Reconcile all leaves, protect Pi behavior, and prevent unsupported parity claims.
 
-- [ ] T046 Reconcile every inventory leaf ID with a nox surface, item-level implementation and verification tasks, passing normal/failure/interaction scenarios, and no open discrepancy in `specs/001-add-feature-parity/reference/reconciliation.md`; create and finish missing tasks in `specs/001-add-feature-parity/tasks.md` before closing coverage. Unobserved or gated leaves keep this task open.
+- [ ] T046 After T080, reconcile every inventory leaf ID with a nox surface, item-level implementation and verification tasks, passing normal/failure/interaction scenarios, and no open discrepancy in `specs/001-add-feature-parity/reference/reconciliation.md`; create and finish missing tasks in `specs/001-add-feature-parity/tasks.md` before closing coverage. Unobserved or gated leaves keep this task open.
 - [ ] T047 Audit developed application code, user-facing strings, command names, and configuration filenames and paths for prohibited reference-product naming; record scope and findings in `specs/001-add-feature-parity/reference/naming-audit.md`.
 - [ ] T048 Compare every required state in the predeclared Pi visual matrix and unrelated Pi workflows against `specs/001-add-feature-parity/reference/pi-visuals.md`; report tested and missing matrix cells, and require an approved constitution amendment for every intentional visual divergence.
 - [ ] T049 Re-run `npm run check`, focused modified test files, and appropriate non-e2e coverage according to `AGENTS.md` for the final integrated state; record commands, results, and unresolved failures in `specs/001-add-feature-parity/reference/validation.md`.
 - [ ] T050 Refresh the installed reference version, availability matrix, inventory, and changed observations in `specs/001-add-feature-parity/reference/snapshot.md` and `specs/001-add-feature-parity/reference/reconciliation.md` before a current-parity claim.
 - [ ] T051 Define and record matched-environment end-to-end acceptance results for all four user-story journeys, including stated error and recovery cases, in `specs/001-add-feature-parity/reference/journey-results.md`; do not count a gated or unverified journey as passing.
 - [ ] T052 Record workload, hardware, network state, warm-up, and 30-run p95 comparisons for every timing-sensitive leaf in `specs/001-add-feature-parity/reference/performance.md`; require nox completion time to be at most 10% above the matched reference p95 or record a discrepancy.
-- [ ] T053 Apply the release gate in `specs/001-add-feature-parity/reference/release-gate.md`: require all inventoried leaves and all four journeys passing, zero known discrepancies, and zero gated-unverified leaves for an unqualified 100% claim; otherwise state the precise remaining gaps.
+- [ ] T053 Apply the release gate in `specs/001-add-feature-parity/reference/release-gate.md`: require all inventoried leaves and all four journeys passing, zero known discrepancies, zero gated-unverified leaves, and no unexplained candidate from the installed CLI, current official documentation, or restored source map for an unqualified 100% claim; otherwise state the precise remaining gaps.
 
 ---
 
 ## Dependencies and Execution Order
 
 ```text
-Reference discovery (T001–T007, continuing as new leaves are found)
+Reference discovery (T001–T007 and T062, continuing as new leaves are found)
     → Per-feature evidence (T008–T012 and T054–T061 for core workflow leaf IDs)
         → Explicit implementation and verification tasks (T013 for observed IDs)
             → US1 / US2 / US3 / US4 source and verification slices
-                → Full inventory and all leaf tasks complete (T046)
+                → Three-source audit (T079–T080) and all leaf tasks complete (T046)
                     → Cross-cutting release gates (T047–T053)
 ```
 
 - US1 and US2 are P1. Each source slice depends on evidence and explicit tasks for its own leaves, not completion of every Phase 2 item; shared `agent-session.ts` edits must be serialized or isolated.
 - US3 and US4 are P2. Each source slice depends on evidence and explicit tasks for its own leaves. US4's remote connections may consume US3 connection behavior, but its protocol and worktree slices remain independently demonstrable.
 - Within each story, observed scenarios precede behavior changes, core state changes precede UI/CLI integration, and discrepancy closure follows verification. Run `npm run check` with full output after each code-change task and fix all errors, warnings, and infos before continuing; run each created or modified focused test file until it passes. Record results in `specs/001-add-feature-parity/reference/validation.md`.
-- T046 can expose missing leaf tasks. Such tasks are added in the owning story phase and completed before T051–T052. T053 follows all validation.
+- T062 precedes T006. T079–T080 precede T046. T046 can expose missing leaf tasks; add them in the owning story phase and complete them before T051–T052. T053 follows all validation.
 
 ## Parallel Execution Examples
 
@@ -237,3 +237,8 @@ These tasks keep every currently identified family in this one document. Each re
 - [ ] T083 [US4] Contract deep hosted review, security guidance/scanning, finding verification, patch review, and CI/provider variants in `reference/scenarios.md`; implement observed leaves under `packages/coding-agent/src/` and nox CLI controls, then verify result, permission, data-disclosure, and gated cases.
 - [ ] T084 [US3] Contract plugin evaluation cases, baseline comparison, grading, and result reporting in `reference/scenarios.md`; implement observed leaves under `packages/coding-agent/src/core/plugins.ts` or its owning nox-named modules, with focused repeatability and failure tests.
 - [ ] T085 [US4] Contract artifact creation, sharing permissions, deep-link launch, and cross-surface access in `reference/scenarios.md`; implement observed leaves through nox terminal/CLI controls and connected-service bridges under `packages/coding-agent/src/`, verifying ownership, denial, expiration, disconnect, and gated cases.
+- [ ] T086 [US1] Contract context-window accounting, prompt caching, image and large-input behavior, and context reduction from current documentation and observed turns in `reference/scenarios.md`; implement each observed leaf in `packages/agent/src/` and `packages/coding-agent/src/core/`, and verify usage, limits, model switch, stale instruction, and recovery cases.
+- [ ] T087 [US2] Contract scheduled prompts, one-time reminders, repeated prompts, goal continuation, and stop conditions in `reference/scenarios.md`; implement observed leaves under `packages/coding-agent/src/core/`, with deterministic time-controlled tests for restart, cancellation, missed trigger, and error behavior.
+- [ ] T088 [US3] Contract extension configuration diagnostics, plugin evaluation, and debugging commands in `reference/scenarios.md`; implement observed leaves under `packages/coding-agent/src/core/` and `packages/coding-agent/src/cli/`, verifying explanation of source precedence, disabled features, invalid settings, and failed connections.
+- [ ] T089 [US4] Contract desktop local scheduling, Dispatch, app previews, visual diff review, and editor/simulator connections in `reference/scenarios.md`; implement each observed functional outcome through nox-native terminal or CLI controls under `packages/coding-agent/src/` and verify session handoff, state, permissions, failure, and service gates.
+- [ ] T090 [US4] Contract deep-link launch, channel event delivery, and external-trigger authorization across local and hosted sessions in `reference/scenarios.md`; implement observed leaves under `packages/coding-agent/src/core/` and `packages/coding-agent/src/cli/`, verifying event ordering, replay, disconnection, and unauthorized triggers.
