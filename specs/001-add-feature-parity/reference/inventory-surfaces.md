@@ -288,3 +288,22 @@ Sources: [current platform comparison](https://code.claude.com/docs/en/platforms
 | SUR-PLAT-012 | Continue local configuration across CLI, editor, and Desktop | Shared settings, project memory, and connectors affect later sessions | Conflicting versions, stale reload, denied scope | Installed local clients; nox settings sharing |
 
 Desktop layout and shortcuts, mobile push, Slack authority, GitHub Actions and GitLab variants, Code Review controls, JetBrains bridge details, and computer-use actions remain to be split further. T005 remains open.
+
+## Channel delivery leaves (SUR-009)
+
+Source: [current channels guide](https://code.claude.com/docs/en/channels), read 2026-09-14. Channels inject external events into an already running local session through explicitly opted-in plugins. Installed help lists `--channels` only in current documentation, not local top-level help; installed availability remains unconfirmed.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-CHAN-001 | Launch with `--channels plugin:<name>` | Approved channel plugin starts; inbound events appear in current session | Plugin absent, not approved, unsupported provider | Version/policy gate; `nox --channels` |
+| SUR-CHAN-002 | Enable or deny channels through managed policy | Organization gate controls all channel delivery | Denied policy overrides user opt-in | Team/Enterprise/managed Console gate; nox policy |
+| SUR-CHAN-003 | Receive an external event while session is open | Event enters model context with source label and visible terminal line | Session closed, malformed event, duplicate delivery | Channel plugin gate; nox event inbox |
+| SUR-CHAN-004 | Reply through the originating channel | Outbound tool call confirms send; remote platform receives text | Permission denial, delivery failure, recipient mismatch | Channel plugin gate; nox reply tool |
+| SUR-CHAN-005 | Pair sender and apply allowlist | Only approved external identities can inject messages | Invalid code, unknown sender, revoked access | Channel platform gate; nox sender policy |
+| SUR-CHAN-006 | Configure Telegram or Discord bot plugin | Token is stored or read from environment, session connects | Missing token, intent/permission failure, token redaction | Bun and service gate; nox channel configuration |
+| SUR-CHAN-007 | Configure iMessage channel | Local Messages database and automation permissions allow read/reply | Full Disk Access or Automation denial, sender restriction | macOS/Bun gate; nox local-message channel |
+| SUR-CHAN-008 | Run fakechat localhost demo | Browser message enters session and reply returns to browser | Plugin startup failure, refused reply, closed session | Bun/local gate; nox channel test fixture |
+| SUR-CHAN-009 | Enable multiple channel plugins | Events remain attributed to correct source and replies route back | Collision, ordering, one plugin fails | Policy/plugin gate; nox channel registry |
+| SUR-CHAN-010 | Receive permission question from channel-connected session | Only trusted sender may answer protected tool approval | Spoofed sender, stale approval, denial | Security-critical channel gate; nox permission bridge |
+
+Each platform’s complete event schema, reply-tool options, reconnection policy, and channel plugin lifecycle remains to be split. No bot token, message database, or external chat account was accessed.

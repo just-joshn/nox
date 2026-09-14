@@ -176,5 +176,15 @@
 | SUR-PLAT-010 | Automatic PR review findings and repeat-push behavior unobserved | Authorized disposable PR and review integration |
 | SUR-PLAT-011 | JetBrains bridge and failure behavior unobserved | Compatible disposable IDE project and plugin |
 | SUR-PLAT-012 | Cross-surface settings and memory propagation unobserved | Isolated local profiles and synthetic settings across installed clients |
+| SUR-CHAN-001 | Installed parser and approved plugin startup unobserved | Safe help/parser probe, then disposable channel plugin after allowance returns |
+| SUR-CHAN-002 | Managed policy enable/deny behavior unobserved | Controlled organization policy fixture; no production policy change |
+| SUR-CHAN-003 | Inbound event labeling, ordering, and malformed case unobserved | Synthetic local channel server and bounded session |
+| SUR-CHAN-004 | Reply permission, routing, and delivery failure unobserved | Synthetic recipient/server with allow/deny and disconnect cases |
+| SUR-CHAN-005 | Pairing and sender allowlist enforcement unobserved | Disposable account/identity and invalid/revoked code fixtures |
+| SUR-CHAN-006 | Bot credential storage and failure unobserved | Test bot tokens only; inspect redaction and no real user messages |
+| SUR-CHAN-007 | Messages database and Automation permission behavior unobserved | Dedicated macOS test profile; no personal Messages database |
+| SUR-CHAN-008 | Fakechat local event/reply round trip unobserved | Bun and disposable authenticated session; localhost-only fixture |
+| SUR-CHAN-009 | Multiple plugin attribution and partial failure unobserved | Two synthetic plugins with distinct source IDs |
+| SUR-CHAN-010 | External sender authority over protected approvals unobserved | Security review and synthetic sender spoof/deny fixtures |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
