@@ -659,6 +659,31 @@ These inputs are printed by installed 2.1.270 help but were missed in the first 
 | CLI-517 | `self-hosted-runner --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
 | CLI-518 | `self-hosted-runner orchestrator --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
 
+The [official CLI reference](https://code.claude.com/docs/en/cli-usage) also distinguishes these startup dispatch inputs. They are documentation-backed candidates for installed 2.1.270; local invocation behavior remains unobserved.
+
+| ID | Input | Documented decision | State |
+|----|-------|---------------------|-------|
+| CLI-519 | Misspelled CLI subcommand with a close match | Suggest the closest subcommand and exit without starting a session | Documented only |
+| CLI-520 | Leading `--dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | Documented only; introduced before installed release |
+| CLI-521 | Leading `--allow-dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | Documented only; introduced before installed release |
+| CLI-522 | Other leading flag before `daemon <subcommand>` | Start an interactive session rather than dispatching the daemon subcommand | Documented only |
+| CLI-523 | `daemon stop --any --keep-workers` | Stop an on-demand supervisor while leaving detached sessions running | Documented only; session lifecycle unobserved |
+| CLI-524 | `agents --json --all` | Include completed background sessions in the JSON array | Documented only; session lifecycle unobserved |
+
+The [self-hosted environment test reference](https://code.claude.com/docs/en/self-hosted-environments-testing#--environment-dispatch-behavior) documents separate dispatch decisions for the following `--environment` combinations. Creating a session requires an eligible environment and OAuth access; parser decisions have not yet been isolated from that gate.
+
+| ID | Input | Documented decision | State |
+|----|-------|---------------------|-------|
+| CLI-525 | `--environment` with `--output-format stream-json` | Reject unsupported streaming output | Documented; environment-gated |
+| CLI-526 | `--environment` with `--resume` | Reject resume combination | Documented; environment-gated |
+| CLI-527 | `--environment` with `--continue` | Reject continuation combination | Documented; environment-gated |
+| CLI-528 | `--environment` with `--teleport` | Reject teleport combination | Documented; environment-gated |
+| CLI-529 | `--environment` with `--session-id` | Reject preselected session ID | Documented; environment-gated |
+| CLI-530 | `--environment` with `--init-only` | Reject setup-only combination | Documented; environment-gated |
+| CLI-531 | `--environment` with `--cloud <session ID or URL>` | Reject existing-session target | Documented; environment-gated |
+| CLI-532 | `--environment` with `--cloud <description>` in non-interactive mode | Reject description combination | Documented; environment-gated |
+| CLI-533 | `--environment` with bare `--cloud` | Treat bare `--cloud` as absent | Documented; environment-gated |
+
 ## Documented interactive dispatch leaves
 
 The [current command reference](https://code.claude.com/docs/en/commands) distinguishes these dispatch and timing behaviors. They were reviewed on 2026-09-14 against installed release 2.1.270. Documentation establishes candidates, not local behavior or a nox parity result. Each row requires an isolated interaction scenario before implementation.
