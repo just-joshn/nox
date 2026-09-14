@@ -155,7 +155,7 @@
 - [X] T202 [US1] Observe reference Grep file-list ordering with controlled hidden/visible modification times under localhost-only isolation; distinguish timestamp ordering from traversal order before implementing nox fixes.
 - [X] T203 [US1] Write failing nox tests for observed Grep descending-mtime file order and `.git` metadata exclusion; implement only explicit adapter behavior while preserving lower-case Pi grep, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T204 [US1] Observe reference Grep file-list order when hidden and visible synthetic matches have equal controlled modification times under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's tie break.
-- [ ] T205 [US1] Write a failing nox test for observed equal-mtime Grep file order; add a deterministic tie-break in the explicit file-list adapter, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T205 [US1] Write a failing nox test for observed equal-mtime Grep file order; add a deterministic tie-break in the explicit file-list adapter, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

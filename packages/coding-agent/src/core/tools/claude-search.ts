@@ -187,14 +187,16 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				),
 			];
 			const datedFiles = await Promise.all(
-				files.map(async (file, index) => ({
+				files.map(async (file) => ({
 					file,
-					index,
 					mtime: (await stat(path.join(ctx?.cwd || cwd, file))).mtimeMs,
 				})),
 			);
 			const orderedFiles = [...datedFiles]
-				.sort((left, right) => right.mtime - left.mtime || left.index - right.index)
+				.sort(
+					(left, right) =>
+						right.mtime - left.mtime || (left.file < right.file ? -1 : left.file > right.file ? 1 : 0),
+				)
 				.map(({ file }) => file);
 			return {
 				...result,

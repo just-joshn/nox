@@ -150,6 +150,15 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
+	it("Grep orders equal-mtime hidden and visible files as observed", async () => {
+		writeFileSync(join(cwd, ".hidden.txt"), "alpha\nbeta\n");
+		utimesSync(join(cwd, "fixture.txt"), 1_600_000_000, 1_600_000_000);
+		utimesSync(join(cwd, ".hidden.txt"), 1_600_000_000, 1_600_000_000);
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute("call-1", { pattern: "alpha" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "Found 2 files\n.hidden.txt\nfixture.txt" }]);
+	});
+
 	it("Grep excludes a matching file inside git metadata", async () => {
 		execFileSync("git", ["init", "-q", cwd]);
 		writeFileSync(join(cwd, ".git", "inner.txt"), "alpha\nbeta\n");
