@@ -16,7 +16,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Storage**: Existing session JSONL and settings files; new persisted feature state uses nox-named files and paths
 
-**Testing**: Write a failing behavior test before each application change, then make it pass and refactor; use focused unit, integration, end-to-end, and isolated black-box comparison fixtures; add an aggregate workspace coverage command and measure project coverage against the 80% constitution gate; run `npm run check` after code changes
+**Testing**: Write a failing behavior test before each application change, then make it pass and refactor; use focused unit, integration, end-to-end, and isolated black-box comparison fixtures; add an offline aggregate coverage command spanning every production workspace package and session backend shipped or imported by nox, counting each owned source file once with documented exclusions; measure project coverage against the 80% constitution gate; run `npm run check` after code changes
 
 **Target Platform**: Existing Pi-supported terminal platforms. Desktop, web, mobile, editor, browser, chat, and CI workflows are reached through nox terminal or CLI controls and connected-service bridges, with equivalent functional outcomes. Platform, account, policy, and service-gated features remain inventory items with explicit availability conditions.
 
