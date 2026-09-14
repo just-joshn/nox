@@ -1,5 +1,19 @@
+import path from "node:path";
+import { Type } from "typebox";
 import { createFindToolDefinition } from "./find.ts";
 import { createGrepToolDefinition } from "./grep.ts";
+
+const globSchema = Type.Object({
+	pattern: Type.String(),
+	path: Type.Optional(Type.String()),
+});
+
+const grepSchema = Type.Object({
+	pattern: Type.String(),
+	path: Type.Optional(Type.String()),
+	glob: Type.Optional(Type.String()),
+	output_mode: Type.Optional(Type.Union([Type.Literal("files_with_matches"), Type.Literal("content")])),
+});
 
 function resultText(result: { content: Array<{ type: string; text?: string }> }): string {
 	return result.content
@@ -8,33 +22,56 @@ function resultText(result: { content: Array<{ type: string; text?: string }> })
 		.join("\n");
 }
 
-export function createClaudeGlobToolDefinition(cwd: string): ReturnType<typeof createFindToolDefinition> {
+export function createClaudeGlobToolDefinition(cwd: string) {
 	const find = createFindToolDefinition(cwd);
 	return {
 		...find,
 		name: "Glob",
 		label: "Glob",
-		async execute(id, input, signal, onUpdate, ctx) {
+		parameters: globSchema,
+		renderCall: undefined,
+		renderResult: undefined,
+		async execute(...args: Parameters<typeof find.execute>) {
+			const [id, input, signal, onUpdate, ctx] = args;
 			const result = await find.execute(id, input, signal, onUpdate, ctx);
 			const text = resultText(result);
+			const relativePath = input.path ? path.normalize(input.path).replaceAll("\\", "/") : "";
+			const output =
+				text === "No files found matching pattern"
+					? "No files found"
+					: relativePath
+						? text
+								.split("\n")
+								.map((line) => path.posix.join(relativePath, line))
+								.join("\n")
+						: text;
 			return {
 				...result,
-				content: [{ type: "text", text: text === "No files found matching pattern" ? "No files found" : text }],
+				content: [{ type: "text" as const, text: output }],
 			};
 		},
 	};
 }
 
-export function createClaudeGrepToolDefinition(cwd: string): ReturnType<typeof createGrepToolDefinition> {
+export function createClaudeGrepToolDefinition(cwd: string) {
 	const grep = createGrepToolDefinition(cwd);
 	return {
 		...grep,
 		name: "Grep",
 		label: "Grep",
-		async execute(id, input, signal, onUpdate, ctx) {
+		parameters: grepSchema,
+		renderCall: undefined,
+		renderResult: undefined,
+		async execute(...args: Parameters<typeof grep.execute>) {
+			const [id, input, signal, onUpdate, ctx] = args;
+			const outputMode = (input as typeof input & { output_mode?: "files_with_matches" | "content" }).output_mode;
 			const result = await grep.execute(id, input, signal, onUpdate, ctx);
 			const text = resultText(result);
-			if (text === "No matches found") return { ...result, content: [{ type: "text", text: "No files found" }] };
+			if (text === "No matches found")
+				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
+			if (outputMode === "content") {
+				return { ...result, content: [{ type: "text" as const, text: text.replaceAll(/:(\d+): /g, ":$1:") }] };
+			}
 			const files = [
 				...new Set(
 					text
@@ -47,7 +84,7 @@ export function createClaudeGrepToolDefinition(cwd: string): ReturnType<typeof c
 				...result,
 				content: [
 					{
-						type: "text",
+						type: "text" as const,
 						text: `Found ${files.length} file${files.length === 1 ? "" : "s"}\n${files.join("\n")}`,
 					},
 				],
