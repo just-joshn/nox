@@ -48,3 +48,7 @@ In a temporary home, installed CLI 2.1.270 invoked with `udpate` exited 1 with e
 ## Leading-flag daemon dispatch observation (2026-09-14)
 
 In three isolated temporary homes, installed CLI 2.1.270 routed `--dangerously-skip-permissions daemon status` and `--allow-dangerously-skip-permissions daemon status` to daemon status, reporting an absent supervisor and exiting 1. With `--bare daemon status`, it entered interactive startup and stopped at the login check instead of printing daemon status. The [normalized trace](observations/cli-daemon-leading-flags-2026-09-14.txt) excludes socket paths and credentials. No model request was made. These observations cover CLI-520–522 routing only; they do not establish nox parity.
+
+## Self-hosted environment parser matrix (2026-09-14)
+
+Nine documented `--environment` combinations were probed in separate logged-out temporary homes with a synthetic environment ID. The [redacted matrix](observations/cli-environment-preflight-2026-09-14.json) records exit 1 and empty stdout for each. CLI-525–532 reject their conflicting input before login with distinct stderr diagnostics. CLI-533, bare `--cloud`, reaches the login gate, consistent with treating the bare flag as absent for conflict checks. No provider credentials were available or model request made. This does not verify authenticated dispatch, environment eligibility, or the resulting session.

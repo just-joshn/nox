@@ -1,0 +1,130 @@
+{
+  "snapshot": "installed CLI 2.1.270, macOS, isolated temporary homes, 2026-09-14",
+  "base_input": "--bare -p noop --environment ccpool_synthetic",
+  "credential_context": "no reference account credentials in temporary homes",
+  "results": [
+    {
+      "id": "CLI-525",
+      "variant_flags": [
+        "--output-format",
+        "stream-json"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment does not support --output-format stream-json",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-526",
+      "variant_flags": [
+        "--resume",
+        "synthetic-session"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment cannot be combined with --resume, --continue, or --teleport",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-527",
+      "variant_flags": [
+        "--continue"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment cannot be combined with --resume, --continue, or --teleport",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-528",
+      "variant_flags": [
+        "--teleport"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment cannot be combined with --resume, --continue, or --teleport",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-529",
+      "variant_flags": [
+        "--session-id",
+        "550e8400-e29b-41d4-a716-446655440000"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment cannot be combined with --session-id",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-530",
+      "variant_flags": [
+        "--init-only"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment cannot be combined with --init-only",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-531",
+      "variant_flags": [
+        "--cloud",
+        "session_synthetic"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: --environment creates a new session; it cannot be combined with --cloud <session_id|url>",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-532",
+      "variant_flags": [
+        "--cloud",
+        "synthetic description"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: non-interactive --environment reads the prompt from the positional or stdin; drop --cloud/--remote <description>.",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups"
+      ]
+    },
+    {
+      "id": "CLI-533",
+      "variant_flags": [
+        "--cloud"
+      ],
+      "exit_code": 1,
+      "stdout_empty": true,
+      "stderr": "Error: Cloud sessions require a claude.ai login. Run /login to authenticate.",
+      "temporary_home_entries": [
+        ".claude.json",
+        "backups",
+        "sessions"
+      ]
+    }
+  ]
+}

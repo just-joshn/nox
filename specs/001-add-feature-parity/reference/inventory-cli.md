@@ -674,15 +674,15 @@ The [self-hosted environment test reference](https://code.claude.com/docs/en/sel
 
 | ID | Input | Documented decision | State |
 |----|-------|---------------------|-------|
-| CLI-525 | `--environment` with `--output-format stream-json` | Reject unsupported streaming output | Documented; environment-gated |
-| CLI-526 | `--environment` with `--resume` | Reject resume combination | Documented; environment-gated |
-| CLI-527 | `--environment` with `--continue` | Reject continuation combination | Documented; environment-gated |
-| CLI-528 | `--environment` with `--teleport` | Reject teleport combination | Documented; environment-gated |
-| CLI-529 | `--environment` with `--session-id` | Reject preselected session ID | Documented; environment-gated |
-| CLI-530 | `--environment` with `--init-only` | Reject setup-only combination | Documented; environment-gated |
-| CLI-531 | `--environment` with `--cloud <session ID or URL>` | Reject existing-session target | Documented; environment-gated |
-| CLI-532 | `--environment` with `--cloud <description>` in non-interactive mode | Reject description combination | Documented; environment-gated |
-| CLI-533 | `--environment` with bare `--cloud` | Treat bare `--cloud` as absent | Documented; environment-gated |
+| CLI-525 | `--environment` with `--output-format stream-json` | Reject unsupported streaming output | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-526 | `--environment` with `--resume` | Reject resume combination | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-527 | `--environment` with `--continue` | Reject continuation combination | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-528 | `--environment` with `--teleport` | Reject teleport combination | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-529 | `--environment` with `--session-id` | Reject preselected session ID | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-530 | `--environment` with `--init-only` | Reject setup-only combination | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-531 | `--environment` with `--cloud <session ID or URL>` | Reject existing-session target | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-532 | `--environment` with `--cloud <description>` in non-interactive mode | Reject description combination | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): rejected before login; service behavior gated |
+| CLI-533 | `--environment` with bare `--cloud` | Treat bare `--cloud` as absent | [Isolated parser trace](observations/cli-environment-preflight-2026-09-14.json): bare flag passed conflict checks and reached login gate; service behavior gated |
 
 ## Documented interactive dispatch leaves
 
