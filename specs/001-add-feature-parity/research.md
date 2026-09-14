@@ -16,6 +16,12 @@
 - **Alternatives considered**: Literal reference names violate the naming rule. Silent aliases obscure whether the rule is met.
 - **Evidence**: [spec clarification](spec.md#clarifications).
 
+## Decision: Route surface-specific workflows through nox
+
+- **Decision**: Deliver surface-specific workflows through nox terminal or CLI controls and connected-service bridges when needed. Inventory the desktop, web, mobile, editor, browser, chat, and CI behavior separately; verify outcomes under equivalent availability conditions. A terminal control is a delivery route, not evidence that the feature works.
+- **Rationale**: Pi's terminal presentation is the required visual baseline, while functional parity still covers workflows whose reference entry point is elsewhere.
+- **Alternatives considered**: Omitting those workflows breaks feature coverage. Recreating each native client is not required for an equivalent terminal-accessible outcome.
+
 ## Decision: Extend existing package boundaries
 
 - **Decision**: Use the repository's `packages/coding-agent` CLI, session, settings, resource, interactive, print, and RPC layers; `packages/agent` for loop/session behavior; `packages/ai` for model transports; and `packages/tui` for visuals. Create new modules only for concrete inventory items.

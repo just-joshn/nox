@@ -77,6 +77,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 1. **Given** a non-interactive request, **When** text, JSON, or streaming output is selected, **Then** output records, ordering, errors, and exit status match the reference.
 2. **Given** a supported remote or editor integration, **When** the user connects and continues work, **Then** handoff and session state match the reference.
 3. **Given** a worktree request, **When** work begins and ends, **Then** isolation, naming, and cleanup behavior match the reference.
+4. **Given** a feature normally entered through a desktop, web, mobile, editor, chat, or CI surface, **When** the user invokes its nox terminal or CLI control under equivalent availability conditions, **Then** its decisions, state, side effects, and failure behavior match the reference. A feature without an observed delivery contract remains unverified.
 
 ### Edge Cases
 
@@ -102,11 +103,12 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **FR-007**: nox MUST support the reference's model, effort, fallback, context, and budget controls, including their precedence and observable failure behavior.
 - **FR-008**: nox MUST support the reference's settings scopes, project instructions, memory, skills, custom commands, agents, hooks, plugins, external-tool connections, and associated discovery and precedence rules.
 - **FR-009**: nox MUST support the reference's non-interactive input and output formats, structured output validation, partial streaming, event reporting, and exit behavior.
-- **FR-010**: nox MUST support the reference's background agents, isolated worktrees, remote or hosted sessions, and supported editor and browser handoffs where available to the user.
+- **FR-010**: nox MUST support the reference's background agents, isolated worktrees, remote or hosted sessions, and desktop, web, mobile, editor, browser, chat, and CI workflows where available to the user. Surface-specific workflows MUST have nox terminal or CLI controls, with connected-service bridges where needed, that produce the same observable functional outcome. Every workflow remains in the inventory even when its original surface is inaccessible; a proposed terminal equivalent does not count as parity until its behavior is observed and verified.
 - **FR-011**: nox MUST support the behavior of all installed-reference CLI subcommands and flags that represent user-facing features, including authentication, setup, diagnostics, update, import, project state, plugin and external-tool management, and hosted review, subject to the same availability conditions. Commands and paths MUST use nox-specific names where the reference names contain its product name.
 - **FR-012**: nox MUST preserve Pi behavior unrelated to a required parity change; every intentional divergence MUST identify the reference scenario requiring it.
 - **FR-013**: Developed nox application code, user-facing strings, command names, and configuration filenames and paths MUST contain no mention of the reference product's name. Equivalent features MUST remain available through nox-specific names. Specification and verification artifacts MAY name the reference so parity remains auditable.
 - **FR-014**: The inventory MUST be refreshed against a newly installed reference release before any claim of complete parity; changed items MUST be reverified.
+- **FR-015**: nox MUST match observed credential storage and reuse, secret redaction in output and logs, permission-rule scope and persistence, and disclosure of local or session data to remote services and extensions. For each applicable leaf, normal use, denial, failure, and restart behavior MUST be compared with the reference; unobservable security behavior MUST remain unverified.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -126,6 +128,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **SC-004**: 100% of documented reference command and option behaviors applicable to the tested environment are discoverable and produce equivalent outcomes through nox-specific names.
 - **SC-005**: All four end-to-end journeys in User Stories 1–4 have passing matched-environment acceptance scenarios, including each story's stated error or recovery cases; a gated or unverified journey prevents a complete-parity claim.
 - **SC-006**: A release audit finds 0 mentions of the reference product in developed nox application code, user-facing strings, command names, and configuration filenames and paths.
+- **SC-007**: For every timing-sensitive leaf, after warm-up and under matched workload, hardware, and network conditions, nox's p95 user-visible completion time across 30 runs is at most 110% of the reference p95. Inaccessible or unmeasured leaves cannot pass this criterion.
 
 ## Assumptions
 

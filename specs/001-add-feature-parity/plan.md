@@ -18,7 +18,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Testing**: Existing unit tests, focused `node:test`/Vitest tests, `./test.sh` for non-e2e coverage, and isolated black-box comparison fixtures; `npm run check` after code changes
 
-**Target Platform**: Existing Pi-supported terminal platforms; platform, account, policy, and service-gated reference features remain inventory items with explicit availability conditions
+**Target Platform**: Existing Pi-supported terminal platforms. Desktop, web, mobile, editor, browser, chat, and CI workflows are reached through nox terminal or CLI controls and connected-service bridges, with equivalent functional outcomes. Platform, account, policy, and service-gated features remain inventory items with explicit availability conditions.
 
 **Project Type**: Monorepo terminal coding agent with CLI, interactive TUI, RPC, model transport, and extensibility packages
 
@@ -40,7 +40,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 | Parity verification | Pin release and retain evidence, scenarios, and discrepancy status | Pass as a method; evidence incomplete |
 | Preserve Pi foundation | Map each change to an inventory item and run Pi regression checks | Pass as a method; no change verified |
 
-No constitutional exception is proposed. The missing inventory is unfinished work, not a waived requirement. Phase 1 design may describe contracts, but implementation readiness and release parity remain blocked until the inventory and item-level scenarios exist.
+No constitutional exception is proposed. The missing inventory is unfinished work, not a waived requirement. A reachable slice may enter implementation after its leaf inventory, observed contract, and explicit tasks exist. Inaccessible features stay tracked and prevent a complete-parity claim.
 
 ## Project Structure
 
@@ -94,7 +94,7 @@ implementation slices can be called complete or a full-parity release can be cla
 ## Delivery Sequence and Gates
 
 1. **Inventory gate**: Enumerate the installed release with CLI output, official documentation, interactive inspection, and safe probes. Record each item and gated condition in the inventory contract. Split broad categories into independently testable leaf items. Reconcile the official documentation index and command list against the inventory; open gaps for every unmatched entry.
-2. **Reference-evidence gate**: For each leaf item, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures. Mark inaccessible features `gated-unverified`; do not infer their behavior from names alone. Acquire access or a valid external observation before claiming parity.
-3. **Architecture slices**: Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations; administrative command families. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
+2. **Reference-evidence gate**: For each reachable leaf selected for implementation, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures before source work on that leaf. Mark inaccessible features `gated-unverified`, record the access or observation needed, and do not infer behavior from names alone. Gated leaves do not block source work on independently observed leaves, but they block a complete-parity claim.
+3. **Architecture slices**: Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations and terminal controls for surface-specific workflows; administrative command families. Compare credential storage, redaction, permission scope, and remote or extension data exposure against observed contracts. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
 4. **Verification gate**: Compare normalized observable results for each leaf item, including side effects and failure behavior. Run focused regression tests and Pi visual comparisons. Close discrepancies only with evidence.
 5. **Release gate**: Refresh the reference version, inventory, and affected traces. Require every inventoried item to pass and zero known discrepancies before an unqualified complete-parity claim. Report gated-unverified items separately; each prevents that claim.
