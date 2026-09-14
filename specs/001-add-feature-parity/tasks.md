@@ -123,7 +123,7 @@
 - [X] T170 [US1] Write a failing nox test for observed Grep offset-past-end output, implement that explicit content-mode boundary, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T171 [US1] Observe reference Grep content `head_limit: 1, offset: 0` with two synthetic matching lines under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's zero-offset marker.
 - [X] T172 [US1] Observe reference Grep `type: py` with matching synthetic `.py` and `.txt` files under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
-- [ ] T173 [US1] Write a failing nox test for observed Grep `type: py` filtering, implement the explicit schema and safe type filtering for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T173 [US1] Write a failing nox test for observed Grep `type: py` filtering, implement the explicit schema and safe type filtering for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

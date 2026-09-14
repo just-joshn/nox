@@ -16,6 +16,7 @@ const grepSchema = Type.Object({
 	pattern: Type.String(),
 	path: Type.Optional(Type.String()),
 	glob: Type.Optional(Type.String()),
+	type: Type.Optional(Type.String({ minLength: 1 })),
 	head_limit: Type.Optional(Type.Integer({ minimum: 1 })),
 	offset: Type.Optional(Type.Integer({ minimum: 0 })),
 	output_mode: Type.Optional(
@@ -82,6 +83,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				output_mode?: "files_with_matches" | "content" | "count";
 				head_limit?: number;
 				offset?: number;
+				type?: string;
 				"-i"?: boolean;
 				"-n"?: boolean;
 				"-o"?: boolean;
@@ -95,9 +97,14 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && (selected["-A"] !== undefined || selected["-B"] !== undefined))
 				return executeClaudeGrepSidedContext(ctx?.cwd || cwd, selected, signal);
-			const result = await grep.execute(
+			const typedGrep = selected.type ? createGrepToolDefinition(cwd, { fileType: selected.type }) : grep;
+			const result = await typedGrep.execute(
 				id,
-				{ ...input, ignoreCase: selected["-i"], context: selected["-C"] },
+				{
+					...input,
+					ignoreCase: selected["-i"],
+					context: selected["-C"],
+				},
 				signal,
 				onUpdate,
 				ctx,

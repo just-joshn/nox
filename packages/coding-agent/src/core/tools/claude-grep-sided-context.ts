@@ -7,6 +7,7 @@ interface SidedContextInput {
 	pattern: string;
 	path?: string;
 	glob?: string;
+	type?: string;
 	"-i"?: boolean;
 	"-A"?: number;
 	"-B"?: number;
@@ -23,6 +24,7 @@ export async function executeClaudeGrepSidedContext(cwd: string, input: SidedCon
 	if (input["-A"] !== undefined) args.push("--after-context", String(input["-A"]));
 	if (input["-B"] !== undefined) args.push("--before-context", String(input["-B"]));
 	if (input.glob) args.push("--glob", input.glob);
+	if (input.type) args.push("--type", input.type);
 	args.push("--", input.pattern, searchPath);
 
 	const output = await new Promise<string>((resolve, reject) => {

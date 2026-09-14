@@ -50,6 +50,14 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep type py filters matching Python files", async () => {
+		writeFileSync(join(cwd, "fixture.py"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("type");
+		const result = await tool.execute("call-1", { pattern: "alpha", type: "py" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.py" }]);
+	});
+
 	it("Grep head_limit paginates content matches", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
 		const tool = createAllToolDefinitions(cwd).Grep;

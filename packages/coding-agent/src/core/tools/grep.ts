@@ -65,6 +65,8 @@ const defaultGrepOperations: GrepOperations = {
 export interface GrepToolOptions {
 	/** Custom operations for grep. Default: local filesystem plus ripgrep */
 	operations?: GrepOperations;
+	/** Optional ripgrep file type for explicit search adapters. */
+	fileType?: string;
 }
 
 export function createGrepToolDefinition(
@@ -163,6 +165,7 @@ export function createGrepToolDefinition(
 						if (ignoreCase) args.push("--ignore-case");
 						if (literal) args.push("--fixed-strings");
 						if (glob) args.push("--glob", glob);
+						if (options?.fileType) args.push("--type", options.fileType);
 						args.push("--", pattern, searchPath);
 
 						const child = spawn(rgPath, args, { stdio: ["ignore", "pipe", "pipe"] });
