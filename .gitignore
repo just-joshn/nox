@@ -43,3 +43,15 @@ plans/
 .pi/hf-sessions-backup/
 collect.sh
 packages/agent/docs/extensions/pi-server-artifact/index.md
+
+.gjc/
+.omc/
+.specify/extensions/.cache/
+.specify/extensions/.backup/
+.specify/extensions/*/local-config.yml
+.github/agents/
+.github/prompts/
+.github/copilot-instructions.md
+.grok/
+.specify/
+specs/
