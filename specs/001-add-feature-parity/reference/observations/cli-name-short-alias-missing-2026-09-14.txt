@@ -1,0 +1,7 @@
+Installed CLI 2.1.270 on macOS; separate disposable empty HOME and cwd for each invocation; sandbox-exec denied all network access. No credentials or model request.
+
+Input: claude -n
+Input: claude --name
+Both: exit 1; empty stdout; stderr `error: option '-n, --name <name>' argument missing\n`; no home/cwd entries.
+
+Nox already parses both spellings but currently emits `Error: --name requires a value\n` for a missing value. The observed parser diagnostic can be matched without starting a session.
