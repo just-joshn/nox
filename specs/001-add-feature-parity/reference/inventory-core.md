@@ -69,6 +69,11 @@ The [memory guide](https://code.claude.com/docs/en/memory) distinguishes instruc
 | MEM-011 | Auto memory index exceeds 200 lines or 25KB → only startup prefix loads | Topic files read on demand; instruction files have no analogous hard startup cutoff | Documented; trace pending |
 | MEM-012 | `/memory` opens manager → loaded files and memory folder appear, toggle available | Interactive session | Documented; trace pending |
 | MEM-013 | Instruction text requests an action a permission rule forbids → tool remains blocked | Context does not override enforced permission policy | Documented; trace pending |
+| MEM-014 | External import in a project instruction is declined → later sessions keep it disabled without repeating the prompt | Project-scoped approval state; compare persistence and disclosure | Documented; local trace pending |
+| MEM-015 | User-scope instruction imports outside the working directory in a Cowork session → skip that import | Desktop Cowork gate; ordinary CLI user-scope imports are trusted | Documented; platform-gated |
+| MEM-016 | User-scope instruction or rule is symlinked outside the working directory in a Cowork session → skip it | Desktop Cowork gate; source file may contain private data | Documented; platform-gated |
+| MEM-017 | `/init` runs with an existing project instruction file → propose improvements rather than overwrite it | Interactive command; current file and side effects need isolated comparison | Documented; trace pending |
+| MEM-018 | `CLAUDE_CODE_NEW_INIT=1` and `/init` → select instructions, skills, and hooks for a reviewable proposal before writing | Feature environment flag; installed availability and intermediate decisions pending | Documented; trace pending |
 
 ## Permission leaves
 
