@@ -550,11 +550,11 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
-	it("Grep count mode reports zero occurrences without an error", async () => {
+	it.each([undefined, 1])("Grep count mode reports zero occurrences with head_limit %s", async (head_limit) => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute(
 			"call-1",
-			{ pattern: "absent-sentinel", output_mode: "count" },
+			{ pattern: "absent-sentinel", output_mode: "count", head_limit },
 			undefined,
 			undefined,
 			{} as never,
