@@ -1,0 +1,7 @@
+Installed CLI 2.1.270 on macOS; disposable empty HOME and cwd; no credentials or model request.
+Input: claude daemon --help
+Exit: 0
+Stdout begins: Usage: claude daemon [subcommand] [options]
+Stderr: empty
+Temporary-home entries after exit: .claude.json
+Complete help text is retained in help-daemon-2026-09-14.txt.

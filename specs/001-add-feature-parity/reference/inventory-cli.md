@@ -254,6 +254,7 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-549 | `plugin marketplace help [command]` | [local help](observations/help-plugin-marketplace-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `list` and unknown-target paths observed |
 | CLI-550 | `project help [command]` | [local help](observations/help-project-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `purge` and unknown-target paths observed |
 | CLI-551 | `respawn --all` | [local help](observations/help-respawn-2026-09-14.txt) | Restart every background session to use the current binary; lifecycle and no-session failure unobserved |
+| CLI-552 | `daemon -h, --help` | [local help](observations/help-daemon-2026-09-14.txt) | [Isolated `--help` result](observations/cli-daemon-help-2026-09-14.txt): exit 0, usage stdout, empty stderr, `.claude.json` created; `-h` alias untested |
 
 ## Documented interactive command invocations
 
