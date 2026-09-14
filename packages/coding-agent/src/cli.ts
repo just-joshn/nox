@@ -8,7 +8,9 @@ setupCli();
 const args = process.argv.slice(2);
 const suggestion = suggestCliCommand(args);
 if (suggestion) {
-	console.error(`Unknown command "${args[0]}". Did you mean ${APP_NAME} ${suggestion}?`);
+	console.error(
+		`✘ unknown command "${args[0]}"\n  └ Did you mean ${APP_NAME} ${suggestion}?\n\nRun ${APP_NAME} --help to list commands, or ${APP_NAME} -p "${args[0]}" to send as a prompt.`,
+	);
 	process.exitCode = 1;
 } else {
 	main(args);
