@@ -152,5 +152,17 @@
 | SUR-LINK-003 | Path precedence, traversal, and clone resolution unobserved | Disposable local clones and malformed URL parameters |
 | SUR-LINK-004 | Handler registration/disablement unobserved | Disposable OS user profile; managed-policy fixture if available |
 | SUR-LINK-005 | Editor-specific handler and failure unobserved | Compatible disposable editor profile and invalid-link fixture |
+| SUR-ENT-001 | Gateway request/response and auth behavior unobserved | Controlled gateway with synthetic credentials and protocol fixtures |
+| SUR-ENT-002 | Enterprise proxy, CA, and mTLS behavior unobserved | Isolated proxy/certificate test environment; no production endpoints |
+| SUR-ENT-003 | Gateway startup, policy, and failure unobserved | Disposable YAML and local bind; synthetic auth only |
+| SUR-ENT-004 | Runner registration and assignment unobserved | Authorized enterprise test environment and dedicated runner identity |
+| SUR-ENT-005 | Account lock and label behavior unobserved | Test accounts and dedicated runner registration |
+| SUR-ENT-006 | Capacity, checkout, executable, and hook lifecycle unobserved | Isolated runner host with disposable repositories and hooks |
+| SUR-ENT-007 | Rotating proxy header and redaction unobserved | Synthetic proxy/token and command/file rotation fixtures |
+| SUR-ENT-008 | Git rewrite and managed-proxy mutation unobserved | Dedicated disposable account/container only; inspect config before/after |
+| SUR-ENT-009 | Git identity and signing unobserved | Dedicated disposable git profile and failed-signing fixture |
+| SUR-ENT-010 | Drain, push-on-release, and interrupted recovery unobserved | Isolated runner and synthetic branch with controlled stop |
+| SUR-ENT-011 | Orchestrator routing, pool, and failure unobserved | Authorized enterprise test connector and disposable worker pool |
+| SUR-ENT-012 | Health/log/telemetry output and redaction unobserved | Isolated runner with synthetic secrets and port/log failures |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.

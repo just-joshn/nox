@@ -246,3 +246,24 @@ Sources: [current artifact guide](https://code.claude.com/docs/en/artifacts) and
 | SUR-LINK-005 | Open editor-specific link | Editor tab starts with prefilled context instead of terminal | Editor absent, invalid link, permission refusal | Editor/OS gate; nox editor link |
 
 Artifact page constraints, connector authorization variants, public retention controls, link parsing limits, and platform-specific handler locations need separate leaves before SUR-012 is complete.
+
+## Enterprise gateway and runner leaves (SUR-011)
+
+Sources: [current deployment overview](https://code.claude.com/docs/en/bedrock-vertex-proxies), [LLM gateway guide](https://code.claude.com/docs/en/llm-gateway), [enterprise network guide](https://code.claude.com/docs/en/corporate-proxy), and installed [gateway](observations/help-gateway-2026-09-14.txt) and [runner](observations/help-self-hosted-runner-2026-09-14.txt) help. These are deployment candidates, not tests. The runner help explicitly says its managed-git-proxy option replaces the account's global git configuration; no runner was started on a personal account.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-ENT-001 | Configure model gateway endpoint and credentials | Model requests route through gateway with required API fields/headers | Unsupported protocol, missing header, auth refusal | Managed deployment; nox provider gateway |
+| SUR-ENT-002 | Configure corporate HTTP proxy, CA, or mTLS | Outbound requests use enterprise transport settings | Invalid certificate, proxy denial, unavailable host | Managed network; nox transport config |
+| SUR-ENT-003 | Run `gateway --config <yaml>` | Auth/telemetry gateway starts with declared policy | Invalid YAML, bind conflict, credential error | Enterprise deployment; `nox gateway` |
+| SUR-ENT-004 | Start self-hosted runner with secret and API URL | Runner registers, advertises capacity, and accepts assigned sessions | Invalid secret, registration rejection, disconnect | Enterprise environment; `nox runner` |
+| SUR-ENT-005 | Set runner account lock and client label | Assignment restricted to account; label affects observability only | Wrong account, duplicate registration | Enterprise policy; nox runner identity |
+| SUR-ENT-006 | Set runner capacity, base dir, executable, and hooks | Bounded child sessions use isolated checkouts and lifecycle hooks | Full capacity, invalid base, hook failure | Enterprise host; nox runner runtime |
+| SUR-ENT-007 | Set rotating proxy authorization command or file | Local forward proxy adds per-connection header without logging secret | Missing upstream proxy, command failure, conflicting sources | Enterprise proxy; nox runner proxy auth |
+| SUR-ENT-008 | Configure git URL rewrites or managed git proxy | Repository checkout uses selected auth/routing strategy | Bad rewrite, clone failure, global git config replacement | Dedicated runner account only; nox runner git |
+| SUR-ENT-009 | Configure git identity and signing | Child commits carry managed identity and signature | Signing failure, missing identity, invalid policy | Enterprise host; nox runner git policy |
+| SUR-ENT-010 | Drain, stop, or release runner session | In-flight work gets grace or termination; optional outcome branches pushed | Interrupted response, push failure, restart recovery | Enterprise host; nox runner lifecycle |
+| SUR-ENT-011 | Start runner orchestrator with SCM connector and hooks | Worker pool scales and routes repository events | Connector failure, spawn timeout, invalid hook | Enterprise environment; nox orchestrator |
+| SUR-ENT-012 | Inspect runner health, logs, and telemetry | Status and diagnostics show capacity and failures without secrets | Health-port conflict, log write failure, sensitive value leak | Enterprise host; nox runner diagnostics |
+
+Every runner option and its mutually exclusive combinations still requires an individual CLI leaf under T002; the rows here track externally visible lifecycle boundaries. No privileged deployment, credential, or git-global mutation was performed.
