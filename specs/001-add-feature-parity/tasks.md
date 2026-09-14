@@ -79,6 +79,11 @@
 - [X] T126 [US1] Observe TOOL-003 Grep no-match behavior with a synthetic `absent-sentinel` query in the same sandboxed fixture; retain the redacted error/result-state trace. Depend on [TOOL-GREP-NO-MATCH](reference/scenarios.md); leave invalid queries and nox comparison open.
 - [X] T127 [US1] Observe TOOL-002 Glob input `[` in the same sandboxed fixture, retaining only the error flag, fixture-match flag, completion/exit, and unchanged-file state. Depend on [TOOL-GLOB-BRACKET](reference/scenarios.md); do not infer Grep's pattern rules.
 - [X] T128 [US1] Observe TOOL-003 Grep input `[` in the same sandboxed fixture, retaining only the error flag, fixture-match flag, completion/exit, and unchanged-file state. Depend on [TOOL-GREP-BRACKET](reference/scenarios.md); leave exact diagnostic and nox comparison open.
+- [X] T129 [US1] Classify the six synthetic Glob/Grep result bodies in `reference/harness/loopback_probe.py` using only exact fixture-format allowlists, test that unexpected text stays redacted, and retain normalized offline traces. Depend on TOOL-GLOB-NORMAL, TOOL-GREP-NORMAL, TOOL-GLOB-NO-MATCH, TOOL-GREP-NO-MATCH, TOOL-GLOB-BRACKET, and TOOL-GREP-BRACKET.
+- [ ] T130 [US1] Inspect nox's actual tool registration, CLI tool selection, and existing search behavior; reconcile TOOL-002/003 source targets and test fixtures before implementation. Keep default tool exposure aligned with the observed catalog.
+- [ ] T131 [US1] Write failing nox tests for explicit Glob/Grep exposure and synthetic match, no-match, and invalid-pattern results, using the exact offline fixture formats and error decisions.
+- [ ] T132 [US1] Implement the minimum nox Glob/Grep tool definitions and explicit selection wiring for the observed contracts; keep unrelated defaults and Pi visuals intact.
+- [ ] T133 [US1] Run focused tests and `npm run check`, compare nox against the six offline fixtures, update the validation/discrepancy ledger, and commit locally. Leave unobserved options and real-service behavior open.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

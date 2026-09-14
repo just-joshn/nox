@@ -144,10 +144,15 @@ class LoopbackProbeTests(unittest.TestCase):
 
     def test_search_result_summary_retains_fixture_match_without_raw_text(self):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})
-        self.assertEqual(result, {"is_error": False, "fixture_name_present": True})
+        self.assertEqual(result, {"is_error": False, "fixture_name_present": True, "result_format": "<redacted>"})
         self.assertNotIn("private", json.dumps(result))
         self.assertEqual(summarize_search_result({"is_error": False, "content": "No files found"}),
-                         {"is_error": False, "fixture_name_present": False})
+                         {"is_error": False, "fixture_name_present": False, "result_format": "no_files_found"})
+
+    def test_search_result_summary_recognizes_only_exact_synthetic_formats(self):
+        for tool, value in (("Glob", "fixture.txt"), ("Grep", "Found 1 file\nfixture.txt")):
+            self.assertEqual(summarize_search_result({"content": value}, tool)["result_format"], "fixture_match")
+            self.assertEqual(summarize_search_result({"content": value + " private"}, tool)["result_format"], "<redacted>")
 
 
 if __name__ == "__main__":

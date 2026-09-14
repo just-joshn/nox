@@ -110,7 +110,7 @@ def summarize_result(result: dict) -> dict:
             "error_kind": error_kind(value) if result.get("is_error") else None}
 
 
-def summarize_search_result(result: dict) -> dict:
+def summarize_search_result(result: dict, tool_name: str = "") -> dict:
     content = result.get("content", [])
     if isinstance(content, str):
         text = content
@@ -119,7 +119,10 @@ def summarize_search_result(result: dict) -> dict:
             block.get("text", "") for block in content
             if isinstance(block, dict) and isinstance(block.get("text"), str)
         ) if isinstance(content, list) else ""
-    return {"is_error": bool(result.get("is_error")), "fixture_name_present": "fixture.txt" in text}
+    expected = {"Glob": "fixture.txt", "Grep": "Found 1 file\nfixture.txt"}
+    return {"is_error": bool(result.get("is_error")), "fixture_name_present": "fixture.txt" in text,
+            "result_format": "fixture_match" if text == expected.get(tool_name) else
+                             "no_files_found" if text == "No files found" else "<redacted>"}
 
 
 def is_expected_trace(summary: dict, missing: bool = False) -> bool:
@@ -180,7 +183,7 @@ def make_handler(state: ProbeState):
                  and len(request["model"]) < 80 and all(char.isalnum() or char == "-" for char in request["model"])
                  else "<redacted>",
                  "tool_names": [name if name in {"Read", "Edit", "Bash"} else "<redacted>" for name in names],
-                 "response": kind, "tool_results": [summarize_search_result(item) if state.tool_name in {"Glob", "Grep"}
+                 "response": kind, "tool_results": [summarize_search_result(item, state.tool_name) if state.tool_name in {"Glob", "Grep"}
                                                      else summarize_result(item) for item in results],
                  **({"catalog": catalog_summary(names)} if state.catalog else {})}
             )
