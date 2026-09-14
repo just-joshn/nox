@@ -212,6 +212,7 @@ class LoopbackProbeTests(unittest.TestCase):
         self.assertEqual(summarize_search_result({"content": "second.txt:1:alpha\nfixture.txt:1:alpha"}, "Grep")["result_format"], "grep_content_multiple")
         self.assertEqual(summarize_search_result({"content": "second.txt:1:alpha\n\n[Showing results with pagination = limit: 1]"}, "Grep")["result_format"], "grep_content_page")
         self.assertEqual(summarize_search_result({"content": "Found 1 file limit: 1\nsecond.txt"}, "Grep")["result_format"], "grep_files_page")
+        self.assertEqual(summarize_search_result({"content": "Found 1 file offset: 1\nfixture.txt"}, "Grep")["result_format"], "grep_files_offset")
         self.assertEqual(summarize_search_result({"content": "No matches found"}, "Grep")["result_format"], "no_matches_found")
         self.assertEqual(summarize_search_result({"content": "fixture.txt:1\n\nFound 1 total occurrence across 1 file."}, "Grep")["result_format"], "count_match")
         self.assertEqual(summarize_search_result({"content": "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files."}, "Grep")["result_format"], "count_multiple")
