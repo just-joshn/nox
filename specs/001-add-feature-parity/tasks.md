@@ -111,7 +111,7 @@
 - [X] T158 [US1] Write failing nox tests for the observed one-sided context flags, implement their explicit schema and result semantics, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T159 [US1] Observe reference Grep with `path: nested` and a synthetic nested match under localhost-only isolation, retaining exact allowlisted result format and unchanged-file state.
 - [X] T160 [US1] Observe reference Grep with both `path: nested` and `output_mode: files_with_matches` in the same localhost-only fixture, establishing explicit-mode precedence.
-- [ ] T161 [US1] Write failing nox nested-path Grep tests for implicit and explicit output modes, match the observed repository-relative results in the explicit adapter, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T161 [US1] Write failing nox nested-path Grep tests for implicit and explicit output modes, match the observed repository-relative results in the explicit adapter, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

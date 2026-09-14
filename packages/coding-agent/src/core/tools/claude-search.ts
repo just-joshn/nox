@@ -5,6 +5,7 @@ import { executeClaudeGrepOnly } from "./claude-grep-only.ts";
 import { executeClaudeGrepSidedContext } from "./claude-grep-sided-context.ts";
 import { createFindToolDefinition } from "./find.ts";
 import { createGrepToolDefinition } from "./grep.ts";
+import { resolveToCwd } from "./path-utils.ts";
 
 const globSchema = Type.Object({
 	pattern: Type.String(),
@@ -100,7 +101,20 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const text = resultText(result);
 			if (text === "No matches found")
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
-			if (outputMode === "content") {
+			const searchPrefix = selected.path
+				? path.relative(ctx?.cwd || cwd, resolveToCwd(selected.path, ctx?.cwd || cwd)).replaceAll("\\", "/")
+				: "";
+			const prefixFile = (file: string) => (searchPrefix ? path.posix.join(searchPrefix, file) : file);
+			if (outputMode === "content" || (outputMode === undefined && selected.path)) {
+				const prefixed = text
+					.split("\n")
+					.map((line) =>
+						line.replace(
+							/^(.*?)(:\d+: |-\d+- )/,
+							(_match, file: string, separator: string) => `${prefixFile(file)}${separator}`,
+						),
+					)
+					.join("\n");
 				return {
 					...result,
 					content: [
@@ -108,8 +122,8 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 							type: "text" as const,
 							text:
 								selected["-n"] === false
-									? text.replaceAll(/:\d+: /g, ":")
-									: text.replaceAll(/(:\d+:|-\d+-) /g, "$1"),
+									? prefixed.replaceAll(/:\d+: /g, ":")
+									: prefixed.replaceAll(/(:\d+:|-\d+-) /g, "$1"),
 						},
 					],
 				};
@@ -118,7 +132,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				...new Set(
 					text
 						.split("\n")
-						.map((line) => line.split(":", 1)[0])
+						.map((line) => prefixFile(line.split(":", 1)[0]))
 						.filter(Boolean),
 				),
 			];

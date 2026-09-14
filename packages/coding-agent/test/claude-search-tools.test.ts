@@ -37,6 +37,23 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it.each([
+		[undefined, "nested/fixture.txt:1:alpha"],
+		["files_with_matches", "Found 1 file\nnested/fixture.txt"],
+	])("Grep nested path with output mode %s preserves repository-relative paths", async (output_mode, expected) => {
+		mkdirSync(join(cwd, "nested"));
+		writeFileSync(join(cwd, "nested", "fixture.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", path: "nested", output_mode },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: expected }]);
+	});
+
 	it("Grep content mode omits line numbers when -n is false", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-n");
