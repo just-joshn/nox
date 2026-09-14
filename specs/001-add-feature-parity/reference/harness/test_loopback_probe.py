@@ -153,6 +153,8 @@ class LoopbackProbeTests(unittest.TestCase):
         body = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", output_mode="content")
         self.assertIn('\\"output_mode\\": \\"content\\"', body.decode())
         self.assertNotIn('\\"path\\"', body.decode())
+        insensitive = message_response("test-model", "tool", "fixture.txt", "Grep", "ALPHA", ignore_case=True)
+        self.assertIn('\\"-i\\": true', insensitive.decode())
 
     def test_search_result_summary_retains_fixture_match_without_raw_text(self):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})

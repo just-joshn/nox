@@ -90,6 +90,9 @@
 - [X] T137 [US1] Write failing nox tests for Glob `path: nested` and Grep `output_mode: files_with_matches|content`, including advertised schema presence and exact synthetic outputs.
 - [X] T138 [US1] Add the observed Glob/Grep schema fields and output-mode mapping without changing lower-case Pi tools; keep unobserved Grep options out of the new adapter schema.
 - [X] T139 [US1] Verify focused tool and catalog tests plus `npm run check`, record remaining schema gaps, and commit locally.
+- [X] T140 [US1] Observe Grep `-i: true` with an uppercase query against the lowercase synthetic fixture through the localhost-only reference endpoint, retaining only fixed result classification.
+- [ ] T141 [US1] Write a failing nox test for the observed case-insensitive Grep field and result, then map `-i` to the existing lower-case grep option.
+- [ ] T142 [US1] Run focused and neighboring tests plus `npm run check`, update the validation ledger, and commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
