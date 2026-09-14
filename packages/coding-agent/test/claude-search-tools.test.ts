@@ -62,6 +62,22 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\nignored.txt" }]);
 	});
 
+	it("Glob includes a file excluded by .ignore", async () => {
+		writeFileSync(join(cwd, ".ignore"), "ignored.txt\n");
+		writeFileSync(join(cwd, "ignored.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "*.txt" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\nignored.txt" }]);
+	});
+
+	it("Glob includes a matching file inside git metadata", async () => {
+		mkdirSync(join(cwd, ".git"));
+		writeFileSync(join(cwd, ".git", "inner.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "**/*.txt" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\n.git/inner.txt" }]);
+	});
+
 	it("Glob keeps the result-limit notice after ordering matches", async () => {
 		for (let index = 0; index < 1001; index++) writeFileSync(join(cwd, `extra-${index}.txt`), "alpha\n");
 		const tool = createAllToolDefinitions(cwd).Glob;
