@@ -692,6 +692,8 @@ These inputs are printed by installed 2.1.270 help but were missed in the first 
 | CLI-565 | `-v` (short alias for `--version`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and version output pending |
 | CLI-566 | `-w` (short alias for `--worktree`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and worktree creation pending |
 
+An offline option audit of every captured `help-*.txt` file found no missing nested option names or short aliases. The `help-daemon-status` and `help-daemon-stop` captures print the shared parent daemon help; their `--help, -h` line is the existing daemon help leaf CLI-552, not a separate status or stop option. This audit covers printed help only; it does not close undocumented parser combinations or T002.
+
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) also distinguishes these startup dispatch inputs. They are documentation-backed candidates for installed 2.1.270; local invocation behavior remains unobserved.
 
 | ID | Input | Documented decision | State |
