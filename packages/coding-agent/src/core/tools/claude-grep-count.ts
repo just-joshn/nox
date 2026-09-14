@@ -8,6 +8,7 @@ interface CountInput {
 	path?: string;
 	glob?: string;
 	type?: string;
+	multiline?: boolean;
 	"-i"?: boolean;
 }
 
@@ -21,6 +22,7 @@ export async function executeClaudeGrepCount(cwd: string, input: CountInput, sig
 	if (input["-i"]) args.push("--ignore-case");
 	if (input.glob) args.push("--glob", input.glob);
 	if (input.type) args.push("--type", input.type);
+	if (input.multiline) args.push("--multiline");
 	args.push("--", input.pattern, searchPath);
 
 	const output = await new Promise<string>((resolve, reject) => {
