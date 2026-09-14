@@ -78,6 +78,7 @@
 - [X] T125 [US1] Observe TOOL-002 Glob no-match behavior with a synthetic `absent-*.zzz` pattern in the same sandboxed fixture; test the redacted no-match classification and retain the error/result-state trace. Depend on [TOOL-GLOB-NO-MATCH](reference/scenarios.md); leave invalid patterns and nox comparison open.
 - [X] T126 [US1] Observe TOOL-003 Grep no-match behavior with a synthetic `absent-sentinel` query in the same sandboxed fixture; retain the redacted error/result-state trace. Depend on [TOOL-GREP-NO-MATCH](reference/scenarios.md); leave invalid queries and nox comparison open.
 - [X] T127 [US1] Observe TOOL-002 Glob input `[` in the same sandboxed fixture, retaining only the error flag, fixture-match flag, completion/exit, and unchanged-file state. Depend on [TOOL-GLOB-BRACKET](reference/scenarios.md); do not infer Grep's pattern rules.
+- [X] T128 [US1] Observe TOOL-003 Grep input `[` in the same sandboxed fixture, retaining only the error flag, fixture-match flag, completion/exit, and unchanged-file state. Depend on [TOOL-GREP-BRACKET](reference/scenarios.md); leave exact diagnostic and nox comparison open.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
