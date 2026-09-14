@@ -133,8 +133,8 @@ Each row identifies a distinct tool surface from the [current tools reference](h
 | ID | Tool / independently testable action | Manual approval; availability condition | Evidence status |
 |----|--------------------------------------|-----------------------------------------|-----------------|
 | TOOL-001 | `Read`: read file content and supported media | No in-scope; out-of-scope may prompt | Documented; trace pending |
-| TOOL-002 | `Glob`: enumerate paths by pattern | No in-scope; absent by default on macOS/Linux/WSL | [Bare-mode loopback trace](observations/tool-bare-catalog-loopback-2026-09-14.json): absent from request; normal default and explicit enablement unverified |
-| TOOL-003 | `Grep`: search file content by pattern | No in-scope; absent by default on macOS/Linux/WSL | [Bare-mode loopback trace](observations/tool-bare-catalog-loopback-2026-09-14.json): absent from request; normal default and explicit enablement unverified |
+| TOOL-002 | `Glob`: enumerate paths by pattern | No in-scope; absent by default on macOS/Linux/WSL | [Sandboxed normal-startup trace](observations/tool-default-catalog-loopback-2026-09-14.json) and [bare trace](observations/tool-bare-catalog-loopback-2026-09-14.json): absent from both requests on macOS; explicit enablement unverified |
+| TOOL-003 | `Grep`: search file content by pattern | No in-scope; absent by default on macOS/Linux/WSL | [Sandboxed normal-startup trace](observations/tool-default-catalog-loopback-2026-09-14.json) and [bare trace](observations/tool-bare-catalog-loopback-2026-09-14.json): absent from both requests on macOS; explicit enablement unverified |
 | TOOL-004 | `Edit`: targeted replacement in a file | Yes unless mode/rule approves | Documented; trace pending |
 | TOOL-005 | `Write`: create or overwrite a file | Yes unless mode/rule approves | Documented; trace pending |
 | TOOL-006 | `NotebookEdit`: modify notebook cells | Yes unless mode/rule approves | Documented; trace pending |
