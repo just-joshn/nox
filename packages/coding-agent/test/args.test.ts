@@ -1,3 +1,6 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { normalizeSessionName, parseArgs } from "../src/cli/args.ts";
 
@@ -157,6 +160,30 @@ describe("parseArgs", () => {
 		test("parses --system-prompt", () => {
 			const result = parseArgs(["--system-prompt", "You are a helpful assistant"]);
 			expect(result.systemPrompt).toBe("You are a helpful assistant");
+		});
+
+		test("selects explicit prompt files in replacement then append order", () => {
+			const root = mkdtempSync(join(tmpdir(), "nox-prompt-args-"));
+			try {
+				const replacement = join(root, "replacement.txt");
+				const append = join(root, "append.txt");
+				writeFileSync(replacement, "replacement");
+				writeFileSync(append, "append");
+				const result = parseArgs(["--system-prompt-file", replacement, "--append-system-prompt-file", append]);
+				expect(result.systemPrompt).toBe(replacement);
+				expect(result.appendSystemPrompt).toEqual([append]);
+				expect(result.diagnostics).toEqual([]);
+			} finally {
+				rmSync(root, { recursive: true, force: true });
+			}
+		});
+
+		test("rejects an inline and file replacement before checking the file", () => {
+			const result = parseArgs(["--system-prompt", "inline", "--system-prompt-file", "/missing/synthetic.txt"]);
+			expect(result.diagnostics).toContainEqual({
+				type: "error",
+				message: "Cannot use both --system-prompt and --system-prompt-file. Please use only one.",
+			});
 		});
 
 		test("parses --append-system-prompt", () => {
