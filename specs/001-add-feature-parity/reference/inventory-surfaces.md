@@ -182,3 +182,26 @@ Sources: [current hosted-review guide](https://code.claude.com/docs/en/ultrarevi
 | SUR-AUTO-014 | Configure routine connectors and branch permissions | Run receives selected tools and permitted push scope | Unauthorized connector write or protected branch | Organization/policy gate; nox routine permissions |
 
 Automatic PR repair, inline code-review integration, routine API payloads and status codes, event filter variants, and billing boundaries need separate leaves before SUR-007 is complete.
+
+## Browser and editor integration leaves (SUR-008)
+
+Sources: [current browser guide](https://code.claude.com/docs/en/chrome) and [current editor guide](https://code.claude.com/docs/en/ide-integrations), read 2026-09-14. Installed `--chrome`, `--no-chrome`, and `--ide` help corroborate launch controls only. No browser extension or editor session was connected for this inventory.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-INT-001 | Start with `--chrome` and accept one-time setup | Browser extension connects and tool set becomes available | Missing extension, declined setup, unsupported provider | Browser, extension, account gate; `nox --browser` |
+| SUR-INT-002 | Use `/chrome` to inspect, reconnect, or select browser | Connection and chosen browser persist for session | Multiple browsers, disconnection, extension not installed | Browser gate; Pi browser status command |
+| SUR-INT-003 | Request browser action on a site | New visible tab opens; navigation, DOM, console, click and typing use signed-in browser state | Site denial, CAPTCHA/login pause, browser permission refusal | Browser/site gate; nox browser tools |
+| SUR-INT-004 | Grant or deny site/browser action | Session/site permission controls subsequent actions | Plan-mode prompt, denied site, policy-blocked extension | Browser/policy gate; nox browser permissions |
+| SUR-INT-005 | Upload local file through browser | Allowed file bytes reach page upload field | Read denial, total over 10 MB, multiply linked file | Browser/site gate; nox upload tool |
+| SUR-INT-006 | Save screenshot or record GIF | Local artifact path and visible browser content captured | Write failure, sensitive content in recording, denied capture | Browser gate; nox capture tool |
+| SUR-INT-007 | Clear, resume, or exit session with browser tabs | Session tab group closes or remains according to active work/content | Orphan group or lost connection | Browser gate; nox browser lifecycle |
+| SUR-INT-008 | Launch with `--ide` or inside integrated editor terminal | One detected editor connects; diffs and diagnostics route through editor | No editor, more than one, stale connection | Editor platform gate; `nox --ide` |
+| SUR-INT-009 | Open graphical editor chat and send prompt | Editor panel shows conversation and permission controls | Sign-in failure, restricted workspace, panel reload | Editor extension/account gate; nox editor client |
+| SUR-INT-010 | Inspect proposed edit in native diff | Accept, reject, or change proposal before application | Modified proposal, denied edit, stale source | Editor gate; nox diff bridge |
+| SUR-INT-011 | Send selected text or active file with a CLI prompt | Editor context reaches agent unless read rule denies path | Sensitive selection excluded by deny rule; stale selection | Editor gate; nox selection bridge |
+| SUR-INT-012 | Request diagnostics or notebook execution via editor bridge | Problems data returns; execution requires protected action | Kernel absent, permission denial, bridge auth failure | Editor/Jupyter gate; nox editor tools |
+| SUR-INT-013 | Continue editor conversation in CLI or vice versa | Shared local session history resumes in chosen interface | Missing session, simultaneous open, reload recovery | Editor gate; nox session bridge |
+| SUR-INT-014 | Reference `@terminal:<name>` in editor prompt | Named terminal output enters prompt context | Missing terminal, stale output, sensitive logs | Editor gate; nox terminal context |
+
+Detailed VS Code layout, themes, shortcuts, focus/accessibility, browser tool list, and other editor/browser variants remain to be split. The editor bridge's local token and selected-text disclosure are security-sensitive observations requiring synthetic data.

@@ -115,5 +115,19 @@
 | SUR-AUTO-012 | Routine management and run-now behavior unobserved | Eligible account; disposable routine with list, pause, edit, resume, run |
 | SUR-AUTO-013 | Routine run continuation and failure unobserved | Eligible account; bounded synthetic run and archived-session case |
 | SUR-AUTO-014 | Connector/tool and branch permission scope unobserved | Eligible organization; synthetic connector and protected branch fixture |
+| SUR-INT-001 | Browser extension setup and eligibility unobserved | Compatible browser/extension and eligible login; disposable profile |
+| SUR-INT-002 | Browser selection, status, and reconnect unobserved | Two disposable browser profiles and controlled disconnect |
+| SUR-INT-003 | Browser actions and signed-in state disclosure unobserved | Synthetic local website/account; permission and CAPTCHA fixtures |
+| SUR-INT-004 | Browser site and plan-mode permission semantics unobserved | Synthetic site with allow/deny and managed-policy fixtures |
+| SUR-INT-005 | Upload read permission, size, and link restrictions unobserved | Synthetic files only; denied read, >10 MB, and hard-link cases |
+| SUR-INT-006 | Screenshot/GIF output and sensitive content handling unobserved | Synthetic page, approved artifact destination, redacted trace |
+| SUR-INT-007 | Browser tab-group cleanup and resume unobserved | Disposable profile; clear, switch, exit, and surviving-work variants |
+| SUR-INT-008 | Automatic editor detection and connection unobserved | Compatible editor extension; zero/one/multiple editor fixtures |
+| SUR-INT-009 | Graphical panel sign-in, trust, and reload unobserved | Compatible editor and test account; restricted workspace fixture |
+| SUR-INT-010 | Native diff modification and permission flow unobserved | Synthetic file proposal; accept/reject/edit and stale-source cases |
+| SUR-INT-011 | Selection disclosure and deny-rule protection unobserved | Synthetic selected text; denied file and changed selection fixtures |
+| SUR-INT-012 | Diagnostic and notebook tool authorization unobserved | Synthetic Problems panel and disposable notebook kernel |
+| SUR-INT-013 | Editor/CLI shared history and conflict handling unobserved | Disposable session, resume from both surfaces, reload fixture |
+| SUR-INT-014 | Named terminal context and missing/stale output unobserved | Synthetic terminal logs only; missing title and redaction cases |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
