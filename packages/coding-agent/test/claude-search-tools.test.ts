@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -135,6 +136,36 @@ describe("explicit Claude search tools", () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute("call-1", { pattern: "alpha" }, undefined, undefined, {} as never);
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
+	it.each([
+		["hidden file is newer", 1_600_000_000, 1_700_000_000, "Found 2 files\n.hidden.txt\nfixture.txt"],
+		["visible file is newer", 1_700_000_000, 1_600_000_000, "Found 2 files\nfixture.txt\n.hidden.txt"],
+	])("Grep orders matching files by descending mtime when %s", async (_case, visibleTime, hiddenTime, expected) => {
+		writeFileSync(join(cwd, ".hidden.txt"), "alpha\nbeta\n");
+		utimesSync(join(cwd, "fixture.txt"), visibleTime, visibleTime);
+		utimesSync(join(cwd, ".hidden.txt"), hiddenTime, hiddenTime);
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute("call-1", { pattern: "alpha" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: expected }]);
+	});
+
+	it("Grep excludes a matching file inside git metadata", async () => {
+		execFileSync("git", ["init", "-q", cwd]);
+		writeFileSync(join(cwd, ".git", "inner.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute("call-1", { pattern: "alpha" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
+	it("Grep keeps the match-limit notice after ordering files", async () => {
+		for (let index = 0; index < 101; index++) writeFileSync(join(cwd, `extra-${index}.txt`), "alpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute("call-1", { pattern: "alpha" }, undefined, undefined, {} as never);
+		expect(result.content[0]).toMatchObject({
+			type: "text",
+			text: expect.stringContaining("100 matches limit reached"),
+		});
 	});
 
 	it("Grep type py filters matching Python files", async () => {
@@ -372,6 +403,22 @@ describe("explicit Claude search tools", () => {
 	it("Grep count mode reports one occurrence", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(JSON.stringify(tool.parameters.properties.output_mode)).toContain("count");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:1\n\nFound 1 total occurrence across 1 file." },
+		]);
+	});
+
+	it("Grep count mode excludes git metadata like file-list mode", async () => {
+		execFileSync("git", ["init", "-q", cwd]);
+		writeFileSync(join(cwd, ".git", "inner.txt"), "alpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute(
 			"call-1",
 			{ pattern: "alpha", output_mode: "count" },

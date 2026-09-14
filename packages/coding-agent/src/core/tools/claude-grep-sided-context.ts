@@ -25,6 +25,7 @@ export async function executeClaudeGrepSidedContext(cwd: string, input: SidedCon
 	if (input["-B"] !== undefined) args.push("--before-context", String(input["-B"]));
 	if (input.glob) args.push("--glob", input.glob);
 	if (input.type) args.push("--type", input.type);
+	args.push("--glob", "!**/.git/**");
 	args.push("--", input.pattern, searchPath);
 
 	const output = await new Promise<string>((resolve, reject) => {

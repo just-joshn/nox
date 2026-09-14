@@ -67,6 +67,8 @@ export interface GrepToolOptions {
 	operations?: GrepOperations;
 	/** Optional ripgrep file type for explicit search adapters. */
 	fileType?: string;
+	/** Exclude git metadata for explicit search adapters. */
+	excludeGitMetadata?: boolean;
 }
 
 export function createGrepToolDefinition(
@@ -165,6 +167,7 @@ export function createGrepToolDefinition(
 						if (ignoreCase) args.push("--ignore-case");
 						if (literal) args.push("--fixed-strings");
 						if (glob) args.push("--glob", glob);
+						if (options?.excludeGitMetadata) args.push("--glob", "!**/.git/**");
 						if (options?.fileType) args.push("--type", options.fileType);
 						args.push("--", pattern, searchPath);
 

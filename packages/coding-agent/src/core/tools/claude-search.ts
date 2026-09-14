@@ -85,7 +85,7 @@ export function createClaudeGlobToolDefinition(cwd: string) {
 }
 
 export function createClaudeGrepToolDefinition(cwd: string) {
-	const grep = createGrepToolDefinition(cwd);
+	const grep = createGrepToolDefinition(cwd, { excludeGitMetadata: true });
 	return {
 		...grep,
 		name: "Grep",
@@ -117,7 +117,9 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && (selected["-A"] !== undefined || selected["-B"] !== undefined))
 				return executeClaudeGrepSidedContext(ctx?.cwd || cwd, selected, signal);
-			const typedGrep = selected.type ? createGrepToolDefinition(cwd, { fileType: selected.type }) : grep;
+			const typedGrep = selected.type
+				? createGrepToolDefinition(cwd, { fileType: selected.type, excludeGitMetadata: true })
+				: grep;
 			const result = await typedGrep.execute(
 				id,
 				{
@@ -132,6 +134,9 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const text = resultText(result);
 			if (text === "No matches found")
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
+			const noticeStart = result.details ? text.lastIndexOf("\n\n[") : -1;
+			const matchText = noticeStart >= 0 ? text.slice(0, noticeStart) : text;
+			const notice = noticeStart >= 0 ? text.slice(noticeStart) : "";
 			const searchPrefix = selected.path
 				? path.relative(ctx?.cwd || cwd, resolveToCwd(selected.path, ctx?.cwd || cwd)).replaceAll("\\", "/")
 				: "";
@@ -175,18 +180,28 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			}
 			const files = [
 				...new Set(
-					text
+					matchText
 						.split("\n")
 						.map((line) => prefixFile(line.split(":", 1)[0]))
 						.filter(Boolean),
 				),
 			];
+			const datedFiles = await Promise.all(
+				files.map(async (file, index) => ({
+					file,
+					index,
+					mtime: (await stat(path.join(ctx?.cwd || cwd, file))).mtimeMs,
+				})),
+			);
+			const orderedFiles = [...datedFiles]
+				.sort((left, right) => right.mtime - left.mtime || left.index - right.index)
+				.map(({ file }) => file);
 			return {
 				...result,
 				content: [
 					{
 						type: "text" as const,
-						text: `Found ${files.length} file${files.length === 1 ? "" : "s"}\n${files.join("\n")}`,
+						text: `Found ${orderedFiles.length} file${orderedFiles.length === 1 ? "" : "s"}\n${orderedFiles.join("\n")}${notice}`,
 					},
 				],
 			};

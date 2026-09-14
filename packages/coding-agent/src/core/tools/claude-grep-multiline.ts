@@ -26,6 +26,7 @@ export async function executeClaudeGrepMultiline(
 	if (input["-i"]) args.push("--ignore-case");
 	if (input.glob) args.push("--glob", input.glob);
 	if (input.type) args.push("--type", input.type);
+	args.push("--glob", "!**/.git/**");
 	args.push("--", input.pattern, searchPath);
 
 	const output = await new Promise<string>((resolve, reject) => {
