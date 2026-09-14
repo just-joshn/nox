@@ -164,5 +164,17 @@
 | SUR-ENT-010 | Drain, push-on-release, and interrupted recovery unobserved | Isolated runner and synthetic branch with controlled stop |
 | SUR-ENT-011 | Orchestrator routing, pool, and failure unobserved | Authorized enterprise test connector and disposable worker pool |
 | SUR-ENT-012 | Health/log/telemetry output and redaction unobserved | Isolated runner with synthetic secrets and port/log failures |
+| SUR-PLAT-001 | Desktop local launch and sign-in unobserved | Compatible disposable desktop profile and synthetic project |
+| SUR-PLAT-002 | Parallel desktop worktree isolation unobserved | Disposable repository and two desktop sessions |
+| SUR-PLAT-003 | Desktop diff feedback and apply unobserved | Synthetic file edit with accept/reject/stale diff variants |
+| SUR-PLAT-004 | Desktop terminal/editor/preview behavior unobserved | Disposable app with bounded local preview server and port collision |
+| SUR-PLAT-005 | Computer-use permissions and action results unobserved | Eligible macOS test profile; synthetic app and explicit OS permission |
+| SUR-PLAT-006 | Mobile Dispatch pairing and offline recovery unobserved | Eligible paired devices; synthetic task and controlled offline case |
+| SUR-PLAT-007 | Mobile hosted task and notification behavior unobserved | Eligible mobile/cloud account; disposable session |
+| SUR-PLAT-008 | Team-chat sender authority and result flow unobserved | Authorized test workspace/channel and synthetic repository task |
+| SUR-PLAT-009 | CI event, token, and branch protection behavior unobserved | Disposable CI repository and least-privilege test token |
+| SUR-PLAT-010 | Automatic PR review findings and repeat-push behavior unobserved | Authorized disposable PR and review integration |
+| SUR-PLAT-011 | JetBrains bridge and failure behavior unobserved | Compatible disposable IDE project and plugin |
+| SUR-PLAT-012 | Cross-surface settings and memory propagation unobserved | Isolated local profiles and synthetic settings across installed clients |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.

@@ -267,3 +267,24 @@ Sources: [current deployment overview](https://code.claude.com/docs/en/bedrock-v
 | SUR-ENT-012 | Inspect runner health, logs, and telemetry | Status and diagnostics show capacity and failures without secrets | Health-port conflict, log write failure, sensitive value leak | Enterprise host; nox runner diagnostics |
 
 Every runner option and its mutually exclusive combinations still requires an individual CLI leaf under T002; the rows here track externally visible lifecycle boundaries. No privileged deployment, credential, or git-global mutation was performed.
+
+## Desktop, mobile, chat, and CI surface leaves (SUR-009)
+
+Sources: [current platform comparison](https://code.claude.com/docs/en/platforms) and [desktop reference](https://code.claude.com/docs/en/desktop), read 2026-09-14. These surfaces share the underlying agent capability but have different interaction and hosting boundaries. This table is a discovery split, not a claim that the terminal build can drive every graphical client.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-PLAT-001 | Start local session in Desktop Code tab | Graphical prompt and workspace open on local files | Sign-in, missing project, unsupported platform | Desktop client gate; nox desktop adapter |
+| SUR-PLAT-002 | Start parallel Desktop sessions with Git isolation | Each session uses separate worktree and history | Conflict, dirty worktree, cleanup refusal | Desktop/git gate; nox desktop session list |
+| SUR-PLAT-003 | Review Desktop diff and proposed edit | Visual diff supports inspection and feedback before commit | Rejected edit, stale diff, failed apply | Desktop gate; nox desktop diff view |
+| SUR-PLAT-004 | Use Desktop terminal, editor, and app preview | Local processes and files appear beside conversation | Port conflict, preview server failure, layout recovery | Desktop gate; nox desktop workspace |
+| SUR-PLAT-005 | Enable Desktop computer use | Agent interacts with permitted macOS apps and screen | Permission denial, restricted app, interruption | macOS and plan gate; nox computer-use bridge |
+| SUR-PLAT-006 | Pair mobile app and Dispatch task to Desktop | New local Desktop session starts from phone instruction | Offline desktop, lost pairing, queued task | Mobile/Desktop plan gate; nox dispatch |
+| SUR-PLAT-007 | Start or monitor hosted task from mobile | Cloud session remains accessible after device disconnect | Sign-in, expired environment, notification failure | Mobile/cloud gate; nox mobile client |
+| SUR-PLAT-008 | Mention assistant in team chat | Authorized chat request creates cloud work and reports result/link | Untrusted sender, missing repository, policy denial | Chat integration gate; nox chat connector |
+| SUR-PLAT-009 | Run CI integration on PR, issue, or schedule event | Pipeline starts agent work with repository context and reports changes | Token refusal, fork/branch restrictions, failed job | CI provider gate; nox CI entrypoint |
+| SUR-PLAT-010 | Run automated code review on PR updates | Findings attach to review location and may update on later pushes | No access, oversized diff, review failure | Git service/policy gate; nox review integration |
+| SUR-PLAT-011 | Open JetBrains integration from IDE terminal | IDE diff/selection bridge joins local CLI session | Plugin absent, bridge disconnect, unsupported IDE | JetBrains gate; nox IDE bridge |
+| SUR-PLAT-012 | Continue local configuration across CLI, editor, and Desktop | Shared settings, project memory, and connectors affect later sessions | Conflicting versions, stale reload, denied scope | Installed local clients; nox settings sharing |
+
+Desktop layout and shortcuts, mobile push, Slack authority, GitHub Actions and GitLab variants, Code Review controls, JetBrains bridge details, and computer-use actions remain to be split further. T005 remains open.
