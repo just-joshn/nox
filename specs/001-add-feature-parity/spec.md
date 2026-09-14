@@ -31,7 +31,7 @@ A user starts nox in a repository, asks it to inspect or change files, reviews p
 1. **Given** a repository and a new session, **When** the user asks for a code change, **Then** nox presents tool activity, applies approved edits, and reports the result with the reference assistant's observable behavior. Context discovery and prompt assembly are required by FR-004 but are a separate delivery slice, not this story's core coding loop.
 2. **Given** equivalent terminal width, theme, and interaction state, **When** the user performs the same action in Pi and nox, **Then** nox's layout, colors, text treatment, and interaction feedback match Pi; any intentional exception has an approved constitution amendment.
 3. **Given** a tool failure or denied action, **When** execution ends, **Then** the user sees the same decision and recovery options as in the reference assistant.
-4. **Given** a new session in a repository with project instructions present, **When** the user sends the first prompt, **Then** nox loads the same context sources and prompt-assembly order as the reference (delivery slice `US1-CONTEXT-*`, not `US1-CORE-2026-09-14`).
+4. **Given** a new session in a repository with project instructions present, **When** the user sends the first prompt, **Then** nox loads the same context sources and prompt-assembly order as the reference (delivery slice `US1-CONTEXT-PENDING`, not `US1-CORE-2026-09-14`).
 
 ---
 
@@ -108,7 +108,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **FR-007**: nox MUST support the reference's model, effort, fallback, context, and budget controls, including their precedence and observable failure behavior.
 - **FR-008**: nox MUST support the reference's settings scopes, project instructions, memory, skills, custom commands, agents, hooks, plugins, external-tool connections, and associated discovery and precedence rules.
 - **FR-009**: nox MUST support the reference's non-interactive input and output formats, structured output validation, partial streaming, event reporting, and exit behavior.
-- **FR-010**: nox MUST support the reference's background agents, isolated worktrees, remote or hosted sessions, and desktop, web, mobile, editor, browser, chat, and CI workflows where available to the user. Each surface-specific leaf MUST identify its entry action, intermediate interactions, resulting state, side effects, failure behavior, availability conditions, and corresponding nox terminal or CLI control; connected-service bridges MAY deliver the behavior where needed. Every workflow remains in the inventory even when its original surface is inaccessible. A workflow whose required interactions cannot be matched by a valid nox equivalent MUST remain unverified rather than be counted as parity.
+- **FR-010**: nox MUST support the reference's background agents, isolated worktrees, remote or hosted sessions, and desktop, web, mobile, editor, browser, chat, and CI workflows where available to the user. Each surface-specific leaf MUST identify its entry action, intermediate interactions, resulting state, side effects, failure behavior, availability conditions, and corresponding nox terminal or CLI control. A connected-service bridge counts as that control only when the leaf records the bridge, the nox entry action, and a matched observation. If no valid nox control exists, the leaf MUST be `gated-unverified` and MUST NOT be counted as parity. Every workflow remains in the inventory even when its original surface is inaccessible.
 - **FR-011**: nox MUST support the behavior of all installed-reference CLI subcommands and flags that represent user-facing features, including authentication, setup, diagnostics, update, import, project state, plugin and external-tool management, and hosted review, subject to the same availability conditions. Commands and paths MUST use nox-specific names where the reference names contain its product name.
 - **FR-012**: nox MUST preserve Pi behavior unrelated to a required parity change; every intentional divergence MUST identify the reference scenario requiring it.
 - **FR-013**: Developed nox application code, user-facing strings, command names, and configuration filenames and paths MUST contain no mention of the reference product's name. Equivalent features MUST remain available through nox-specific names. Specification and verification artifacts MAY name the reference so parity remains auditable.
@@ -124,6 +124,18 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **Reachable leaf**: An applicable leaf that can be exercised safely using the authorized accounts, services, platform, and isolated fixtures available for the recorded snapshot.
 - **Delivery slice**: An immutable, explicitly named set of leaf IDs selected for one delivery increment. Newly discovered leaves do not silently alter an existing slice; they require a new slice ID or an explicit versioned amendment.
 - **Gated-unverified leaf**: A discovered leaf that cannot currently be observed under authorized conditions. It remains in scope and blocks an unqualified complete-parity claim but does not block independently reachable slices after all other applicable gates pass.
+
+### SC-009 scenario catalog
+
+T009 MUST register these IDs in `reference/scenarios.md` before SC-009 is evaluable. Extra leaves may be added; these slots cannot be omitted.
+
+| ID | Protected action | Must refuse before | Must not appear in output/logs/errors |
+|---|---|---|---|
+| SEC-PATH-001 | Path outside the authorized workspace | Any file read/write | Real absolute paths beyond the fixture |
+| SEC-CMD-001 | Crafted command/payload crossing an authorization boundary | Process start or shell | Synthetic credentials |
+| SEC-SET-001 | Malformed or unauthorized settings/integration payload | Persisted config or extension load | Private session values |
+| SEC-SECRET-001 | Restart after synthetic credential use | N/A (compare reuse vs redaction) | The synthetic secret |
+| SEC-EXT-001 | Extension or remote disclosure | Data sent to the extension/remote | Synthetic secret or private session values |
 
 ### Key Entities *(include if feature involves data)*
 
