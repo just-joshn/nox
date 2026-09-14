@@ -2,7 +2,7 @@
  * CLI argument parsing and help display
  */
 
-import { accessSync, constants, statSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import chalk from "chalk";
 import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, ENV_SESSION_DIR } from "../config.ts";
@@ -57,7 +57,7 @@ export interface Args {
 	fileArgs: string[];
 	/** Unknown flags (potentially extension flags) - map of flag name to value */
 	unknownFlags: Map<string, boolean | string>;
-	diagnostics: Array<{ type: "warning" | "error"; message: string }>;
+	diagnostics: Array<{ type: "warning" | "error"; message: string; verbatim?: boolean }>;
 }
 
 const VALID_THINKING_LEVELS = ["off", "minimal", "low", "medium", "high", "xhigh", "max"] as const;
@@ -71,13 +71,16 @@ export function normalizeSessionName(value: string): string | undefined {
 	return name.length > 0 ? name : undefined;
 }
 
-function promptFileError(path: string): "not found" | "cannot be read" | "is not a regular file" | undefined {
+function promptFileDiagnostic(path: string, label: string): Args["diagnostics"][number] | undefined {
 	try {
-		if (!statSync(path).isFile()) return "is not a regular file";
-		accessSync(path, constants.R_OK);
+		readFileSync(path, "utf8");
 		return undefined;
 	} catch (error) {
-		return (error as NodeJS.ErrnoException).code === "ENOENT" ? "not found" : "cannot be read";
+		if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+			return { type: "error", message: `${label} file not found: ${path}` };
+		}
+		const detail = error instanceof Error ? error.message : String(error);
+		return { type: "error", message: `Error reading ${label.toLowerCase()} file: ${detail}`, verbatim: true };
 	}
 }
 
@@ -142,9 +145,9 @@ export function parseArgs(args: string[]): Args {
 				result.diagnostics.push({ type: "error", message: "--append-system-prompt-file requires a value" });
 			} else {
 				i++;
-				const error = promptFileError(value);
-				if (error) {
-					result.diagnostics.push({ type: "error", message: `Append system prompt file ${error}: ${value}` });
+				const diagnostic = promptFileDiagnostic(value, "Append system prompt");
+				if (diagnostic) {
+					result.diagnostics.push(diagnostic);
 				} else {
 					result.appendSystemPrompt = [...(result.appendSystemPrompt ?? []), value];
 				}
@@ -303,9 +306,9 @@ export function parseArgs(args: string[]): Args {
 			message: "Cannot use both --system-prompt and --system-prompt-file. Please use only one.",
 		});
 	} else if (systemPromptFile !== undefined) {
-		const error = promptFileError(systemPromptFile);
-		if (error) {
-			result.diagnostics.push({ type: "error", message: `System prompt file ${error}: ${systemPromptFile}` });
+		const diagnostic = promptFileDiagnostic(systemPromptFile, "System prompt");
+		if (diagnostic) {
+			result.diagnostics.push(diagnostic);
 		} else {
 			result.systemPrompt = systemPromptFile;
 		}
