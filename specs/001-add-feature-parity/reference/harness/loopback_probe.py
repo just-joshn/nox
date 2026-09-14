@@ -21,7 +21,7 @@ SEARCH_MODES = frozenset({
     "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context",
     "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
     "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
-    "grep-context-alias",
+    "grep-context-alias", "grep-multiline",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -52,6 +52,7 @@ class ProbeState:
     offset: int | None = None
     file_type: str | None = None
     context_alias: int | None = None
+    multiline: bool = False
 
 
 def sse(event: str, payload: dict) -> str:
@@ -64,7 +65,7 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
                      context_lines: int | None = None, context_side: str | None = None,
                      file_glob: str | None = None, head_limit: int | None = None,
                      offset: int | None = None, file_type: str | None = None,
-                     context_alias: int | None = None) -> bytes:
+                     context_alias: int | None = None, multiline: bool = False) -> bytes:
     message = {
         "id": "msg_synthetic",
         "type": "message",
@@ -92,6 +93,7 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
         if offset is not None: tool_input = {**tool_input, "offset": offset}
         if file_type: tool_input = {**tool_input, "type": file_type}
         if context_alias is not None: tool_input = {**tool_input, "context": context_alias}
+        if multiline: tool_input = {**tool_input, "multiline": True}
         delta = {"type": "input_json_delta", "partial_json": json.dumps(tool_input)}
         stop_reason = "tool_use"
     else:
@@ -190,6 +192,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "offset_content" if text == "fixture.txt:2:alpha\n\n[Showing results with pagination = offset: 1]" and tool_name == "Grep" else
                              "offset_end" if text == "No entries at this offset\n\n[Showing results with pagination = offset: 2]" and tool_name == "Grep" else
                              "python_match" if text == "Found 1 file\nfixture.py" and tool_name == "Grep" else
+                             "multiline_content" if text == "fixture.txt:1:alpha\nfixture.txt:2:beta" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
                              "count_no_match" if text == "No matches found\n\nFound 0 total occurrences across 0 files." and tool_name == "Grep" else
@@ -264,7 +267,8 @@ def make_handler(state: ProbeState):
             body = message_response(request["model"], kind, state.read_path, state.tool_name, state.tool_pattern,
                                     state.tool_path, state.output_mode, state.ignore_case, state.line_numbers,
                                     state.only_matching, state.context_lines, state.context_side, state.file_glob,
-                                    state.head_limit, state.offset, state.file_type, state.context_alias)
+                                    state.head_limit, state.offset, state.file_type, state.context_alias,
+                                    state.multiline)
             self.send_response(200)
             self.send_header("Content-Type", "text/event-stream")
             self.send_header("Content-Length", str(len(body)))
@@ -308,9 +312,9 @@ def main(executable: str, mode: str = "normal") -> int:
         state = ProbeState(read_path=read_path,
                            catalog=mode in CATALOG_MODES,
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
-                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else None,
+                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode == "grep-multiline" else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
@@ -320,7 +324,8 @@ def main(executable: str, mode: str = "normal") -> int:
                            head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero"} else None,
                            offset=1 if mode == "grep-offset" else 2 if mode == "grep-offset-end" else 0 if mode == "grep-offset-zero" else None,
                            file_type="py" if mode == "grep-type-filter" else None,
-                           context_alias=1 if mode == "grep-context-alias" else None)
+                           context_alias=1 if mode == "grep-context-alias" else None,
+                           multiline=mode == "grep-multiline")
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
