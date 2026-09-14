@@ -114,3 +114,5 @@ Nox's explicit Grep count mode now reports per-file counts and total occurrences
 The [count no-match trace](observations/tool-grep-count-no-match-loopback-2026-09-14.json) returns `No matches found\n\nFound 0 total occurrences across 0 files.` with `is_error: false`, unchanged fixture, and synthetic completion. Fourteen harness tests passed. Nox currently returns `No files found` for this input, so count-mode empty-result formatting remains open for T147.
 
 Nox's explicit Grep count-mode no-match branch now returns the observed zero-total text while the other Grep no-match modes keep `No files found`. The new test failed before the change and passed afterward. The neighboring six-file suite passed 120 tests, and `npm run check` passed.
+
+The [101-line count trace](observations/tool-grep-count-limit-loopback-2026-09-14.json) returns `fixture.txt:101\n\nFound 101 total occurrences across 1 file.` under the localhost-only reference fixture, with no error and unchanged file. Fourteen harness tests passed. This exceeds the lower-case nox grep tool's default 100-match cap, so the explicit count adapter needs a separate exact-count path before this case can match.
