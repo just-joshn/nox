@@ -54,7 +54,7 @@ export async function executeClaudeGrepCount(cwd: string, input: CountInput, sig
 			: "No entries at this offset"
 		: "No matches found";
 	const pagination =
-		offset > 0 && counts.length
+		offset > 0
 			? ` with pagination = offset: ${offset}`
 			: input.head_limit && counts.length > input.head_limit
 				? ` with pagination = limit: ${input.head_limit}`

@@ -564,6 +564,23 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep zero-match count keeps the offset annotation", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", output_mode: "count", head_limit: 1, offset: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{
+				type: "text",
+				text: "No matches found\n\nFound 0 total occurrences across 0 files. with pagination = offset: 1",
+			},
+		]);
+	});
+
 	it("Grep count mode includes matches beyond the default grep result cap", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\n".repeat(101));
 		const tool = createAllToolDefinitions(cwd).Grep;
