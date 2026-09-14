@@ -19,7 +19,7 @@
 | DOC-013 | [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices.md) | Unreviewed |
 | DOC-014 | [Platforms and integrations](https://code.claude.com/docs/en/platforms.md) | Unreviewed |
 | DOC-015 | [Continue local sessions from any device with Remote Control](https://code.claude.com/docs/en/remote-control.md) | Unreviewed |
-| DOC-016 | [Claude Code on mobile](https://code.claude.com/docs/en/mobile.md) | Unreviewed |
+| DOC-016 | [Claude Code on mobile](https://code.claude.com/docs/en/mobile.md) | Candidate-mapped to SUR-PLAT-006–007 and SUR-PLAT-013–019; account/device observations gated |
 | DOC-017 | [Use Claude Code with Chrome](https://code.claude.com/docs/en/chrome.md) | Unreviewed |
 | DOC-018 | [Let Claude use your computer from the CLI](https://code.claude.com/docs/en/computer-use.md) | Unreviewed |
 | DOC-019 | [Use Claude Code in VS Code](https://code.claude.com/docs/en/vs-code.md) | Unreviewed |
