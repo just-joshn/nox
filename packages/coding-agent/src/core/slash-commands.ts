@@ -38,6 +38,16 @@ export const BUILTIN_SLASH_COMMANDS: ReadonlyArray<BuiltinSlashCommand> = [
 	{ name: "new", description: "Start a new session" },
 	{ name: "compact", description: "Manually compact the session context" },
 	{ name: "resume", description: "Resume a different session" },
+	{
+		name: "mode",
+		description: "Set or show permission/operational mode",
+		argumentHint: "<default|plan|accept-edits|dont-ask|bypass-permissions>",
+	},
+	{ name: "plan", description: "Toggle read-only plan mode" },
+	{ name: "permissions", description: "View operational permission rules and active mode" },
+	{ name: "agents", description: "List and manage background agents", argumentHint: "[list|logs|stop|rm]" },
+	{ name: "tasks", description: "Alias for /agents" },
+	{ name: "skills", description: "List loaded agent skills and custom commands" },
 	{ name: "reload", description: "Reload keybindings, extensions, skills, prompts, themes, and context files" },
 	{ name: "quit", description: `Quit ${APP_NAME}` },
 ];

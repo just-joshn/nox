@@ -136,7 +136,7 @@ export class BackgroundSessionManager {
 		return info;
 	}
 
-	async list(options: ListBackgroundOptions = {}): Promise<BackgroundSessionInfo[]> {
+	listSync(options: ListBackgroundOptions = {}): BackgroundSessionInfo[] {
 		if (!existsSync(this.bgDir)) {
 			return [];
 		}
@@ -161,6 +161,10 @@ export class BackgroundSessionManager {
 		}
 
 		return records.sort((a, b) => b.createdAt - a.createdAt);
+	}
+
+	async list(options: ListBackgroundOptions = {}): Promise<BackgroundSessionInfo[]> {
+		return this.listSync(options);
 	}
 
 	async get(id: string): Promise<BackgroundSessionInfo | undefined> {

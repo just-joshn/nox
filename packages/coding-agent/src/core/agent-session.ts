@@ -52,6 +52,7 @@ import { stripFrontmatter } from "../utils/frontmatter.ts";
 import { sleep } from "../utils/sleep.ts";
 import { normalizeToolResultImages } from "../utils/tool-result-images.ts";
 import { formatNoApiKeyFoundMessage, formatNoModelSelectedMessage } from "./auth-guidance.ts";
+import { BackgroundSessionManager } from "./background-session.ts";
 import { type BashResult, executeBashWithOperations } from "./bash-executor.ts";
 import {
 	type CompactionPreparation,
@@ -99,6 +100,7 @@ import { emitSessionShutdownEvent } from "./extensions/runner.ts";
 import type { BashExecutionMessage, CustomMessage } from "./messages.ts";
 import { ModelRegistry } from "./model-registry.ts";
 import type { ModelRuntime } from "./model-runtime.ts";
+import { PermissionManager, type PermissionMode } from "./permission-manager.ts";
 import { expandPromptTemplate, type PromptTemplate } from "./prompt-templates.ts";
 import type { ResourceExtensionPaths, ResourceLoader } from "./resource-loader.ts";
 import { exportSessionToJsonl } from "./session-export.ts";
@@ -403,6 +405,37 @@ export class AgentSession {
 			activeToolNames: this._initialActiveToolNames,
 			includeAllExtensionTools: true,
 		});
+	}
+
+	get cwd(): string {
+		return this._cwd;
+	}
+
+	private _permissionManager: PermissionManager = new PermissionManager();
+
+	get permissionManager(): PermissionManager {
+		return this._permissionManager;
+	}
+
+	getPermissionMode(): PermissionMode {
+		return this._permissionManager.getMode();
+	}
+
+	setPermissionMode(mode: PermissionMode): void {
+		this._permissionManager = new PermissionManager({
+			mode,
+			rules: this._permissionManager.getRules(),
+			cwd: this._cwd,
+		});
+	}
+
+	getActiveBackgroundTaskCount(): number {
+		try {
+			const manager = new BackgroundSessionManager();
+			return manager.listSync({ cwd: this._cwd, all: true }).filter((s) => s.status === "running").length;
+		} catch {
+			return 0;
+		}
 	}
 
 	get modelRuntime(): ModelRuntime {

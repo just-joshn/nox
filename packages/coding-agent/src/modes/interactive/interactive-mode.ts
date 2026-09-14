@@ -57,6 +57,7 @@ import {
 import { type AgentSession, type AgentSessionEvent, parseSkillBlock } from "../../core/agent-session.ts";
 import { type AgentSessionRuntime, SessionImportFileNotFoundError } from "../../core/agent-session-runtime.ts";
 import type { AgentSessionRuntimeDiagnostic } from "../../core/agent-session-services.ts";
+import { BackgroundSessionManager } from "../../core/background-session.ts";
 import {
 	CACHE_TTL_MS,
 	type CacheMiss,
@@ -89,6 +90,7 @@ import {
 } from "../../core/model-resolver.ts";
 import { CredentialSynchronizationError } from "../../core/model-runtime.ts";
 import { DefaultPackageManager } from "../../core/package-manager.ts";
+import type { PermissionMode } from "../../core/permission-manager.ts";
 import type { ResourceDiagnostic } from "../../core/resource-loader.ts";
 import { formatMissingSessionCwdPrompt, MissingSessionCwdError } from "../../core/session-cwd.ts";
 import { type SessionEntry, SessionManager, sessionEntryToContextMessages } from "../../core/session-manager.ts";
@@ -689,6 +691,32 @@ export class InteractiveMode {
 					label: provider.id,
 					description: formatLoginProviderCompletionDescription(provider),
 				}));
+			};
+		}
+
+		const modeCommand = slashCommands.find((command) => command.name === "mode");
+		if (modeCommand) {
+			modeCommand.getArgumentCompletions = (prefix: string): AutocompleteItem[] | null => {
+				const modes = ["default", "plan", "accept-edits", "dont-ask", "bypass-permissions"];
+				return createFuzzyAutocompleteItems(
+					modes,
+					prefix,
+					(m) => m,
+					(m) => ({ value: m, label: m }),
+				);
+			};
+		}
+
+		const agentsCommand = slashCommands.find((command) => command.name === "agents" || command.name === "tasks");
+		if (agentsCommand) {
+			agentsCommand.getArgumentCompletions = (prefix: string): AutocompleteItem[] | null => {
+				const actions = ["list", "logs", "stop", "rm", "respawn"];
+				return createFuzzyAutocompleteItems(
+					actions,
+					prefix,
+					(a) => a,
+					(a) => ({ value: a, label: a }),
+				);
 			};
 		}
 
@@ -3089,6 +3117,37 @@ export class InteractiveMode {
 			if (text === "/dementedelves") {
 				this.handleDementedDelves();
 				this.editor.setText("");
+				return;
+			}
+			if (text === "/mode" || text.startsWith("/mode ")) {
+				const modeArg = text.startsWith("/mode ") ? text.slice(6).trim() : undefined;
+				this.editor.setText("");
+				this.handleModeCommand(modeArg);
+				return;
+			}
+			if (text === "/plan") {
+				this.editor.setText("");
+				this.handlePlanCommand();
+				return;
+			}
+			if (text === "/permissions") {
+				this.editor.setText("");
+				this.handlePermissionsCommand();
+				return;
+			}
+			if (text === "/agents" || text.startsWith("/agents ") || text === "/tasks" || text.startsWith("/tasks ")) {
+				const agentsArg = text.startsWith("/agents ")
+					? text.slice(8).trim()
+					: text.startsWith("/tasks ")
+						? text.slice(7).trim()
+						: undefined;
+				this.editor.setText("");
+				await this.handleAgentsCommand(agentsArg);
+				return;
+			}
+			if (text === "/skills") {
+				this.editor.setText("");
+				this.handleSkillsCommand();
 				return;
 			}
 			if (text === "/resume") {
@@ -6596,6 +6655,266 @@ export class InteractiveMode {
 		} catch {
 			// Ignore, will be emitted as an event
 		}
+	}
+
+	private handleModeCommand(modeArg?: string): void {
+		if (!modeArg) {
+			const currentMode = this.session.getPermissionMode();
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(new DynamicBorder());
+			this.chatContainer.addChild(new Text(theme.bold(theme.fg("accent", "Operational Mode")), 1, 0));
+			this.chatContainer.addChild(new Text(`Current mode: ${theme.bold(theme.fg("success", currentMode))}`, 1, 0));
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(new Text("Available modes:", 1, 0));
+			this.chatContainer.addChild(
+				new Text(`  ${theme.bold("default")}             - Prompt for non-whitelisted operations`, 1, 0),
+			);
+			this.chatContainer.addChild(
+				new Text(
+					`  ${theme.bold("plan")}                - Read-only analysis; file modifications & destructive bash denied`,
+					1,
+					0,
+				),
+			);
+			this.chatContainer.addChild(
+				new Text(
+					`  ${theme.bold("accept-edits")}        - Automatically approve file modifications and edit operations`,
+					1,
+					0,
+				),
+			);
+			this.chatContainer.addChild(
+				new Text(
+					`  ${theme.bold("dont-ask")}            - Auto-approve read-only operations; deny dangerous operations silently`,
+					1,
+					0,
+				),
+			);
+			this.chatContainer.addChild(
+				new Text(`  ${theme.bold("bypass-permissions")} - Execute all operations without prompting`, 1, 0),
+			);
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(new Text(theme.fg("dim", "Usage: /mode <mode-name> or /plan"), 1, 0));
+			this.chatContainer.addChild(new DynamicBorder());
+			this.ui.requestRender();
+			return;
+		}
+
+		const normalized = modeArg.trim().toLowerCase();
+		const modeMap: Record<string, PermissionMode> = {
+			default: "default",
+			plan: "plan",
+			"accept-edits": "acceptEdits",
+			acceptedits: "acceptEdits",
+			"dont-ask": "dontAsk",
+			dontask: "dontAsk",
+			"bypass-permissions": "bypassPermissions",
+			bypasspermissions: "bypassPermissions",
+			bypass: "bypassPermissions",
+		};
+
+		const targetMode = modeMap[normalized];
+		if (!targetMode) {
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(
+				new Text(
+					theme.fg(
+						"error",
+						`Unknown mode: "${modeArg}". Available: default, plan, accept-edits, dont-ask, bypass-permissions`,
+					),
+					1,
+					0,
+				),
+			);
+			this.ui.requestRender();
+			return;
+		}
+
+		this.session.setPermissionMode(targetMode);
+		this.chatContainer.addChild(new Spacer(1));
+		this.chatContainer.addChild(
+			new Text(theme.fg("success", `Operational mode switched to ${theme.bold(targetMode)}.`), 1, 0),
+		);
+		this.ui.requestRender();
+	}
+
+	private handlePlanCommand(): void {
+		const currentMode = this.session.getPermissionMode();
+		const nextMode: PermissionMode = currentMode === "plan" ? "default" : "plan";
+		this.session.setPermissionMode(nextMode);
+		this.chatContainer.addChild(new Spacer(1));
+		if (nextMode === "plan") {
+			this.chatContainer.addChild(
+				new Text(
+					theme.bold(
+						theme.fg("warning", "Plan mode enabled (read-only analysis). File writes and edits are blocked."),
+					),
+					1,
+					0,
+				),
+			);
+		} else {
+			this.chatContainer.addChild(new Text(theme.bold(theme.fg("success", "Default mode restored.")), 1, 0));
+		}
+		this.ui.requestRender();
+	}
+
+	private handlePermissionsCommand(): void {
+		const currentMode = this.session.getPermissionMode();
+		const rules = this.session.permissionManager.getRules();
+
+		this.chatContainer.addChild(new Spacer(1));
+		this.chatContainer.addChild(new DynamicBorder());
+		this.chatContainer.addChild(new Text(theme.bold(theme.fg("accent", "Operational Permissions")), 1, 0));
+		this.chatContainer.addChild(new Text(`Active Mode: ${theme.bold(theme.fg("success", currentMode))}`, 1, 0));
+		this.chatContainer.addChild(new Spacer(1));
+		this.chatContainer.addChild(new Text(theme.bold("Configured Rules:"), 1, 0));
+		if (rules.length === 0) {
+			this.chatContainer.addChild(new Text(theme.fg("dim", "  (No custom rules configured in .nox/rules)"), 1, 0));
+		} else {
+			for (const rule of rules) {
+				const target = rule.pattern || rule.path || "*";
+				const ruleText = `  • ${rule.tool} on ${target}: ${rule.action}`;
+				this.chatContainer.addChild(new Text(ruleText, 1, 0));
+			}
+		}
+		this.chatContainer.addChild(new Spacer(1));
+		this.chatContainer.addChild(
+			new Text(
+				theme.fg("dim", "Use /mode <mode> or /plan to change mode. Edit .nox/rules to configure custom rules."),
+				1,
+				0,
+			),
+		);
+		this.chatContainer.addChild(new DynamicBorder());
+		this.ui.requestRender();
+	}
+
+	private async handleAgentsCommand(args?: string): Promise<void> {
+		const parts = (args || "").trim().split(/\s+/).filter(Boolean);
+		const sub = parts[0]?.toLowerCase() || "list";
+		const targetId = parts[1];
+
+		const manager = new BackgroundSessionManager();
+
+		if (sub === "list" || parts.length === 0) {
+			const sessions = await manager.list({ cwd: this.session.cwd, all: true });
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(new DynamicBorder());
+			this.chatContainer.addChild(new Text(theme.bold(theme.fg("accent", "Background Agents & Tasks")), 1, 0));
+
+			if (sessions.length === 0) {
+				this.chatContainer.addChild(new Text(theme.fg("dim", "No background agents or tasks found."), 1, 0));
+				this.chatContainer.addChild(
+					new Text(theme.fg("dim", 'Start a background task with CLI: nox --bg "your task prompt"'), 1, 0),
+				);
+			} else {
+				for (const s of sessions) {
+					const statusColor = s.status === "running" ? "accent" : s.status === "completed" ? "success" : "error";
+					const age = Math.round((Date.now() - s.createdAt) / 1000);
+					const ageStr = age < 60 ? `${age}s ago` : `${Math.round(age / 60)}m ago`;
+					this.chatContainer.addChild(
+						new Text(`${theme.bold(s.id)} [${theme.fg(statusColor, s.status)}] (${ageStr})`, 1, 0),
+					);
+					this.chatContainer.addChild(new Text(`  Prompt: ${theme.fg("dim", s.prompt.slice(0, 80))}`, 1, 0));
+				}
+			}
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(
+				new Text(
+					theme.fg("dim", "Commands: /agents list | /agents logs <id> | /agents stop <id> | /agents rm <id>"),
+					1,
+					0,
+				),
+			);
+			this.chatContainer.addChild(new DynamicBorder());
+			this.ui.requestRender();
+			return;
+		}
+
+		if (sub === "logs") {
+			if (!targetId) {
+				this.chatContainer.addChild(new Text(theme.fg("error", "Usage: /agents logs <id>"), 1, 0));
+				this.ui.requestRender();
+				return;
+			}
+			const logContent = await manager.logs(targetId, { tail: 30 });
+			this.chatContainer.addChild(new Spacer(1));
+			this.chatContainer.addChild(new DynamicBorder());
+			this.chatContainer.addChild(new Text(theme.bold(theme.fg("accent", `Logs for ${targetId}`)), 1, 0));
+			this.chatContainer.addChild(new Text(logContent || theme.fg("dim", "(No log entries)"), 1, 0));
+			this.chatContainer.addChild(new DynamicBorder());
+			this.ui.requestRender();
+			return;
+		}
+
+		if (sub === "stop") {
+			if (!targetId) {
+				this.chatContainer.addChild(new Text(theme.fg("error", "Usage: /agents stop <id>"), 1, 0));
+				this.ui.requestRender();
+				return;
+			}
+			const stopped = await manager.stop(targetId);
+			this.chatContainer.addChild(
+				new Text(
+					stopped
+						? theme.fg("success", `Stopped task ${targetId}`)
+						: theme.fg("error", `Task not found: ${targetId}`),
+					1,
+					0,
+				),
+			);
+			this.ui.requestRender();
+			return;
+		}
+
+		if (sub === "rm" || sub === "delete") {
+			if (!targetId) {
+				this.chatContainer.addChild(new Text(theme.fg("error", "Usage: /agents rm <id>"), 1, 0));
+				this.ui.requestRender();
+				return;
+			}
+			const removed = await manager.remove(targetId);
+			this.chatContainer.addChild(
+				new Text(
+					removed
+						? theme.fg("success", `Removed task ${targetId}`)
+						: theme.fg("error", `Task not found: ${targetId}`),
+					1,
+					0,
+				),
+			);
+			this.ui.requestRender();
+			return;
+		}
+
+		this.chatContainer.addChild(
+			new Text(theme.fg("error", `Unknown subcommand: ${sub}. Use list, logs, stop, or rm.`), 1, 0),
+		);
+		this.ui.requestRender();
+	}
+
+	private handleSkillsCommand(): void {
+		const skills = this.session.resourceLoader.getSkills().skills;
+		this.chatContainer.addChild(new Spacer(1));
+		this.chatContainer.addChild(new DynamicBorder());
+		this.chatContainer.addChild(new Text(theme.bold(theme.fg("accent", "Loaded Skills")), 1, 0));
+
+		if (skills.length === 0) {
+			this.chatContainer.addChild(new Text(theme.fg("dim", "No skills loaded."), 1, 0));
+			this.chatContainer.addChild(
+				new Text(theme.fg("dim", "Add skills to .nox/skills/ or ~/.nox/agent/skills/"), 1, 0),
+			);
+		} else {
+			for (const skill of skills) {
+				const scope = skill.sourceInfo?.scope || "user";
+				this.chatContainer.addChild(
+					new Text(`• ${theme.bold(skill.name)} (${scope}): ${theme.fg("dim", skill.description || "")}`, 1, 0),
+				);
+			}
+		}
+		this.chatContainer.addChild(new DynamicBorder());
+		this.ui.requestRender();
 	}
 
 	stop(fullscreenExitOutput = this.settingsManager.getFullscreenExitOutput()): void {

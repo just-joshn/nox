@@ -159,6 +159,35 @@ export class FooterComponent implements Component {
 			contextPercentStr = contextPercentDisplay;
 		}
 		statsParts.push(contextPercentStr);
+
+		const mode = this.session.getPermissionMode();
+		if (mode && mode !== "default") {
+			const modeLabel =
+				mode === "plan"
+					? "plan"
+					: mode === "acceptEdits"
+						? "accept-edits"
+						: mode === "bypassPermissions"
+							? "bypass"
+							: mode === "dontAsk"
+								? "dont-ask"
+								: mode;
+			const modeColor =
+				mode === "plan"
+					? "warning"
+					: mode === "acceptEdits"
+						? "success"
+						: mode === "bypassPermissions"
+							? "error"
+							: "accent";
+			statsParts.push(`${theme.fg("dim", "•")} ${theme.bold(theme.fg(modeColor as any, `[${modeLabel}]`))}`);
+		}
+
+		const bgCount = this.session.getActiveBackgroundTaskCount?.() ?? 0;
+		if (bgCount > 0) {
+			statsParts.push(`${theme.fg("dim", "•")} ${theme.fg("accent", `⚡ ${bgCount} bg`)}`);
+		}
+
 		if (areExperimentalFeaturesEnabled()) {
 			statsParts.push(`${theme.fg("dim", "•")} ${theme.bold(theme.fg("warning", "xp"))}`);
 		}

@@ -208,4 +208,15 @@ describe("US2 parity permissions suite (PERM-001–PERM-026)", () => {
 		expect(redacted).toContain("[REDACTED_API_KEY]");
 		expect(redacted).toContain("[REDACTED_TOKEN]");
 	});
+
+	it("SUR-PERM-001: BUILTIN_SLASH_COMMANDS registers parity commands mode, plan, permissions, agents, tasks, skills", async () => {
+		const { BUILTIN_SLASH_COMMANDS } = await import("../../src/core/slash-commands.ts");
+		const names = BUILTIN_SLASH_COMMANDS.map((c) => c.name);
+		expect(names).toContain("mode");
+		expect(names).toContain("plan");
+		expect(names).toContain("permissions");
+		expect(names).toContain("agents");
+		expect(names).toContain("tasks");
+		expect(names).toContain("skills");
+	});
 });
