@@ -1,0 +1,26 @@
+# Pi Functional Baseline
+
+**Captured**: 2026-09-14 on `main` at `8cca2ab25`, before parity application source changes. Node 24.20.0, macOS arm64. These are local Pi behavior fixtures, not reference-product comparisons. The selected tests use temporary files, in-memory sessions, fake responses, or isolated extension directories; they do not require provider credentials or paid model calls.
+
+The first run could not establish a baseline because generated model JSON was absent. `npm run hydrate:model-data` restored ignored local data from public catalogs; rerunning the same five files passed. The hydration is a setup prerequisite for this checkout, not a parity implementation or a test result. No generated model data is committed.
+
+From `packages/coding-agent/`, rerun the following commands after a parity slice affects the listed workflow and at final integration:
+
+```sh
+npm run test -- test/session-file-invalid.test.ts test/tools-manager.test.ts test/prompt-templates.test.ts test/extensions-discovery.test.ts test/rpc-jsonl.test.ts
+npm run test -- test/tools.test.ts test/session-manager/save-entry.test.ts test/session-manager/load-entries.test.ts test/session-manager/file-operations.test.ts
+npm run test -- test/rpc-prompt-response-semantics.test.ts test/suite/agent-session-prompt.test.ts test/session-manager/file-operations.test.ts
+```
+
+| Pi workflow and fixture | Input and initial state | Expected transition, output, and side effect | Failure or recovery guard | Baseline result |
+|-------------------------|-------------------------|---------------------------------------------|---------------------------|-----------------|
+| Session history and files: `session-manager/{save-entry,load-entries,file-operations}.test.ts` | In-memory user/custom/assistant entries or disposable JSONL session files | Entries retain parent links and branch order; valid files load; append continues from the loaded leaf; file-backed sessions preserve their identity | Missing/empty/malformed files return the tested empty or recovery state; non-session content is preserved | Passed in second invocation |
+| Invalid session CLI: `session-file-invalid.test.ts` | Disposable non-session file, `--session <path> -p hi`, offline agent directory | Exit 1 with a friendly invalid-session error; original file bytes unchanged | No internal stack or unrelated file write | Passed in first invocation after hydration |
+| File and command tools: `tools.test.ts` and `tools-manager.test.ts` | Disposable text files, edits, search patterns, `echo`, failing command, and fake tool selection state | Read returns content, write creates content, edit changes the selected span, shell returns output, and tool manager exposes configured tools | Missing reads and edits fail; `exit 1` rejects; timeout, truncation, and invalid search cases retain their tested behavior | Passed in first and second invocations |
+| Prompt handling: `prompt-templates.test.ts` and `suite/agent-session-prompt.test.ts` | Quoted template arguments and fake provider turns, including tool calls and extension commands | Positional/template expansion is stable; idle prompt records one response; tool calls continue to one follow-up response; extension command dispatch does not consume a provider response | Prompting during unsupported streaming/compaction or without model/auth rejects as tested | Passed in first and third invocations |
+| Extension loading: `extensions-discovery.test.ts` | Temporary extension files, subdirectories, package entries, and invalid modules | Discovery loads supported entries and registers commands, tools, renderers, handlers, and shortcuts | Missing entries are skipped; invalid code and initialization errors are reported without loading a valid extension in their place | Passed in first invocation |
+| Non-interactive protocol: `rpc-jsonl.test.ts` and `rpc-prompt-response-semantics.test.ts` | JSONL with Unicode separators, CRLF, final line without LF, and fake prompt preflight/streaming states | Parser emits the expected records; successful prompt emits one success response; queued prompt and steering retain order | Rejected preflight emits one failure response; queued messages are returned and cleared | Passed in first and third invocations |
+
+The three recorded invocations passed 5 files/135 tests, 4 files/124 tests, and 3 files/49 tests respectively; the third invocation repeats `file-operations.test.ts` and must not be counted as distinct coverage. These fixtures characterize selected Pi behaviors only. Add affected workflows to this matrix before changing their source; do not infer that unrelated behavior is preserved from an omitted test.
+
+For each parity source slice, link its inventory leaf and changed paths here, run the affected baseline rows from identical disposable starting state, and compare decisions, outputs, errors, state transitions, and side effects. Record the tested revision and any changed result in `validation.md`. An intentional Pi functional difference needs an observed parity scenario and its owning task; an intentional visual departure additionally needs the constitution amendment required by FR-003. At the final gate, rerun this matrix plus any added rows and reject unexplained regressions.
