@@ -20,6 +20,7 @@ const grepSchema = Type.Object({
 	"-i": Type.Optional(Type.Boolean()),
 	"-n": Type.Optional(Type.Boolean()),
 	"-o": Type.Optional(Type.Boolean()),
+	"-C": Type.Optional(Type.Integer({ minimum: 0 })),
 });
 
 function resultText(result: { content: Array<{ type: string; text?: string }> }): string {
@@ -76,12 +77,19 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-i"?: boolean;
 				"-n"?: boolean;
 				"-o"?: boolean;
+				"-C"?: number;
 			};
 			const outputMode = selected.output_mode;
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && selected["-o"])
 				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);
-			const result = await grep.execute(id, { ...input, ignoreCase: selected["-i"] }, signal, onUpdate, ctx);
+			const result = await grep.execute(
+				id,
+				{ ...input, ignoreCase: selected["-i"], context: selected["-C"] },
+				signal,
+				onUpdate,
+				ctx,
+			);
 			const text = resultText(result);
 			if (text === "No matches found")
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
@@ -94,7 +102,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 							text:
 								selected["-n"] === false
 									? text.replaceAll(/:\d+: /g, ":")
-									: text.replaceAll(/:(\d+): /g, ":$1:"),
+									: text.replaceAll(/(:\d+:|-\d+-) /g, "$1"),
 						},
 					],
 				};

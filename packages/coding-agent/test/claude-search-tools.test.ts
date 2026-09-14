@@ -64,6 +64,19 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha" }]);
 	});
 
+	it("Grep -C includes the observed context line format", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("-C");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", "-C": 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha\nfixture.txt-2-beta" }]);
+	});
+
 	it("Grep count mode reports one occurrence", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(JSON.stringify(tool.parameters.properties.output_mode)).toContain("count");
