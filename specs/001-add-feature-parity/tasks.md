@@ -102,7 +102,7 @@
 - [X] T149 [US1] Compare nox's explicit count mode with the observed 101-line fixture; if it truncates, fix the long-term counting path without changing lower-case Pi grep and verify/commit locally.
 - [X] T150 [US1] Observe reference Grep count mode with two occurrences on one synthetic line under localhost-only isolation, classify only exact fixed result text, compare the nox count helper, and commit the validation.
 - [X] T151 [US1] Observe reference Grep `output_mode: content` with `-n: false` in the localhost-only fixture, retaining only an exact allowlisted output class; compare the nox schema and result.
-- [ ] T152 [US1] Write a failing nox test for the observed `-n` decision, implement only that field in the explicit Grep adapter, verify focused and neighboring tests plus `npm run check`, and commit locally.
+- [X] T152 [US1] Write a failing nox test for the observed `-n` decision, implement only that field in the explicit Grep adapter, verify focused and neighboring tests plus `npm run check`, and commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

@@ -17,6 +17,7 @@ const grepSchema = Type.Object({
 		Type.Union([Type.Literal("files_with_matches"), Type.Literal("content"), Type.Literal("count")]),
 	),
 	"-i": Type.Optional(Type.Boolean()),
+	"-n": Type.Optional(Type.Boolean()),
 });
 
 function resultText(result: { content: Array<{ type: string; text?: string }> }): string {
@@ -71,6 +72,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const selected = input as typeof input & {
 				output_mode?: "files_with_matches" | "content" | "count";
 				"-i"?: boolean;
+				"-n"?: boolean;
 			};
 			const outputMode = selected.output_mode;
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
@@ -79,7 +81,18 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			if (text === "No matches found")
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
 			if (outputMode === "content") {
-				return { ...result, content: [{ type: "text" as const, text: text.replaceAll(/:(\d+): /g, ":$1:") }] };
+				return {
+					...result,
+					content: [
+						{
+							type: "text" as const,
+							text:
+								selected["-n"] === false
+									? text.replaceAll(/:\d+: /g, ":")
+									: text.replaceAll(/:(\d+): /g, ":$1:"),
+						},
+					],
+				};
 			}
 			const files = [
 				...new Set(

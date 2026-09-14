@@ -37,6 +37,19 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep content mode omits line numbers when -n is false", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("-n");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", "-n": false },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:alpha" }]);
+	});
+
 	it("Grep count mode reports one occurrence", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(JSON.stringify(tool.parameters.properties.output_mode)).toContain("count");
