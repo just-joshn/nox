@@ -142,15 +142,28 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				: "";
 			const prefixFile = (file: string) => (searchPrefix ? path.posix.join(searchPrefix, file) : file);
 			if (outputMode === "content" || (outputMode === undefined && selected.path)) {
-				const prefixed = text
-					.split("\n")
-					.map((line) =>
-						line.replace(
-							/^(.*?)(:\d+: |-\d+- )/,
-							(_match, file: string, separator: string) => `${prefixFile(file)}${separator}`,
-						),
-					)
-					.join("\n");
+				const entries = await Promise.all(
+					matchText.split("\n").map(async (line, index) => {
+						const match = /^(.*?)(:\d+: |-\d+- )/.exec(line);
+						if (!match) return { line, file: "", mtime: -Infinity, index };
+						const file = prefixFile(match[1]);
+						return {
+							line: `${file}${match[2]}${line.slice(match[0].length)}`,
+							file,
+							mtime: (await stat(path.join(ctx?.cwd || cwd, file))).mtimeMs,
+							index,
+						};
+					}),
+				);
+				const prefixed =
+					[...entries]
+						.sort(
+							(left, right) =>
+								right.mtime - left.mtime ||
+								(left.file < right.file ? -1 : left.file > right.file ? 1 : left.index - right.index),
+						)
+						.map(({ line }) => line)
+						.join("\n") + notice;
 				const formatted =
 					selected["-n"] === false
 						? prefixed.replaceAll(/:\d+: /g, ":")

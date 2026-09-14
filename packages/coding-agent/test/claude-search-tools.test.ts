@@ -289,6 +289,27 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:alpha" }]);
 	});
 
+	it.each([
+		["second file is newer", 1_600_000_000, 1_700_000_000, "second.txt:1:alpha\nfixture.txt:1:alpha"],
+		["fixture file is newer", 1_700_000_000, 1_600_000_000, "fixture.txt:1:alpha\nsecond.txt:1:alpha"],
+	])(
+		"Grep content mode orders files by descending mtime when %s",
+		async (_case, fixtureTime, secondTime, expected) => {
+			writeFileSync(join(cwd, "second.txt"), "alpha\nbeta\n");
+			utimesSync(join(cwd, "fixture.txt"), fixtureTime, fixtureTime);
+			utimesSync(join(cwd, "second.txt"), secondTime, secondTime);
+			const tool = createAllToolDefinitions(cwd).Grep;
+			const result = await tool.execute(
+				"call-1",
+				{ pattern: "alpha", output_mode: "content" },
+				undefined,
+				undefined,
+				{} as never,
+			);
+			expect(result.content).toEqual([{ type: "text", text: expected }]);
+		},
+	);
+
 	it("Grep -o returns only the matching text", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha beta\n");
 		const tool = createAllToolDefinitions(cwd).Grep;
