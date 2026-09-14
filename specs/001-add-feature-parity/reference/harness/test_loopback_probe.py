@@ -163,6 +163,9 @@ class LoopbackProbeTests(unittest.TestCase):
         before = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", context_side="-B")
         self.assertIn('\\"-A\\": 1', after.decode())
         self.assertIn('\\"-B\\": 1', before.decode())
+        filtered = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", file_glob="*.txt")
+        self.assertIn('\\"glob\\": \\"*.txt\\"', filtered.decode())
+        self.assertNotIn('\\"fixture.md\\"', filtered.decode())
 
     def test_search_result_summary_retains_fixture_match_without_raw_text(self):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})

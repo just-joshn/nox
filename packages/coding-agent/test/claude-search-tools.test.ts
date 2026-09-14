@@ -37,6 +37,19 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep glob filters matching files by extension", async () => {
+		writeFileSync(join(cwd, "fixture.md"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", glob: "*.txt" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
 	it.each([
 		[undefined, "nested/fixture.txt:1:alpha"],
 		["files_with_matches", "Found 1 file\nnested/fixture.txt"],
