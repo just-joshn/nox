@@ -19,4 +19,4 @@
 4. No remote, browser, IDE, desktop, mobile, enterprise, or hosted flow was exercised. Product availability cannot be inferred from documentation alone.
 5. No nox implementation has been compared against these surfaces. Every discovered capability remains unverified.
 
-T002–T006 remain open. T013 cannot yet replace broad story tasks with a complete leaf-specific set. An unqualified 100% parity claim is blocked.
+T002–T006 remain open. T013 cannot yet add leaf-specific tasks for the first US1 read/search/edit/command/denial/failure/recovery slice because its stable leaf IDs, reference observations, and normal/failure scenarios have not been recorded. This blocks source work on that slice. An unqualified 100% parity claim is also blocked until every discovered leaf has passing verification.
