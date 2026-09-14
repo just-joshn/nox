@@ -253,6 +253,7 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-548 | `plugin help [command]` | [local help](observations/help-plugin-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `list` and unknown-target paths observed |
 | CLI-549 | `plugin marketplace help [command]` | [local help](observations/help-plugin-marketplace-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `list` and unknown-target paths observed |
 | CLI-550 | `project help [command]` | [local help](observations/help-project-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `purge` and unknown-target paths observed |
+| CLI-551 | `respawn --all` | [local help](observations/help-respawn-2026-09-14.txt) | Restart every background session to use the current binary; lifecycle and no-session failure unobserved |
 
 ## Documented interactive command invocations
 
