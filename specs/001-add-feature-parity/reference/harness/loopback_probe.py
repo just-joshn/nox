@@ -51,12 +51,13 @@ SEARCH_MODES = frozenset({
     "grep-context-alias-negative",
     "grep-after-negative",
     "grep-before-negative",
+    "grep-pattern-empty",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
 UNRESTRICTED_TOOLS_MODES = SEARCH_MODES | {"outside", "glob-tools", "grep-tools"}
 NO_MATCH_MODES = {"glob-no-match", "grep-no-match", "grep-count-no-match", "grep-offset-end", "grep-multiline-no-match", "grep-files-offset-end", "grep-files-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-no-match-offset", "grep-count-no-match-page"}
-NON_TXT_MATCH_MODES = {"grep-type-filter", "grep-content-page", "grep-files-page", "grep-count-page", "grep-count-offset-end", "grep-count-mtime", "grep-count-recreate"}
+NON_TXT_MATCH_MODES = {"grep-type-filter", "grep-content-page", "grep-files-page", "grep-count-page", "grep-count-offset-end", "grep-count-mtime", "grep-count-recreate", "grep-pattern-empty"}
 INVALID_MODES = {"glob-invalid", "grep-invalid", "grep-type-invalid", "grep-output-invalid", "grep-head-negative", "grep-offset-negative", "grep-head-fraction", "grep-offset-fraction", "grep-context-negative", "grep-context-alias-negative", "grep-after-negative", "grep-before-negative"}
 FIXTURE_MATCH_MODES = SEARCH_MODES - NO_MATCH_MODES - INVALID_MODES - NON_TXT_MATCH_MODES
 VALID_MODES = CATALOG_MODES | {"missing", "outside"}
@@ -108,8 +109,8 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
     events = [sse("message_start", {"type": "message_start", "message": message})]
     if kind == "tool":
         block = {"type": "tool_use", "id": "toolu_synthetic", "name": tool_name, "input": {}}
-        tool_input = ({"pattern": tool_pattern or "*.txt"} if tool_name == "Glob" else
-                      {"pattern": tool_pattern or "alpha"} if tool_name == "Grep" else {"file_path": read_path})
+        tool_input = ({"pattern": tool_pattern if tool_pattern is not None else "*.txt"} if tool_name == "Glob" else
+                      {"pattern": tool_pattern if tool_pattern is not None else "alpha"} if tool_name == "Grep" else {"file_path": read_path})
         if tool_path: tool_input = {**tool_input, "path": tool_path}
         if output_mode: tool_input = {**tool_input, "output_mode": output_mode}
         if ignore_case: tool_input = {**tool_input, "-i": True}
@@ -213,6 +214,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
             "result_format": "fixture_match" if text == expected.get(tool_name) else
                              "nested_match" if text == "nested/fixture.txt" and tool_name == "Glob" else
                              "content_match" if text == "fixture.txt:1:alpha" and tool_name == "Grep" else
+                             "empty_pattern_file_content" if text == "1:alpha\n2:beta" and tool_name == "Grep" else
                              "content_no_line" if text == "fixture.txt:alpha" and tool_name == "Grep" else
                              "content_context" if text == "fixture.txt:1:alpha\nfixture.txt-2-beta" and tool_name == "Grep" else
                              "content_after" if text == "fixture.txt:2:alpha\nfixture.txt-3-after" and tool_name == "Grep" else
@@ -400,9 +402,9 @@ def main(executable: str, mode: str = "normal") -> int:
         state = ProbeState(read_path=read_path,
                            catalog=mode in CATALOG_MODES,
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
-                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match", "grep-files-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-no-match-offset", "grep-count-no-match-page"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode in {"glob-recursive", "glob-git-metadata"} else None,
-                           tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-files-no-match", "grep-files-no-match-offset"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-head-negative", "grep-offset-negative", "grep-head-zero", "grep-head-fraction", "grep-offset-fraction", "grep-context-negative", "grep-context-alias-negative", "grep-after-negative", "grep-before-negative"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero", "grep-count-mtime", "grep-count-recreate"} else "bogus" if mode == "grep-output-invalid" else None,
+                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match", "grep-files-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-no-match-offset", "grep-count-no-match-page"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "" if mode == "grep-pattern-empty" else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode in {"glob-recursive", "glob-git-metadata"} else None,
+                           tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else "fixture.txt" if mode == "grep-pattern-empty" else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-files-no-match", "grep-files-no-match-offset"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-head-negative", "grep-offset-negative", "grep-head-zero", "grep-head-fraction", "grep-offset-fraction", "grep-context-negative", "grep-context-alias-negative", "grep-after-negative", "grep-before-negative", "grep-pattern-empty"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero", "grep-count-mtime", "grep-count-recreate"} else "bogus" if mode == "grep-output-invalid" else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
