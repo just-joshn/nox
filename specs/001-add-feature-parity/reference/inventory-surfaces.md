@@ -104,7 +104,7 @@ Source: [current CLI reference](https://code.claude.com/docs/en/cli-usage) and [
 | Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
 | --- | --- | --- | --- | --- |
 | SUR-LIMIT-001 | `-p --json-schema` with valid schema | Final JSON includes schema-matched structured output and metadata | Model cannot satisfy schema or run fails | Usage-gated; nox structured result |
-| SUR-LIMIT-002 | `-p --json-schema` with invalid schema | Reject before model run with validator diagnostic and nonzero exit | Empty schema, unsupported keyword, format annotation | Local parser probe pending; nox schema validation |
+| SUR-LIMIT-002 | `-p --json-schema` with invalid schema | Reject before model run with validator diagnostic and nonzero exit | Empty schema, unsupported keyword, format annotation | [Malformed JSON observed locally](observations/schema-invalid-2026-09-14.txt); other variants pending; nox schema validation |
 | SUR-LIMIT-003 | Inspect `total_cost_usd` and per-model usage in JSON result | Client estimates reflect run and child activity | Missing/partial usage after failure; billing mismatch is documented | Usage-gated; nox usage result |
 | SUR-LIMIT-004 | `-p --max-budget-usd` with bounded main run | Stop further API work when estimated spend reaches cap | Zero/invalid value, threshold crossing, error and exit shape | Usage-gated; nox budget flag |
 | SUR-LIMIT-005 | Spawn child work under print-mode budget | Child spend counts; further child spawn fails at cap and running background children stop | Multiple children crossing cap concurrently | Version 2.1.217+ documented; nox shared budget |

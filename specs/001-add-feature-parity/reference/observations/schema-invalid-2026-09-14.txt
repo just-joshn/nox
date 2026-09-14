@@ -1,0 +1,7 @@
+Working directory: /private/tmp
+Command: claude --bare -p --json-schema '{' 'noop'
+Exit code: 1
+Stderr: Error: --json-schema is not valid JSON: JSON Parse error: Expected '}'
+Stdout: empty
+
+The malformed argument is rejected during local parsing. No provider output was observed. This does not establish validation behavior for syntactically valid but invalid schemas or for format annotations.
