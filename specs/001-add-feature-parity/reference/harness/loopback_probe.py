@@ -154,6 +154,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "content_context" if text == "fixture.txt:1:alpha\nfixture.txt-2-beta" and tool_name == "Grep" else
                              "content_after" if text == "fixture.txt:2:alpha\nfixture.txt-3-after" and tool_name == "Grep" else
                              "content_before" if text == "fixture.txt-1-before\nfixture.txt:2:alpha" and tool_name == "Grep" else
+                             "nested_content" if text == "nested/fixture.txt:1:alpha" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
                              "count_no_match" if text == "No matches found\n\nFound 0 total occurrences across 0 files." and tool_name == "Grep" else
@@ -245,10 +246,10 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     workspace.mkdir(exist_ok=True)
     subprocess.run(["git", "init", "-q"], cwd=workspace, check=True, capture_output=True)
     fixture = workspace / "fixture.txt"
-    fixture.write_text("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT)
+    fixture.write_text("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context", "grep-path"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT)
     if mode == "grep-count-multiple":
         (workspace / "second.txt").write_text("alpha\n")
-    if mode == "glob-path":
+    if mode in {"glob-path", "grep-path"}:
         (workspace / "nested").mkdir()
         (workspace / "nested" / "fixture.txt").write_text(FIXTURE_CONTENT)
     outside = Path(root, "outside.txt") if mode == "outside" else None
@@ -268,13 +269,14 @@ def main(executable: str, mode: str = "normal") -> int:
                          "grep-count-no-match": "Grep", "grep-count-limit": "Grep",
                          "grep-count-same-line": "Grep", "grep-no-line-number": "Grep",
                          "grep-only-matching": "Grep", "grep-context": "Grep",
-                         "grep-after-context": "Grep", "grep-before-context": "Grep"}.get(mode)
+                         "grep-after-context": "Grep", "grep-before-context": "Grep",
+                         "grep-path": "Grep"}.get(mode)
         state = ProbeState(read_path=read_path,
-                           catalog=mode in {"bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"},
-                           tool_name=selected_tool if mode in {"glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"} else "Read",
+                           catalog=mode in {"bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"},
+                           tool_name=selected_tool if mode in {"glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"} else "Read",
                            tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else None,
-                           tool_path="nested" if mode == "glob-path" else None,
-                           output_mode="files_with_matches" if mode == "grep-files-mode" else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
+                           tool_path="nested" if mode in {"glob-path", "grep-path"} else None,
+                           output_mode="files_with_matches" if mode == "grep-files-mode" else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
@@ -290,16 +292,16 @@ def main(executable: str, mode: str = "normal") -> int:
             "ANTHROPIC_API_KEY": "sk-ant-api03-synthetic",
             "ANTHROPIC_BASE_URL": f"http://127.0.0.1:{server.server_port}",
         }
-        command = [executable, *([] if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"} else ["--bare"]),
+        command = [executable, *([] if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"} else ["--bare"]),
                    "-p", f"Read {read_path}", "--model", "sonnet", "--output-format", "json"]
         if selected_tool:
             command.extend(["--tools", selected_tool])
-        if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"}:
+        if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"}:
             if sys.platform != "darwin":
                 raise SystemExit("default-tools requires the verified macOS sandbox")
             profile = '(version 1)(allow default)(deny network*)(allow network-outbound (remote ip "localhost:*"))'
             command = ["sandbox-exec", "-p", profile, *command]
-        if mode not in {"outside", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"}: command.extend(["--allowedTools", "Read"])
+        if mode not in {"outside", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"}: command.extend(["--allowedTools", "Read"])
         try:
             process = subprocess.run(command, cwd=workspace, env=env, capture_output=True, text=True, timeout=30)
             output = json.loads(process.stdout)
@@ -311,8 +313,10 @@ def main(executable: str, mode: str = "normal") -> int:
                 "is_error": output.get("is_error") if isinstance(output.get("is_error"), bool) else None,
                 "stderr_empty": not process.stderr,
                 "requests": state.requests,
-                "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT),
+                "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context", "grep-path"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT),
                 "second_unchanged": (workspace / "second.txt").read_text() == "alpha\n" if mode == "grep-count-multiple" else None,
+                "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
+                                    if mode in {"glob-path", "grep-path"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
             }
         except (json.JSONDecodeError, ValueError):
@@ -327,14 +331,15 @@ def main(executable: str, mode: str = "normal") -> int:
             server.shutdown()
             server.server_close()
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
-    if mode in {"glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"}:
+    if mode in {"glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"}:
         requests = summary.get("requests", [])
         matched = ((mode != "grep-count-multiple" or summary.get("second_unchanged") is True)
+                   and (mode not in {"glob-path", "grep-path"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
                    and len(requests) == 3 and requests[1]["response"] == "tool"
                    and len(requests[2]["tool_results"]) == 1
-                   and requests[2]["tool_results"][0].get("fixture_name_present") is (mode in {"glob-call", "grep-call", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"})
+                   and requests[2]["tool_results"][0].get("fixture_name_present") is (mode in {"glob-call", "grep-call", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"})
                    and isinstance(requests[2]["tool_results"][0].get("is_error"), bool)
                    and (mode in {"glob-invalid", "grep-invalid"} or requests[2]["tool_results"][0]["is_error"] is False))
     elif selected_tool:
@@ -360,6 +365,6 @@ def main(executable: str, mode: str = "normal") -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"}):
-        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools|default-tools|glob-tools|grep-tools|glob-call|grep-call|glob-no-match|grep-no-match|glob-invalid|grep-invalid|glob-path|grep-files-mode|grep-content-mode|grep-ignore-case|grep-count-mode|grep-count-multiple|grep-count-no-match|grep-count-limit|grep-count-same-line|grep-no-line-number|grep-only-matching|grep-context|grep-after-context|grep-before-context]")
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match", "grep-no-match", "glob-invalid", "grep-invalid", "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-path"}):
+        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools|default-tools|glob-tools|grep-tools|glob-call|grep-call|glob-no-match|grep-no-match|glob-invalid|grep-invalid|glob-path|grep-files-mode|grep-content-mode|grep-ignore-case|grep-count-mode|grep-count-multiple|grep-count-no-match|grep-count-limit|grep-count-same-line|grep-no-line-number|grep-only-matching|grep-context|grep-after-context|grep-before-context|grep-path]")
     raise SystemExit(main(sys.argv[1], mode=sys.argv[2] if len(sys.argv) == 3 else "normal"))
