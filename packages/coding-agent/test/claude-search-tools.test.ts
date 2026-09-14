@@ -841,6 +841,18 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep defaults to a file list for a direct file", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", path: "fixture.txt" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
 	it("Grep count mode names a direct file once", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute(

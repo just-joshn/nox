@@ -159,7 +159,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const searchPrefix =
 				targetPath && !directFile ? path.relative(ctx?.cwd || cwd, targetPath).replaceAll("\\", "/") : "";
 			const prefixFile = (file: string) => (searchPrefix ? path.posix.join(searchPrefix, file) : file);
-			if (outputMode === "content" || (outputMode === undefined && selected.path)) {
+			if (outputMode === "content" || (outputMode === undefined && selected.path && !directFile)) {
 				const entries = await Promise.all(
 					matchText.split("\n").map(async (line, index) => {
 						const match = /^(.*?)(:\d+: |-\d+- )/.exec(line);
