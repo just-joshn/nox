@@ -236,6 +236,7 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-138 | `daemon logs` | observed-help | Pending |
 | CLI-139 | `daemon uninstall` | observed-help | Pending |
 | CLI-140 | `daemon stop` | observed-help | Pending |
+| CLI-534 | `mcp add-from-claude-desktop` | observed-help; macOS and WSL only | Import behavior, scope, conflict handling, and failure path unobserved |
 
 ## Documented interactive command invocations
 
