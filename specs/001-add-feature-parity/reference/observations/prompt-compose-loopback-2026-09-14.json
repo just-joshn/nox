@@ -1,0 +1,12 @@
+{
+  "exit_code": 0,
+  "result_matches_fixture": true,
+  "stderr_empty": true,
+  "requests": [
+    {
+      "replace_present": true,
+      "append_present": true,
+      "replace_before_append": true
+    }
+  ]
+}

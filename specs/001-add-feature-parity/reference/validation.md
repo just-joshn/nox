@@ -54,3 +54,7 @@ In three isolated temporary homes, installed CLI 2.1.270 routed `--dangerously-s
 ## Self-hosted environment parser matrix (2026-09-14)
 
 Nine documented `--environment` combinations were probed in separate logged-out temporary homes with a synthetic environment ID. The [redacted matrix](observations/cli-environment-preflight-2026-09-14.json) records exit 1 and empty stdout for each. CLI-525–532 reject their conflicting input before login with distinct stderr diagnostics. CLI-533, bare `--cloud`, reaches the login gate, consistent with treating the bare flag as absent for conflict checks. No provider credentials were available or model request made. This does not verify authenticated dispatch, environment eligibility, or the resulting session.
+
+## Synthetic loopback prompt composition (2026-09-14)
+
+The `prompt_probe.py` harness used a disposable home, a synthetic key, and a localhost-only Messages endpoint. Its two sentinel-summary tests and the nine existing Read harness tests passed. The [redacted trace](observations/prompt-compose-loopback-2026-09-14.json) records one request whose system field contains the replacement marker before the append marker, then synthetic completion with exit 0 and empty stderr. No raw system prompt or request body was retained. This observes CLI-557 ordering under a mock provider; no nox request comparison or real-service claim has been made.
