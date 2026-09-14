@@ -24,6 +24,7 @@ SEARCH_MODES = frozenset({
     "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
     "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files", "glob-recursive",
     "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored", "glob-fd-ignore",
+    "glob-git-metadata",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -200,6 +201,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "glob_hidden" if text == "fixture.txt\n.hidden.txt" and tool_name == "Glob" else
                              "glob_mtime" if text == ".hidden.txt\nfixture.txt" and tool_name == "Glob" else
                              "glob_ignored" if text == "fixture.txt\nignored.txt" and tool_name == "Glob" else
+                             "glob_git_metadata" if text == "fixture.txt\n.git/inner.txt" and tool_name == "Glob" else
                              "no_matches_found" if text == "No matches found" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
@@ -313,6 +315,8 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     if mode == "glob-fd-ignore":
         (workspace / ".ignore").write_text("ignored.txt\n")
         (workspace / "ignored.txt").write_text(FIXTURE_CONTENT)
+    if mode == "glob-git-metadata":
+        (workspace / ".git" / "inner.txt").write_text(FIXTURE_CONTENT)
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
     if mode == "grep-type-filter":
@@ -336,7 +340,7 @@ def main(executable: str, mode: str = "normal") -> int:
         state = ProbeState(read_path=read_path,
                            catalog=mode in CATALOG_MODES,
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
-                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode == "glob-recursive" else None,
+                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode in {"glob-recursive", "glob-git-metadata"} else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
                            output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count"} else None,
                            ignore_case=mode == "grep-ignore-case",
@@ -401,6 +405,8 @@ def main(executable: str, mode: str = "normal") -> int:
                 "fd_ignore_unchanged": ((workspace / ".ignore").read_text() == "ignored.txt\n" and
                                          (workspace / "ignored.txt").read_text() == FIXTURE_CONTENT)
                                         if mode == "glob-fd-ignore" else None,
+                "metadata_unchanged": (workspace / ".git" / "inner.txt").read_text() == FIXTURE_CONTENT
+                                      if mode == "glob-git-metadata" else None,
                 "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
                                     if mode in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
@@ -427,6 +433,7 @@ def main(executable: str, mode: str = "normal") -> int:
                    and (mode != "glob-mtime-tie" or summary.get("mtime_tie_unchanged") is True)
                    and (mode != "glob-ignored" or summary.get("ignored_unchanged") is True)
                    and (mode != "glob-fd-ignore" or summary.get("fd_ignore_unchanged") is True)
+                   and (mode != "glob-git-metadata" or summary.get("metadata_unchanged") is True)
                    and (mode not in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
