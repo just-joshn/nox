@@ -39,6 +39,8 @@ export function createAllToolRenderers(): Record<ToolName, ToolRenderers> {
 		grep: grepRenderers,
 		find: findRenderers,
 		ls: lsRenderers,
+		Glob: findRenderers,
+		Grep: grepRenderers,
 	};
 }
 

@@ -2,6 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import type { ToolName } from "../src/core/tools/index.ts";
 import { createAllToolDefinitions, createCodingToolDefinitions } from "../src/core/tools/index.ts";
 
 describe("explicit Claude search tools", () => {
@@ -23,14 +24,14 @@ describe("explicit Claude search tools", () => {
 		["Glob", "absent-*.zzz", "No files found"],
 		["Grep", "absent-sentinel", "No files found"],
 	])("%s returns the observed result for %s", async (name, pattern, expected) => {
-		const tool = createAllToolDefinitions(cwd)[name];
+		const tool = createAllToolDefinitions(cwd)[name as ToolName];
 		expect(tool?.name).toBe(name);
-		const result = await tool.execute("call-1", { pattern });
+		const result = await tool.execute("call-1", { pattern }, undefined, undefined, {} as never);
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
 	it.each(["Glob", "Grep"])("%s rejects an invalid bracket pattern", async (name) => {
-		const tool = createAllToolDefinitions(cwd)[name];
-		await expect(tool.execute("call-1", { pattern: "[" })).rejects.toThrow();
+		const tool = createAllToolDefinitions(cwd)[name as ToolName];
+		await expect(tool.execute("call-1", { pattern: "[" }, undefined, undefined, {} as never)).rejects.toThrow();
 	});
 });
