@@ -42,12 +42,14 @@ SEARCH_MODES = frozenset({
     "grep-output-invalid",
     "grep-head-negative",
     "grep-offset-negative",
+    "grep-count-mtime",
+    "grep-count-recreate",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
 UNRESTRICTED_TOOLS_MODES = SEARCH_MODES | {"outside", "glob-tools", "grep-tools"}
 NO_MATCH_MODES = {"glob-no-match", "grep-no-match", "grep-count-no-match", "grep-offset-end", "grep-multiline-no-match", "grep-files-offset-end", "grep-files-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-no-match-offset", "grep-count-no-match-page"}
-NON_TXT_MATCH_MODES = {"grep-type-filter", "grep-content-page", "grep-files-page", "grep-count-page", "grep-count-offset-end"}
+NON_TXT_MATCH_MODES = {"grep-type-filter", "grep-content-page", "grep-files-page", "grep-count-page", "grep-count-offset-end", "grep-count-mtime", "grep-count-recreate"}
 INVALID_MODES = {"glob-invalid", "grep-invalid", "grep-type-invalid", "grep-output-invalid", "grep-head-negative", "grep-offset-negative"}
 FIXTURE_MATCH_MODES = SEARCH_MODES - NO_MATCH_MODES - INVALID_MODES - NON_TXT_MATCH_MODES
 VALID_MODES = CATALOG_MODES | {"missing", "outside"}
@@ -326,8 +328,14 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     subprocess.run(["git", "init", "-q"], cwd=workspace, check=True, capture_output=True)
     fixture = workspace / "fixture.txt"
     fixture.write_text("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT)
-    if mode in {"grep-count-multiple", "grep-count-offset", "grep-count-page"}:
+    if mode in {"grep-count-multiple", "grep-count-offset", "grep-count-page", "grep-count-mtime", "grep-count-recreate"}:
         (workspace / "second.txt").write_text("alpha\n")
+    if mode == "grep-count-recreate":
+        fixture.unlink()
+        fixture.write_text(FIXTURE_CONTENT)
+    if mode == "grep-count-mtime":
+        os.utime(fixture, (1_700_000_000, 1_700_000_000))
+        os.utime(workspace / "second.txt", (1_600_000_000, 1_600_000_000))
     if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"}:
         (workspace / "second.txt").write_text(FIXTURE_CONTENT)
     if mode in {"grep-content-multiple", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"}:
@@ -385,14 +393,14 @@ def main(executable: str, mode: str = "normal") -> int:
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
                            tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match", "grep-files-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-no-match-offset", "grep-count-no-match-page"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode in {"glob-recursive", "glob-git-metadata"} else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-files-no-match", "grep-files-no-match-offset"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-head-negative", "grep-offset-negative"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero"} else "bogus" if mode == "grep-output-invalid" else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-files-no-match", "grep-files-no-match-offset"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match", "grep-content-no-match", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-head-negative", "grep-offset-negative"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero", "grep-count-mtime", "grep-count-recreate"} else "bogus" if mode == "grep-output-invalid" else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
                            context_lines=1 if mode == "grep-context" else None,
                            context_side="-A" if mode == "grep-after-context" else "-B" if mode == "grep-before-context" else None,
                            file_glob="*.txt" if mode == "grep-glob-filter" else None,
-                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-content-page", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero"} else -1 if mode == "grep-head-negative" else None,
+                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-content-page", "grep-files-page", "grep-files-exact", "grep-files-offset", "grep-files-offset-end", "grep-content-no-match-page", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-offset", "grep-count-page", "grep-count-exact", "grep-count-offset-end", "grep-count-no-match-offset", "grep-count-no-match-page", "grep-count-offset-zero", "grep-count-mtime", "grep-count-recreate"} else -1 if mode == "grep-head-negative" else None,
                            offset=1 if mode in {"grep-offset", "grep-files-offset", "grep-content-no-match-offset", "grep-files-no-match-offset", "grep-count-offset", "grep-count-offset-end", "grep-count-no-match-offset"} else 2 if mode in {"grep-offset-end", "grep-files-offset-end"} else 0 if mode in {"grep-offset-zero", "grep-count-offset-zero"} else -1 if mode == "grep-offset-negative" else None,
                            file_type="py" if mode == "grep-type-filter" else "notatype" if mode == "grep-type-invalid" else None,
                            context_alias=1 if mode == "grep-context-alias" else None,
@@ -429,7 +437,10 @@ def main(executable: str, mode: str = "normal") -> int:
                 "stderr_empty": not process.stderr,
                 "requests": state.requests,
                 "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode in {"grep-count-multiple", "grep-head-limit", "grep-offset", "grep-offset-end", "grep-offset-zero"} else FIXTURE_CONTENT),
-                "second_unchanged": (workspace / "second.txt").read_text() == (FIXTURE_CONTENT if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} else "alpha\n") if mode in {"grep-count-multiple", "grep-count-offset", "grep-count-page", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} else None,
+                "second_unchanged": (workspace / "second.txt").read_text() == (FIXTURE_CONTENT if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} else "alpha\n") if mode in {"grep-count-multiple", "grep-count-offset", "grep-count-page", "grep-count-mtime", "grep-count-recreate", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} else None,
+                "count_mtime_unchanged": (fixture.stat().st_mtime == 1_700_000_000 and
+                                           (workspace / "second.txt").stat().st_mtime == 1_600_000_000)
+                                          if mode == "grep-count-mtime" else None,
                 "content_mtime_unchanged": (fixture.stat().st_mtime == 1_600_000_000 and
                                             (workspace / "second.txt").stat().st_mtime == 1_700_000_000)
                                            if mode in {"grep-content-multiple", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} else None,
@@ -474,7 +485,8 @@ def main(executable: str, mode: str = "normal") -> int:
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
     if mode in SEARCH_MODES:
         requests = summary.get("requests", [])
-        matched = ((mode not in {"grep-count-multiple", "grep-count-offset", "grep-count-page", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} or summary.get("second_unchanged") is True)
+        matched = ((mode not in {"grep-count-multiple", "grep-count-offset", "grep-count-page", "grep-count-mtime", "grep-count-recreate", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} or summary.get("second_unchanged") is True)
+                   and (mode != "grep-count-mtime" or summary.get("count_mtime_unchanged") is True)
                    and (mode not in {"grep-content-multiple", "grep-content-page", "grep-files-page", "grep-files-offset", "grep-files-offset-end"} or summary.get("content_mtime_unchanged") is True)
                    and (mode not in {"grep-content-tie", "grep-content-tie-reversed"} or summary.get("content_tie_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
