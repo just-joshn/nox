@@ -35,10 +35,12 @@
             "text"
           ],
           "text": "<redacted>",
-          "text_matches_fixture": false
+          "text_matches_fixture": false,
+          "error_kind": "not_found"
         }
       ]
     }
   ],
-  "fixture_unchanged": true
+  "fixture_unchanged": true,
+  "outside_unchanged": null
 }

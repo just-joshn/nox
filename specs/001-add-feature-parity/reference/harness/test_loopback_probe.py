@@ -5,7 +5,7 @@ from http.server import ThreadingHTTPServer
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from loopback_probe import ProbeState, is_expected_trace, is_missing_trace, make_handler
+from loopback_probe import ProbeState, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, summarize_result
 
 
 class LoopbackProbeTests(unittest.TestCase):
@@ -114,6 +114,28 @@ class LoopbackProbeTests(unittest.TestCase):
                 {"is_error": False, "text": "<redacted>", "text_matches_fixture": False}
             ]},
         ]}))
+
+    def test_denied_read_requires_unchanged_outside_file(self):
+        trace = {
+            "exit_code": 0, "result": "synthetic completion", "is_error": False,
+            "stderr_empty": True, "fixture_unchanged": True, "outside_unchanged": True,
+            "requests": [
+                {"response": "text", "tool_results": [], "tool_names": []},
+                {"response": "tool", "tool_results": [], "tool_names": ["Read"]},
+                {"response": "text", "tool_results": [
+                    {"is_error": True, "text": "<redacted>", "text_matches_fixture": False,
+                     "error_kind": "access_denied"}
+                ], "tool_names": ["Read"]},
+            ],
+        }
+        self.assertTrue(is_denied_trace(trace))
+        self.assertFalse(is_denied_trace({**trace, "outside_unchanged": False}))
+
+    def test_error_summary_classifies_without_retaining_diagnostic(self):
+        result = summarize_result({"is_error": True, "content": "Access denied: synthetic-private-marker"})
+        self.assertEqual(result["error_kind"], "access_denied")
+        self.assertEqual(result["text"], "<redacted>")
+        self.assertNotIn("synthetic-private-marker", json.dumps(result))
 
 
 if __name__ == "__main__":

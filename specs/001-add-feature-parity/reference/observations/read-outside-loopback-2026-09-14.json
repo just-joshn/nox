@@ -30,17 +30,17 @@
       "response": "text",
       "tool_results": [
         {
-          "is_error": false,
+          "is_error": true,
           "content_types": [
             "text"
           ],
-          "text": "1\talpha\n2\tbeta\n3\t",
-          "text_matches_fixture": true,
-          "error_kind": null
+          "text": "<redacted>",
+          "text_matches_fixture": false,
+          "error_kind": "access_denied"
         }
       ]
     }
   ],
   "fixture_unchanged": true,
-  "outside_unchanged": null
+  "outside_unchanged": true
 }

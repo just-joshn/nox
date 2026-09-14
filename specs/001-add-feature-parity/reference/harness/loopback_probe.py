@@ -76,18 +76,29 @@ def tool_results(request: dict) -> list[dict]:
     return results
 
 
+def error_kind(text: str) -> str:
+    lower = text.lower()
+    if any(term in lower for term in ("permission", "access denied", "not allowed", "outside")):
+        return "access_denied"
+    if any(term in lower for term in ("not found", "no such file", "does not exist")):
+        return "not_found"
+    return "other"
+
+
 def summarize_result(result: dict) -> dict:
     content = result.get("content", [])
     if isinstance(content, str):
         return {"is_error": bool(result.get("is_error")), "content_types": ["text"],
                 "text": content if content == EXPECTED_READ_RESULT else "<redacted>",
-                "text_matches_fixture": content == EXPECTED_READ_RESULT}
+                "text_matches_fixture": content == EXPECTED_READ_RESULT,
+                "error_kind": error_kind(content) if result.get("is_error") else None}
     blocks = content if isinstance(content, list) else []
     texts = [block.get("text", "") for block in blocks if isinstance(block, dict) and block.get("type") == "text"]
     value = "\n".join(texts)
     return {"is_error": bool(result.get("is_error")), "content_types": ["text" if block.get("type") == "text" else "<redacted>" for block in blocks],
             "text": value if value == EXPECTED_READ_RESULT else "<redacted>",
-            "text_matches_fixture": value == EXPECTED_READ_RESULT}
+            "text_matches_fixture": value == EXPECTED_READ_RESULT,
+            "error_kind": error_kind(value) if result.get("is_error") else None}
 
 
 def is_expected_trace(summary: dict, missing: bool = False) -> bool:
@@ -109,6 +120,11 @@ def is_expected_trace(summary: dict, missing: bool = False) -> bool:
 
 def is_missing_trace(summary: dict) -> bool:
     return is_expected_trace(summary, missing=True)
+
+
+def is_denied_trace(summary: dict) -> bool:
+    return (summary.get("outside_unchanged") is True and is_missing_trace(summary)
+            and summary["requests"][2]["tool_results"][0].get("error_kind") == "access_denied")
 
 
 def make_handler(state: ProbeState):
@@ -158,11 +174,23 @@ def make_handler(state: ProbeState):
     return Handler
 
 
-def main(executable: str, missing: bool = False) -> int:
+def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
+    workspace = Path(root, "workspace") if mode == "outside" else Path(root)
+    workspace.mkdir(exist_ok=True)
+    subprocess.run(["git", "init", "-q"], cwd=workspace, check=True, capture_output=True)
+    fixture = workspace / "fixture.txt"
+    fixture.write_text(FIXTURE_CONTENT)
+    outside = Path(root, "outside.txt") if mode == "outside" else None
+    if outside:
+        outside.write_text("synthetic outside content\n")
+    return workspace, fixture, outside
+
+
+def main(executable: str, mode: str = "normal") -> int:
     with tempfile.TemporaryDirectory(prefix="nox-loopback-read-") as root:
-        fixture = Path(root, "fixture.txt")
-        fixture.write_text(FIXTURE_CONTENT)
-        state = ProbeState(read_path="missing.txt" if missing else "fixture.txt")
+        workspace, fixture, outside = prepare_workspace(root, mode)
+        read_path = "../outside.txt" if outside else "missing.txt" if mode == "missing" else "fixture.txt"
+        state = ProbeState(read_path=read_path)
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
@@ -173,9 +201,10 @@ def main(executable: str, missing: bool = False) -> int:
             "ANTHROPIC_API_KEY": "sk-ant-api03-synthetic",
             "ANTHROPIC_BASE_URL": f"http://127.0.0.1:{server.server_port}",
         }
-        command = [executable, "--bare", "-p", "Read fixture.txt", "--model", "sonnet", "--output-format", "json", "--allowedTools", "Read"]
+        command = [executable, "--bare", "-p", f"Read {read_path}", "--model", "sonnet", "--output-format", "json"]
+        if mode != "outside": command.extend(["--allowedTools", "Read"])
         try:
-            process = subprocess.run(command, cwd=root, env=env, capture_output=True, text=True, timeout=30)
+            process = subprocess.run(command, cwd=workspace, env=env, capture_output=True, text=True, timeout=30)
             output = json.loads(process.stdout)
             if not isinstance(output, dict):
                 raise ValueError("CLI result is not an object")
@@ -186,6 +215,7 @@ def main(executable: str, missing: bool = False) -> int:
                 "stderr_empty": not process.stderr,
                 "requests": state.requests,
                 "fixture_unchanged": fixture.read_text() == FIXTURE_CONTENT,
+                "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
             }
         except (json.JSONDecodeError, ValueError):
             summary = {
@@ -199,10 +229,11 @@ def main(executable: str, missing: bool = False) -> int:
             server.shutdown()
             server.server_close()
     print(json.dumps(summary, indent=2))
-    return 0 if (is_missing_trace(summary) if missing else is_expected_trace(summary)) else 1
+    matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
+    return 0 if matched else 1
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] != "missing"):
-        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing]")
-    raise SystemExit(main(sys.argv[1], missing=len(sys.argv) == 3))
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside"}):
+        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside]")
+    raise SystemExit(main(sys.argv[1], mode=sys.argv[2] if len(sys.argv) == 3 else "normal"))
