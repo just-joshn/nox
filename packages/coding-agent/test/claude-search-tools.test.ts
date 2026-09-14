@@ -37,6 +37,38 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep count mode reports one occurrence", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(JSON.stringify(tool.parameters.properties.output_mode)).toContain("count");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:1\n\nFound 1 total occurrence across 1 file." },
+		]);
+	});
+
+	it("Grep count mode reports per-file and total occurrences", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
+		writeFileSync(join(cwd, "second.txt"), "alpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		const text = result.content[0]?.type === "text" ? result.content[0].text : "";
+		const [files, summary] = text.split("\n\n");
+		expect(files.split("\n").sort()).toEqual(["fixture.txt:2", "second.txt:1"]);
+		expect(summary).toBe("Found 3 total occurrences across 2 files.");
+	});
+
 	it.each(["Glob", "Grep"])("%s rejects an invalid bracket pattern", async (name) => {
 		const tool = createAllToolDefinitions(cwd)[name as ToolName];
 		await expect(tool.execute("call-1", { pattern: "[" }, undefined, undefined, {} as never)).rejects.toThrow();

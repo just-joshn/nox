@@ -12,7 +12,9 @@ const grepSchema = Type.Object({
 	pattern: Type.String(),
 	path: Type.Optional(Type.String()),
 	glob: Type.Optional(Type.String()),
-	output_mode: Type.Optional(Type.Union([Type.Literal("files_with_matches"), Type.Literal("content")])),
+	output_mode: Type.Optional(
+		Type.Union([Type.Literal("files_with_matches"), Type.Literal("content"), Type.Literal("count")]),
+	),
 	"-i": Type.Optional(Type.Boolean()),
 });
 
@@ -65,7 +67,10 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 		renderResult: undefined,
 		async execute(...args: Parameters<typeof grep.execute>) {
 			const [id, input, signal, onUpdate, ctx] = args;
-			const selected = input as typeof input & { output_mode?: "files_with_matches" | "content"; "-i"?: boolean };
+			const selected = input as typeof input & {
+				output_mode?: "files_with_matches" | "content" | "count";
+				"-i"?: boolean;
+			};
 			const outputMode = selected.output_mode;
 			const result = await grep.execute(id, { ...input, ignoreCase: selected["-i"] }, signal, onUpdate, ctx);
 			const text = resultText(result);
@@ -73,6 +78,26 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
 			if (outputMode === "content") {
 				return { ...result, content: [{ type: "text" as const, text: text.replaceAll(/:(\d+): /g, ":$1:") }] };
+			}
+			if (outputMode === "count") {
+				const files = text
+					.split("\n")
+					.map((line) => /^(.*):\d+: /.exec(line)?.[1])
+					.filter((file): file is string => !!file);
+				const counts = [...new Set(files)].map(
+					(file) => [file, files.filter((candidate) => candidate === file).length] as const,
+				);
+				const fileCount = counts.length;
+				const summary = `Found ${files.length} total occurrence${files.length === 1 ? "" : "s"} across ${fileCount} file${fileCount === 1 ? "" : "s"}.`;
+				return {
+					...result,
+					content: [
+						{
+							type: "text" as const,
+							text: `${counts.map(([file, count]) => `${file}:${count}`).join("\n")}\n\n${summary}`,
+						},
+					],
+				};
 			}
 			const files = [
 				...new Set(

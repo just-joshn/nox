@@ -95,7 +95,8 @@
 - [X] T142 [US1] Run focused and neighboring tests plus `npm run check`, update the validation ledger, and commit locally.
 - [X] T143 [US1] Observe the reference's third advertised Grep `output_mode: count` value in a localhost-only synthetic fixture; retain only an exact allowlisted result class and no raw request content.
 - [X] T144 [US1] Observe reference Grep count mode with two files and three total matches in a disposable localhost-only fixture, retaining only an exact synthetic result class.
-- [ ] T145 [US1] Write failing nox count-mode tests for the observed single- and multi-file fixtures, implement the formatter in the explicit Grep adapter, then verify neighboring tests and `npm run check` before committing locally.
+- [X] T145 [US1] Write failing nox count-mode tests for the observed single- and multi-file fixtures, implement the formatter in the explicit Grep adapter, then verify neighboring tests and `npm run check` before committing locally.
+- [ ] T146 [US1] Observe Grep `output_mode: count` with no matches in a localhost-only fixture and compare nox's empty-result decision; keep count limits and per-file ordering open.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
