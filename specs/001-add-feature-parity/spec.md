@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-13
 
-**Status**: Draft
+**Status**: Active — approved for per-leaf implementation; complete scope remains under inventory reconciliation
 
 **Input**: User description: Create a clean-room design covering every feature of the locally installed Claude Code release, implement equivalent behavior in nox, retain Pi's visual presentation, and omit the reference product's name from developed application code.
 
