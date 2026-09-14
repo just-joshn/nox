@@ -640,4 +640,16 @@ describe("explicit Claude search tools", () => {
 		const result = await tool.execute("call-1", { pattern: "alpha", output_mode }, undefined, undefined, {} as never);
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
+
+	it("Grep content mode keeps the observed no-match text", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", output_mode: "content" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "No matches found" }]);
+	});
 });

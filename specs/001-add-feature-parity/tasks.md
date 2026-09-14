@@ -179,7 +179,7 @@
 - [X] T226 [Setup] Compare installed `-w` and `--worktree` on offline parser exits; record exact process/side-effect evidence and nox gap without inferring worktree creation, then commit locally.
 - [X] T227 [US1] Observe explicit Grep `files_with_matches` with a nonmatching synthetic pattern under localhost-only isolation; compare nox's empty result, verify harness and focused tests, then commit locally.
 - [X] T228 [US1] Observe explicit Grep `content` with a nonmatching synthetic pattern under localhost-only isolation; compare nox's empty result, verify harness tests, then commit locally.
-- [ ] T229 [US1] Write a failing nox test for explicit Grep content no-match text, implement the observed output-mode boundary without changing file-list/default modes, verify focused tests and `npm run check`, then commit locally.
+- [X] T229 [US1] Write a failing nox test for explicit Grep content no-match text, implement the observed output-mode boundary without changing file-list/default modes, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

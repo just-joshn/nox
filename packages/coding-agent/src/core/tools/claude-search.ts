@@ -132,7 +132,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				ctx,
 			);
 			const text = resultText(result);
-			if (text === "No matches found")
+			if (text === "No matches found" && outputMode !== "content")
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
 			const noticeStart = result.details ? text.lastIndexOf("\n\n[") : -1;
 			const matchText = noticeStart >= 0 ? text.slice(0, noticeStart) : text;
