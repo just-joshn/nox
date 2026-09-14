@@ -270,6 +270,13 @@
 | SUR-PLAT-010 | Automatic PR review findings and repeat-push behavior unobserved | Authorized disposable PR and review integration |
 | SUR-PLAT-011 | JetBrains bridge and failure behavior unobserved | Compatible disposable IDE project and plugin |
 | SUR-PLAT-012 | Cross-surface settings and memory propagation unobserved | Isolated local profiles and synthetic settings across installed clients |
+| SUR-PLAT-013 | Mobile cloud start and cross-device persistence are documentation-only | Eligible mobile/cloud account and disposable repository/branch |
+| SUR-PLAT-014 | Mobile cloud question reply and steering are documentation-only | Eligible paired mobile session with synthetic prompt and controlled disconnect |
+| SUR-PLAT-015 | Mobile Remote Control pairing and wake recovery are documentation-only | Eligible paired device plus disposable local session and sleep/reconnect fixture |
+| SUR-PLAT-016 | Mobile photo transfer and local upload path are documentation-only | Eligible paired device and synthetic image; inspect path and redaction |
+| SUR-PLAT-017 | Mobile non-photo transfer and file reference are documentation-only | Eligible paired device and synthetic file; inspect download and failure behavior |
+| SUR-PLAT-018 | Permission-mode selector differences by session kind are documentation-only | Eligible mobile cloud and local remote sessions; compare available modes and refusal |
+| SUR-PLAT-019 | Remote push notification delivery and failure are documentation-only | Eligible paired device with controlled notification toggles and offline case |
 | SUR-CHAN-001 | Installed parser and approved plugin startup unobserved | Safe help/parser probe, then disposable channel plugin after allowance returns |
 | SUR-CHAN-002 | Managed policy enable/deny behavior unobserved | Controlled organization policy fixture; no production policy change |
 | SUR-CHAN-003 | Inbound event labeling, ordering, and malformed case unobserved | Synthetic local channel server and bounded session |
