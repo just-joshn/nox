@@ -1,12 +1,12 @@
 # Implementation Plan: Complete Coding Assistant Parity
 
-**Branch**: `main` | **Date**: 2026-09-13 | **Spec**: [spec.md](spec.md)
+**Branch**: `main` | **Updated**: 2026-09-14 | **Spec**: [spec.md](spec.md)
 
 **Input**: Feature specification from `specs/001-add-feature-parity/spec.md`
 
 ## Summary
 
-Extend the Pi-based nox application until every observable feature of the pinned reference release has equivalent behavior under nox-native names, while retaining Pi's terminal presentation. The work begins with an evidence-backed inventory and comparison harness. Each capability then receives a behavioral contract, implementation slice, and parity verification. The current documents define the process and architecture; they do not claim that the exhaustive inventory or implementation is complete.
+Extend the Pi-based nox application until every observable feature of the pinned reference release has equivalent behavior under nox-native names, while retaining Pi's terminal presentation. The work begins with an evidence-backed inventory and comparison harness. Each capability then receives a behavioral contract, implementation task, and parity verification. This is the only plan for the complete feature set; the exhaustive inventory and implementation are not yet complete.
 
 ## Technical Context
 
@@ -50,12 +50,16 @@ This is the single plan for **all** feature families. Delivery increments are ta
 | CLI and administration | All commands, flags, startup modes, setup, authentication, diagnostics, update, import, project state, and exit behavior |
 | Noninteractive and programmatic use | Print modes, structured and streaming input/output, schemas, budgets, RPC/SDK-like control, events, and automation integration |
 | Remote and platform surfaces | Remote control, cloud/web sessions, desktop/mobile/editor/browser/chat/CI connections, handoff, enterprise gateway, self-hosted runners, artifacts, and deep links |
+| Computer and browser use | Native computer control, screenshots, app interaction, browser debugging, form interaction, and their permission and platform gates |
+| Goals and long-running orchestration | Goal completion conditions, progress and stop rules, agent view, cross-session messaging, dynamic workflows, and recovery |
+| Review and security workflows | Hosted code review, deep review, security guidance and scanning, findings, patches, and CI provider variants |
+| Plugin evaluation | Eval cases, baseline comparison, grading, and lifecycle for installed plugins |
 
-For each leaf, the plan requires: surface and availability conditions; normal, denial/error, persistence, and interaction traces where applicable; a nox-native control; implementation tasks; focused regression coverage; Pi visual states; and a matched parity result. Gated leaves stay in the plan and block an unqualified 100% claim until observed and verified. The family list is a coverage framework, not a false assertion that the current release's complete leaf inventory has already been captured.
+For each leaf, the plan requires: surface and availability conditions; normal, denial/error, persistence, and interaction traces where applicable; a nox-native control; implementation tasks in the single `tasks.md`; focused regression coverage; Pi visual states; and a matched parity result. Gated leaves stay in the plan and block an unqualified 100% claim until observed and verified. The family list is a coverage framework, not a false assertion that the current release's complete leaf inventory has already been captured. The [current official documentation index](https://code.claude.com/docs/llms.txt) is reconciled page by page; documented features absent from installed 2.1.270 remain version- or service-gated candidates until confirmed.
 
 ## Constitution Check
 
-*GATE: Passes for the design approach. Re-check each implementation slice and the complete inventory before a parity claim.*
+*GATE: Passes for the design approach. Re-check each implementation task and the complete inventory before a parity claim.*
 
 | Principle | Design gate | Current result |
 |-----------|-------------|----------------|
@@ -65,7 +69,7 @@ For each leaf, the plan requires: surface and availability conditions; normal, d
 | Parity verification | Pin release and retain evidence, scenarios, and discrepancy status | Pass as a method; evidence incomplete |
 | Preserve Pi foundation | Map each change to an inventory item and run Pi regression checks | Pass as a method; no change verified |
 
-No constitutional exception is proposed. The missing inventory is unfinished work, not a waived requirement. A reachable slice may enter implementation after its leaf inventory, observed contract, and explicit tasks exist. Inaccessible features stay tracked and prevent a complete-parity claim.
+No constitutional exception is proposed. The missing inventory is unfinished work, not a waived requirement. A reachable implementation task may begin after its leaf inventory and observed contract exist. Inaccessible features stay tracked and prevent a complete-parity claim.
 
 ## Project Structure
 
@@ -83,7 +87,7 @@ specs/001-add-feature-parity/
 │   ├── inventory.md
 │   ├── observable-behavior.md
 │   └── surface-map.md
-└── tasks.md                 # Produced by speckit-tasks
+└── tasks.md                 # Only task document for all feature families
 ```
 
 ### Source Code (repository root)
@@ -114,11 +118,11 @@ The data model and contracts require a pinned source, leaf inventory, evidence, 
 behavioral comparisons, and Pi visual checks. Any intentional visual departure requires a constitution
 amendment before implementation. These rules preserve all five principles as design constraints.
 Coverage and parity remain unverified; the inventory and reference-evidence gates below must pass before
-implementation slices can be called complete or a full-parity release can be claimed.
+implementation tasks can be called complete or a full-parity release can be claimed.
 
 ## Delivery Sequence and Gates
 
-1. **Inventory gate**: Enumerate the installed release with CLI output, official documentation, interactive inspection, and safe probes. Record each item and gated condition in the inventory contract. Split broad categories into independently testable leaf items. Reconcile the official documentation index and command list against the inventory; open gaps for every unmatched entry. For each surface-specific leaf, record the reference interaction sequence and proposed nox control before declaring it implementable.
+1. **Inventory gate**: Enumerate the installed release with CLI output, official documentation, interactive inspection, and safe probes. Remotely inspect the older restored source map for candidate features and edge cases without cloning or copying it. Record each item and gated condition in the inventory contract. Split broad categories into independently testable leaf items. Reconcile every official documentation page, installed command, and source-map candidate against the inventory; open gaps for every unmatched entry and date any obsolete rationale. For each surface-specific leaf, record the reference interaction sequence and proposed nox control before declaring it implementable.
 2. **Reference-evidence gate**: For each reachable leaf selected for implementation, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures before source work on that leaf. Mark inaccessible features `gated-unverified`, record the access or observation needed, and do not infer behavior from names alone. Gated leaves do not block source work on independently observed leaves, but they block a complete-parity claim.
 3. **Task execution**: Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations and terminal controls for surface-specific workflows; administrative command families. Compare credential storage, redaction, permission scope, and remote or extension data exposure against observed contracts. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
 4. **Verification gate**: Compare normalized observable results for each leaf item, including intermediate interactions, side effects, and failure behavior. Predeclare the Pi visual matrix by affected workflow, normal/denial/error/recovery state, supported terminal width, and theme; compare every required state. Run focused regression tests. Close discrepancies only with evidence.

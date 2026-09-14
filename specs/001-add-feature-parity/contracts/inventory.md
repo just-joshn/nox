@@ -12,8 +12,9 @@ Each leaf entry MUST record:
 | nox surface | Nox-native equivalent; never a prohibited product name |
 | Availability | Always, platform-gated, account-gated, policy-gated, experimental, or unavailable |
 | Evidence | Official document link and/or reproducible local observation |
+| Discovery provenance | Installed command, official documentation page, and restored-source candidate mapping where applicable; duplicate, obsolete, and open dispositions retained |
 | Behavior | Inputs, defaults, state transitions, outputs, errors, side effects |
 | Scenarios | Normal, failure or denial, persistence, and relevant interactions |
 | Status | Discovered, specified, implemented, verified, discrepant, or gated-unverified |
 
-Inventory completeness requires reconciliation against the installed command tree, CLI options, interactive command and shortcut reference, settings reference, tools, extension and integration docs, and every observed capability. Any unmatched source entry is a gap. A gated feature remains an item; it cannot be counted as verified without suitable observation.
+Inventory completeness requires reconciliation against the installed command tree, CLI options, every current official documentation page, remotely read restored-source candidates, and every observed capability. Any unmatched source entry is a gap. The restored source is discovery evidence, not a behavioral contract or implementation source. A gated feature remains an item; it cannot be counted as verified without suitable observation.

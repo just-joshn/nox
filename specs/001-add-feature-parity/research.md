@@ -1,6 +1,13 @@
 # Research: Complete Coding Assistant Parity
 
-**Baseline observation**: Local `claude --version` returned `2.1.270 (Claude Code)` on 2026-09-13. The local CLI is an observable reference, not an implementation source. Official documentation is a discovery source and can change independently of the installed binary.
+**Baseline observation**: Local `claude --version` returned `2.1.270 (Claude Code)` on 2026-09-13 and again on 2026-09-14. The local CLI is an observable reference, not an implementation source. Official documentation can change independently of the installed binary.
+
+## Decision: Reconcile three sources without copying implementation
+
+- **Decision**: Use the installed release for reachable current behavior, the current official documentation index for documented capabilities and availability, and the older restored source map for candidate features, edge cases, and design questions. Read the source map remotely only; do not clone it, transplant code, or infer current behavior solely from it. Record every candidate as mapped, duplicate, obsolete with dated evidence, or open.
+- **Rationale**: The official index now lists capabilities beyond the earlier family register, including computer use, goals, cross-session messaging, dynamic workflows, plugin evaluation, and deep review. A three-way reconciliation catches omissions while avoiding false parity claims from older code.
+- **Alternatives considered**: Copying the restored implementation violates the clean-room requirement. Ignoring it loses useful discovery context. Treating its older structure as the current contract risks incorrect behavior.
+- **Evidence**: [Current official documentation index](https://code.claude.com/docs/llms.txt), [restored source tree](https://github.com/ChinaSiro/claude-code-sourcemap/tree/main/restored-src), local version output.
 
 ## Decision: Pin the reference and track availability
 

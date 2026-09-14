@@ -17,6 +17,13 @@ This model describes planning and verification records, not a mandated storage i
 - **Status transitions**: `discovered` → `specified` → `implemented` → `verified`. A failed comparison returns to `discrepant`; inaccessible behavior is `gated-unverified`. A reference change returns affected items to `specified` or `discrepant`.
 - **Validation**: `verified` requires an accessible reference observation and passing normal, failure, and relevant interaction scenarios. Domain headings cannot be verified in place of leaf items.
 
+## Discovery Candidate
+
+- **Fields**: source kind (installed command, official documentation page, or restored source module), source identifier, observation date, candidate behavior, mapped capability ID, disposition, disposition rationale, version relevance.
+- **Identity**: Source kind plus stable source identifier and candidate behavior; the same candidate may have several source records.
+- **Relationship**: Maps to one or more capability items, or records a duplicate or dated obsolete rationale. Open candidates block inventory completeness.
+- **Validation**: Restored-source-only candidates cannot become `specified` behavior without a current documented or observed contract. A duplicate or obsolete disposition must identify its mapped item or dated evidence.
+
 ## Scenario and Observation
 
 - **Scenario fields**: item ID, environment fixture, initial state, action sequence, expected decisions, outputs, state and side effects, normalization rules.
@@ -37,4 +44,4 @@ This model describes planning and verification records, not a mandated storage i
 - **Configuration source**: Scope, location, precedence, settings values, and validation errors. Names and paths in nox remain nox-native.
 - **Extension**: Kind, source, scope, trigger or invocation rule, permissions, lifecycle state, and result.
 
-The exact runtime field and transition contracts are filled from item-level reference observations before implementation of each slice.
+The exact runtime field and transition contracts are filled from item-level reference observations before implementation of each task.
