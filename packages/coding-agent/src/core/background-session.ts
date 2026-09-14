@@ -3,7 +3,7 @@
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import { getAgentDir } from "../config.ts";
 import { resolvePath } from "../utils/paths.ts";
 import { stripBom } from "../utils/text.ts";
@@ -61,9 +61,6 @@ export class BackgroundSessionManager {
 	constructor(options: BackgroundSessionManagerOptions = {}) {
 		const agentDir = resolvePath(options.agentDir ?? getAgentDir());
 		this.bgDir = options.sessionsDir ? resolvePath(options.sessionsDir) : join(agentDir, "background-sessions");
-		if (!existsSync(this.bgDir)) {
-			mkdirSync(this.bgDir, { recursive: true });
-		}
 	}
 
 	private getRecordPath(id: string): string {
@@ -91,16 +88,20 @@ export class BackgroundSessionManager {
 		}
 	}
 
-	private writeRecord(info: BackgroundSessionInfo): void {
-		const recordPath = this.getRecordPath(info.id);
-		const dir = dirname(recordPath);
-		if (!existsSync(dir)) {
-			mkdirSync(dir, { recursive: true });
+	private ensureBgDir(): void {
+		if (!existsSync(this.bgDir)) {
+			mkdirSync(this.bgDir, { recursive: true });
 		}
+	}
+
+	private writeRecord(info: BackgroundSessionInfo): void {
+		this.ensureBgDir();
+		const recordPath = this.getRecordPath(info.id);
 		writeFileSync(recordPath, JSON.stringify(info, null, 2), "utf-8");
 	}
 
 	async launch(options: LaunchBackgroundOptions): Promise<BackgroundSessionInfo> {
+		this.ensureBgDir();
 		const id = generateBackgroundId();
 		const now = Date.now();
 		const resolvedCwd = resolvePath(options.cwd);
@@ -463,6 +464,10 @@ export async function handleBackgroundCommand(
 ): Promise<boolean> {
 	const command = args[0]?.toLowerCase();
 	if (!command) return false;
+
+	if (!["agents", "attach", "logs", "stop", "kill", "respawn", "rm"].includes(command)) {
+		return false;
+	}
 
 	const bgManager = new BackgroundSessionManager({ agentDir: options.agentDir });
 

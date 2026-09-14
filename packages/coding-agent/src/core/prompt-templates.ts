@@ -119,10 +119,17 @@ function loadTemplateFromFile(filePath: string, sourceInfo: SourceInfo): PromptT
 			}
 		}
 
+		const rawHint = frontmatter["argument-hint"] ?? frontmatter.argumentHint;
+		const argumentHint = Array.isArray(rawHint)
+			? `[${rawHint.join(", ")}]`
+			: typeof rawHint === "string"
+				? rawHint
+				: undefined;
+
 		return {
 			name,
 			description,
-			...(frontmatter["argument-hint"] && { argumentHint: frontmatter["argument-hint"] }),
+			...(argumentHint && { argumentHint }),
 			content: body,
 			sourceInfo,
 			filePath,

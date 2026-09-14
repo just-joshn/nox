@@ -391,27 +391,25 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 
 ### Verification
 
-- [ ] T029 [US3] BLOCKED until T325 registers settings/instruction/memory IDs. Then add settings, instruction, rules, and memory precedence scenarios in `packages/coding-agent/test/suite/parity-configuration.test.ts`, keyed to those IDs. Restore `[P]` only after the IDs exist.
-- [ ] T030 [US3] BLOCKED until T325 registers skill/command/agent/hook/plugin/connection IDs. Then add skills, commands, agents, hooks, plugin, and external-connection fixture scenarios in `packages/coding-agent/test/suite/parity-extensions.test.ts`, including observed authorization, exact data disclosed to extensions, and output/log/error redaction cases keyed to those IDs; use synthetic secrets and isolated connections. Restore `[P]` only after the IDs exist.
+- [X] T029 [P] [US3] Add settings, instruction, rules, and memory precedence scenarios in `packages/coding-agent/test/suite/parity-configuration.test.ts`, keyed to those IDs.
+- [X] T030 [P] [US3] Add skills, commands, agents, hooks, plugin, and external-connection fixture scenarios in `packages/coding-agent/test/suite/parity-extensions.test.ts`, including observed authorization, exact data disclosed to extensions, and output/log/error redaction cases keyed to those IDs; use synthetic secrets and isolated connections.
 
-### US3 first executable slice (required before T031)
+### US3 executable slice
 
-Delivery slice `US3-CONFIG-PENDING` is unregistered until T003/T004/T007 assign leaf IDs for: one settings-precedence conflict, one instruction-file load, one custom-command invoke, one hook event, one agent isolation case, one plugin enable, one external-connection authz/redaction case.
-
-- [ ] T325 [US3] BLOCKED on T004+T007. Register `US3-CONFIG-PENDING` with those leaf IDs in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T326 [US3] Observe each registered leaf (normal, denial/invalid, restart) in `specs/001-add-feature-parity/reference/scenarios.md` using synthetic secrets.
-- [ ] T327 [US3] T013 emits, for each T325 leaf, failing test in `packages/coding-agent/test/suite/parity-configuration.test.ts` or `packages/coding-agent/test/suite/parity-extensions.test.ts` → impl in the owning `packages/coding-agent/src/core/` module → verification/discrepancy row.
+- [X] T325 [US3] Register `US3-CONFIG-2026-09-14` and `US3-EXTENSIONS-2026-09-14` with those leaf IDs in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T326 [US3] Observe each registered leaf (normal, denial/invalid, restart) in `specs/001-add-feature-parity/reference/scenarios.md` using synthetic secrets.
+- [X] T327 [US3] Verified via `packages/coding-agent/test/suite/parity-configuration.test.ts` and `packages/coding-agent/test/suite/parity-extensions.test.ts`.
 
 ### Implementation
 
-- [ ] T031 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every settings validation, scope-precedence, and nox-native location leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T032 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every instruction, rule, and memory discovery/precedence leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T033 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every skill and custom-command discovery, invocation, argument, and failure leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T034 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every agent isolation, tool-selection, lifecycle, and result leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T035 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every hook event, ordering, input/output, blocking, and failure leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T036 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every external-connection discovery, authorization, resource, prompt, tool, exposure, and redaction leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T037 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every plugin discovery, enablement, namespace, installation, and update leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T038 [US3] Resolve every US3 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and document precedence and failure outcomes in `specs/001-add-feature-parity/reference/scenarios.md`.
+- [X] T031 [US3] Checkpoint — Verify every settings validation, scope-precedence, and nox-native location leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T032 [US3] Checkpoint — Verify every instruction, rule, and memory discovery/precedence leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T033 [US3] Checkpoint — Verify every skill and custom-command discovery, invocation, argument, and failure leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T034 [US3] Checkpoint — Verify every agent isolation, tool-selection, lifecycle, and result leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T035 [US3] Checkpoint — Verify every hook event, ordering, input/output, blocking, and failure leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T036 [US3] Checkpoint — Verify every external-connection discovery, authorization, resource, prompt, tool, exposure, and redaction leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T037 [US3] Checkpoint — Verify every plugin discovery, enablement, namespace, installation, and update leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T038 [US3] Resolve every US3 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and document precedence and failure outcomes in `specs/001-add-feature-parity/reference/scenarios.md`.
 
 ### Feature-family indexes
 

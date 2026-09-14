@@ -55,7 +55,8 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 - `US2-SESSION-2026-09-14`: Session lifecycle, background sessions, and fork/resume/compaction slice containing `US2-SESSION-001` through `US2-SESSION-006` and `SUR-BG-001` through `SUR-BG-009` (T020, T023, T027, T281–T319). Closed.
 - `US2-PERMISSIONS-2026-09-14`: Permission manager, modes, rule precedence, path scoping, and credential redaction slice containing `PERM-001` through `PERM-026` and `SEC-SECRET-001` (T021, T024). Closed.
 - `US2-MODEL-2026-09-14`: Model controls, scoping, thinking budget, context usage, and fallback slice containing `MODEL-001` through `MODEL-017` (T022, T025). Closed.
-- `US3-CONFIG-PENDING`: Configuration, settings, and instructions delivery slice (T325–T327).
+- `US3-CONFIG-2026-09-14`: Configuration, settings, instructions, and rules slice containing `CFG-001` through `CFG-025` (T029, T031, T032). Closed.
+- `US3-EXTENSIONS-2026-09-14`: Skills, custom commands, hooks, and package manager slice containing `EXT-001` through `EXT-025` (T030, T033–T038). Closed.
 - `US4-SURFACE-PENDING`: Print, worktree, and remote surfaces delivery slice (T328–T331).
 
 ### US1-CONTEXT-PENDING Slice Registry
@@ -77,6 +78,13 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 | `SUR-BG-001..009` | Background launch, list, attach, logs, stop, restart, rm, exit, recovery | `packages/coding-agent/src/core/background-session.ts` | T282–T292 | T293–T319 / T027 | Implemented; verified locally |
 | `PERM-001..026` | Permission modes, precedence, pattern matching, path containment | `packages/coding-agent/src/core/permission-manager.ts` | T021 | T021 / T024 | Implemented; verified locally |
 | `MODEL-001..017` | Model resolution, scoping, thinking budget, context usage | `packages/coding-agent/src/core/model-selection.ts` | T022 | T022 / T025 | Implemented; verified locally |
+
+### US3 Slices Registry
+
+| Leaf ID | Description | nox Target | Evidence Task | Verification Task | Status |
+|---|---|---|---|---|---|
+| `CFG-001..025` | Settings precedence, migration, error recovery, trust, exclusions | `packages/coding-agent/src/core/settings-manager.ts` | T326 | T029 / T031, T032 | Implemented; verified locally |
+| `EXT-001..025` | Skills discovery/validation, custom prompt commands, event bus hooks | `packages/coding-agent/src/core/skills.ts`, `prompt-templates.ts`, `event-bus.ts` | T326 | T030 / T033–T038 | Implemented; verified locally |
 
 ---
 
