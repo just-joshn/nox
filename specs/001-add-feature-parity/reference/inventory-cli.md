@@ -201,6 +201,113 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-139 | `daemon uninstall` | observed-help | Pending |
 | CLI-140 | `daemon stop` | observed-help | Pending |
 
+## Documented interactive command invocations
+
+The [current official command reference](https://code.claude.com/docs/en/commands) lists these command signatures. They are discovery leaves only. Each argument form, alias, menu state, mid-turn timing, gating condition, and failure path still needs its own contract and scenario. `/pr-comments` is retained as a documented removed entry so reconciliation does not mistake it for a current capability.
+
+| ID | Surface | Discovery | Behavior evidence |
+|----|---------|-----------|-------------------|
+| CLI-141 | `/add-dir <path>` | documented; local interaction unobserved | Pending |
+| CLI-142 | `/advisor [model\|off]` | documented; local interaction unobserved | Pending |
+| CLI-143 | `/agents` | documented; local interaction unobserved | Pending |
+| CLI-144 | `/artifacts` | documented; local interaction unobserved | Pending |
+| CLI-145 | `/auto-mode-setup` | documented; local interaction unobserved | Pending |
+| CLI-146 | `/autocompact [auto\|<tokens>]` | documented; local interaction unobserved | Pending |
+| CLI-147 | `/autofix-pr [prompt]` | documented; local interaction unobserved | Pending |
+| CLI-148 | `/batch <instruction>` | documented; local interaction unobserved | Pending |
+| CLI-149 | `/branch [name]` | documented; local interaction unobserved | Pending |
+| CLI-150 | `/btw [question]` | documented; local interaction unobserved | Pending |
+| CLI-151 | `/bug [report]` | documented; local interaction unobserved | Pending |
+| CLI-152 | `/cd <path>` | documented; local interaction unobserved | Pending |
+| CLI-153 | `/claude-api [migrate\|upgrade\|managed-agents-onboard\|prompt-audit\|cost-optimize\|build-eval\|hillclimb]` | documented; local interaction unobserved | Pending |
+| CLI-154 | `/clear [name]` | documented; local interaction unobserved | Pending |
+| CLI-155 | `/code-review [low\|medium\|high\|xhigh\|max\|ultra] [--fix] [--comment] [pr#\|branch\|path]` | documented; local interaction unobserved | Pending |
+| CLI-156 | `/color [color\|default]` | documented; local interaction unobserved | Pending |
+| CLI-157 | `/compact [instructions]` | documented; local interaction unobserved | Pending |
+| CLI-158 | `/context [all]` | documented; local interaction unobserved | Pending |
+| CLI-159 | `/copy [N]` | documented; local interaction unobserved | Pending |
+| CLI-160 | `/cost` | documented; local interaction unobserved | Pending |
+| CLI-161 | `/dataviz [request]` | documented; local interaction unobserved | Pending |
+| CLI-162 | `/debug [description]` | documented; local interaction unobserved | Pending |
+| CLI-163 | `/deep-research <question>` | documented; local interaction unobserved | Pending |
+| CLI-164 | `/design [brief]` | documented; local interaction unobserved | Pending |
+| CLI-165 | `/design-login` | documented; local interaction unobserved | Pending |
+| CLI-166 | `/design-sync [hint]` | documented; local interaction unobserved | Pending |
+| CLI-167 | `/desktop` | documented; local interaction unobserved | Pending |
+| CLI-168 | `/diff` | documented; local interaction unobserved | Pending |
+| CLI-169 | `/effort [level\|auto\|status]` | documented; local interaction unobserved | Pending |
+| CLI-170 | `/export [filename]` | documented; local interaction unobserved | Pending |
+| CLI-171 | `/fast [on\|off]` | documented; local interaction unobserved | Pending |
+| CLI-172 | `/feedback [report]` | documented; local interaction unobserved | Pending |
+| CLI-173 | `/fewer-permission-prompts` | documented; local interaction unobserved | Pending |
+| CLI-174 | `/focus` | documented; local interaction unobserved | Pending |
+| CLI-175 | `/fork [prompt]` | documented; local interaction unobserved | Pending |
+| CLI-176 | `/goal [condition\|clear]` | documented; local interaction unobserved | Pending |
+| CLI-177 | `/heapdump` | documented; local interaction unobserved | Pending |
+| CLI-178 | `/hooks` | documented; local interaction unobserved | Pending |
+| CLI-179 | `/ide` | documented; local interaction unobserved | Pending |
+| CLI-180 | `/import [codex\|gemini\|cursor] [--dry-run] [--yes]` | documented; local interaction unobserved | Pending |
+| CLI-181 | `/init` | documented; local interaction unobserved | Pending |
+| CLI-182 | `/insights` | documented; local interaction unobserved | Pending |
+| CLI-183 | `/install-github-app` | documented; local interaction unobserved | Pending |
+| CLI-184 | `/keybindings` | documented; local interaction unobserved | Pending |
+| CLI-185 | `/list-agents` | documented; local interaction unobserved | Pending |
+| CLI-186 | `/logout` | documented; local interaction unobserved | Pending |
+| CLI-187 | `/loop [interval] [prompt]` | documented; local interaction unobserved | Pending |
+| CLI-188 | `/mcp [reconnect <server>\|enable\|disable [<server>\|all]]` | documented; local interaction unobserved | Pending |
+| CLI-189 | `/memory` | documented; local interaction unobserved | Pending |
+| CLI-190 | `/mobile` | documented; local interaction unobserved | Pending |
+| CLI-191 | `/model [model]` | documented; local interaction unobserved | Pending |
+| CLI-192 | `/passes` | documented; local interaction unobserved | Pending |
+| CLI-193 | `/permissions` | documented; local interaction unobserved | Pending |
+| CLI-194 | `/plan [description]` | documented; local interaction unobserved | Pending |
+| CLI-195 | `/plugin [subcommand]` | documented; local interaction unobserved | Pending |
+| CLI-196 | `/powerup` | documented; local interaction unobserved | Pending |
+| CLI-197 | `/pr-comments [PR]` | documented-removed | Pending |
+| CLI-198 | `/privacy-settings` | documented; local interaction unobserved | Pending |
+| CLI-199 | `/radio` | documented; local interaction unobserved | Pending |
+| CLI-200 | `/rate-limit-options` | documented; local interaction unobserved | Pending |
+| CLI-201 | `/recap` | documented; local interaction unobserved | Pending |
+| CLI-202 | `/release-notes` | documented; local interaction unobserved | Pending |
+| CLI-203 | `/reload-plugins [--force]` | documented; local interaction unobserved | Pending |
+| CLI-204 | `/remote-control` | documented; local interaction unobserved | Pending |
+| CLI-205 | `/remote-env` | documented; local interaction unobserved | Pending |
+| CLI-206 | `/resume [session]` | documented; local interaction unobserved | Pending |
+| CLI-207 | `/review [low\|medium\|high\|xhigh\|max\|ultra] [--fix] [--comment] [pr#\|branch\|path]` | documented; local interaction unobserved | Pending |
+| CLI-208 | `/rewind` | documented; local interaction unobserved | Pending |
+| CLI-209 | `/run` | documented; local interaction unobserved | Pending |
+| CLI-210 | `/schedule [description]` | documented; local interaction unobserved | Pending |
+| CLI-211 | `/scroll-speed` | documented; local interaction unobserved | Pending |
+| CLI-212 | `/security-review` | documented; local interaction unobserved | Pending |
+| CLI-213 | `/setup-vertex` | documented; local interaction unobserved | Pending |
+| CLI-214 | `/simplify [target]` | documented; local interaction unobserved | Pending |
+| CLI-215 | `/skill-doctor` | documented; local interaction unobserved | Pending |
+| CLI-216 | `/stats` | documented; local interaction unobserved | Pending |
+| CLI-217 | `/status` | documented; local interaction unobserved | Pending |
+| CLI-218 | `/statusline` | documented; local interaction unobserved | Pending |
+| CLI-219 | `/stickers` | documented; local interaction unobserved | Pending |
+| CLI-220 | `/stop` | documented; local interaction unobserved | Pending |
+| CLI-221 | `/subtask <task>` | documented; local interaction unobserved | Pending |
+| CLI-222 | `/tasks` | documented; local interaction unobserved | Pending |
+| CLI-223 | `/team-onboarding` | documented; local interaction unobserved | Pending |
+| CLI-224 | `/teleport` | documented; local interaction unobserved | Pending |
+| CLI-225 | `/terminal-setup` | documented; local interaction unobserved | Pending |
+| CLI-226 | `/tui [default\|fullscreen]` | documented; local interaction unobserved | Pending |
+| CLI-227 | `/ultraplan <prompt>` | documented; local interaction unobserved | Pending |
+| CLI-228 | `/ultrareview [PR or branch]` | documented; local interaction unobserved | Pending |
+| CLI-229 | `/usage` | documented; local interaction unobserved | Pending |
+| CLI-230 | `/usage-credits` | documented; local interaction unobserved | Pending |
+| CLI-231 | `/verify` | documented; local interaction unobserved | Pending |
+| CLI-232 | `/voice [hold\|tap\|off]` | documented; local interaction unobserved | Pending |
+| CLI-233 | `/web-setup` | documented; local interaction unobserved | Pending |
+| CLI-234 | `/workflow-authoring` | documented; local interaction unobserved | Pending |
+| CLI-235 | `/workflows` | documented; local interaction unobserved | Pending |
+| CLI-236 | `/background [prompt]` | documented; local interaction unobserved | Pending |
+| CLI-237 | `/chrome` | documented; local interaction unobserved | Pending |
+| CLI-238 | `/exit` | documented; local interaction unobserved | Pending |
+| CLI-239 | `/help` | documented; local interaction unobserved | Pending |
+| CLI-240 | `/login` | documented; local interaction unobserved | Pending |
+
 ## Missing discovery work
 
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) says help is incomplete. This table has not been reconciled against every documented flag and command, nor every command-specific option, alias, combination, and failure. Do not mark T002 complete.
