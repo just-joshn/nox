@@ -42,7 +42,7 @@ function resultText(result: { content: Array<{ type: string; text?: string }> })
 }
 
 export function createClaudeGlobToolDefinition(cwd: string) {
-	const find = createFindToolDefinition(cwd);
+	const find = createFindToolDefinition(cwd, { includeVcsIgnored: true });
 	return {
 		...find,
 		name: "Glob",

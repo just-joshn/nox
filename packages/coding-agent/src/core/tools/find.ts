@@ -65,6 +65,8 @@ const defaultFindOperations: FindOperations = {
 export interface FindToolOptions {
 	/** Custom operations for find. Default: local filesystem plus fd */
 	operations?: FindOperations;
+	/** Include files excluded by .gitignore for explicit search adapters. */
+	includeVcsIgnored?: boolean;
 }
 
 export function createFindToolDefinition(
@@ -180,6 +182,7 @@ export function createFindToolDefinition(
 						}
 
 						const args: string[] = ["--glob", "--color=never", "--hidden"];
+						if (options?.includeVcsIgnored) args.push("--no-ignore-vcs");
 
 						// fd normally ignores .gitignore outside git repos, so keep --no-require-git
 						// there. Inside repos, use fd's default git-aware behavior so parent
