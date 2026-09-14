@@ -13,7 +13,7 @@
 
 ## Open evidence and access gaps
 
-1. The host account, subscription, managed policy, and service connections were not inspected. Gated features remain `gated-unverified`.
+1. Authentication is available to the CLI outside the sandbox. The user's weekly usage cap is reportedly reached, so model-backed behavior remains `gated-unverified`. Managed policy and service connections were not inspected.
 2. No interactive reference session or paid model call was run. Interactive command and tool behavior remains undocumented at leaf level.
 3. No extension fixture or external connection was run. Precedence, lifecycle, and failure cases remain unobserved.
 4. No remote, browser, IDE, desktop, mobile, enterprise, or hosted flow was exercised. Product availability cannot be inferred from documentation alone.
@@ -21,7 +21,7 @@
 
 ## First US1 slice gate
 
-Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with pending scenarios in [scenarios.md](scenarios.md). Only a local read request was probed; it exited before tool dispatch because the host is not logged in ([observation](observations/us1-unauthenticated.txt)). No other leaf was probed, and this failure does not establish normal, tool-failure, denial, or recovery behavior. The target paths below are existing nox files, not claims that parity is implemented.
+Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with pending scenarios in [scenarios.md](scenarios.md). Only an earlier sandboxed read request was probed; it exited before tool dispatch because that sandbox could not access the host credentials ([observation](observations/us1-unauthenticated.txt)). A later status check outside the sandbox reported `loggedIn: true`. No model-backed probe followed because the user reported the weekly usage cap. No other leaf was probed, and the sandbox failure does not establish normal, tool-failure, denial, or recovery behavior. The target paths below are existing nox files, not claims that parity is implemented.
 
 | Leaf ID | Observation and scenario | nox target | Evidence task | Implementation and verification task |
 |---------|--------------------------|------------|---------------|--------------------------------------|
@@ -34,4 +34,4 @@ Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with p
 | US1-FAIL-001 | `US1-COMMAND-FAILURE` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T059 | T013 must create after command-failure observation |
 | US1-RECOVER-001 | `US1-COMMAND-RECOVER` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T060 | T013 must create after command-recovery observation |
 
-T002–T006 remain open. T054–T061 require authorized reference access and isolated fixtures. T013 cannot yet create evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.
+T002–T006 remain open. T054–T061 require restored reference usage and isolated fixtures; authentication alone is insufficient while the reported cap is active. T013 cannot yet create evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.

@@ -1,6 +1,6 @@
 # Reference Scenarios
 
-**Snapshot**: local CLI 2.1.270 on macOS, 2026-09-13. These first-slice scenarios are evidence-gathering records, not parity tests. The only local behavior observed is the unauthenticated session-entry failure in [us1-unauthenticated.txt](observations/us1-unauthenticated.txt). It must not be attributed to an individual tool.
+**Snapshot**: local CLI 2.1.270 on macOS, 2026-09-13. These first-slice scenarios are evidence-gathering records, not parity tests. The only model-backed request attempted was an earlier sandboxed read that stopped at authentication in [us1-unauthenticated.txt](observations/us1-unauthenticated.txt). Authentication was later confirmed outside the sandbox, but the user reported the weekly usage cap had been reached; no further model-backed request was attempted. The sandbox failure must not be attributed to an individual tool.
 
 | Scenario ID | Leaf ID | Matched fixture and action | Reference observation | Required next observation |
 |-------------|---------|----------------------------|-----------------------|---------------------------|
