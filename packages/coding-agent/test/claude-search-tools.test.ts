@@ -131,6 +131,20 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "No matches found" }]);
 	});
 
+	it("Grep direct-file count mode reports zero totals", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", path: "fixture.txt", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "No matches found\n\nFound 0 total occurrences across 0 files." },
+		]);
+	});
+
 	it("Grep -i matches an uppercase query against lowercase content", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-i");
