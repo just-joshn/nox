@@ -85,6 +85,13 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 | CLI-075 | `--maintenance` | documented | Pending | Pending |
 | CLI-076 | `--system-prompt-file` | documented | Pending | Pending |
 | CLI-077 | `--teammate-mode` | documented | Pending | Pending |
+| CLI-241 | `--max-turns` | documented; absent from installed help | Pending | Pending |
+| CLI-242 | `--permission-prompt-tool` | documented; absent from installed help | Pending | Pending |
+| CLI-243 | `--ref` | documented; absent from installed help | Pending | Pending |
+| CLI-244 | `--remote` | documented deprecated alias; absent from installed help | Pending | Pending |
+| CLI-245 | `--enable-auto-mode` | documented removed since v2.1.111 | Not applicable | Removed |
+
+The additional flags above came from the [current official CLI reference](https://code.claude.com/docs/en/cli-usage). Their absence from installed `--help` does not establish that the parser rejects them. The removed entry is retained for source reconciliation, not counted as a required current capability.
 
 ## Top-level command families
 
@@ -132,6 +139,35 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 On 2026-09-14, the installed CLI returned help with exit code 0 for 36 command paths: `auth login|logout|status`; `mcp add|add-json|get|list|login|logout|remove|reset-project-choices|serve`; `plugin details|disable|enable|eval|init|install|list|marketplace|prune|tag|uninstall|update|validate`; `project purge`; `auto-mode config|critique|defaults|reset`; and `install`, `respawn`, `doctor`, `update`, `setup-token`. Four third-level `plugin marketplace` paths (`add`, `list`, `remove`, `update`) and `plugin eval init` also returned help. The [dated raw files](observations/) retain the option descriptions, defaults, and usage signatures. A successful help exit is discovery evidence only; it does not establish executable behavior or availability under the current account.
 
 The [current official CLI reference](https://code.claude.com/docs/en/cli-usage) documents `daemon`, `remote-control`, and `self-hosted-runner` command families that are absent from this installation's top-level help. Direct `--help` probes exposed the daemon and runner trees. `remote-control --help` instead exited 1 with an account-login requirement before showing help; its behavior is gated-unverified. The same page states that `--help` is incomplete, so absent help is not proof of absence.
+
+## Documented CLI interaction leaves
+
+The [CLI reference](https://code.claude.com/docs/en/cli-usage) specifies these option interactions independently of the individual flag rows. Their described outcomes are documentation contracts; local behavior remains unobserved while the account cannot make model-backed requests. The mutually exclusive and ignored cases require separate failure or no-effect scenarios before implementation.
+
+| ID | Input combination | Documented contract | Evidence state |
+|----|-------------------|---------------------|----------------|
+| CLI-246 | `--background` with `--print` | Rejected | Documented only |
+| CLI-247 | `--background` with `--exec` | Launch a PTY-backed shell job | Documented only |
+| CLI-248 | `--background` with `--agent` | Launch a selected subagent | Documented only |
+| CLI-249 | `--continue` with `--print` | Search includes print, SDK, and loop sessions | Documented only |
+| CLI-250 | `--fork-session` with `--resume` | Resume under a new session ID | Documented only |
+| CLI-251 | `--fork-session` with `--continue` | Continue under a new session ID | Documented only |
+| CLI-252 | `--forward-subagent-text` with `--print --output-format stream-json` | Include subagent text and thinking blocks with parent tool ID | Documented only |
+| CLI-253 | `--include-partial-messages` with `--print --output-format stream-json` | Include partial stream events | Documented only |
+| CLI-254 | `--prompt-suggestions` with `--print --output-format stream-json --verbose` | Emit predicted prompt when generated | Documented only |
+| CLI-255 | `--replay-user-messages` with stream JSON input and output | Echo input user messages to stdout | Documented only |
+| CLI-256 | `--strict-mcp-config` with `--mcp-config` | Exclude other MCP configuration sources | Documented only |
+| CLI-257 | `--tmux` without `--worktree` | Requires worktree option | Documented only |
+| CLI-258 | `--ref` with `--environment` | Base remote checkout on selected ref | Documented only |
+| CLI-259 | `--allow-dangerously-skip-permissions` with `--permission-mode plan` | Start in plan and add bypass to mode cycle | Documented only |
+| CLI-260 | `--append-subagent-system-prompt` with `--append-subagent-system-prompt-file` | Mutually exclusive | Documented only |
+| CLI-261 | `--system-prompt` with `--system-prompt-file` | Mutually exclusive | Documented only |
+| CLI-262 | `--exclude-dynamic-system-prompt-sections` with either replacement prompt flag | Exclusion is ignored | Documented only |
+| CLI-263 | `--permission-prompts none` in print mode | Deny requests without a prompt handler | Documented only |
+| CLI-264 | `--no-session-persistence` outside print mode | Print-mode restriction | Documented only |
+| CLI-265 | `--remote-control` with explicit name | Use supplied session name | Documented only |
+
+These rows cover only interactions the reference states explicitly. Other independently failing combinations, parse errors, and precedence cases remain to be discovered and split.
 
 ## Nested option seeds from 2026-09-14 local help
 
