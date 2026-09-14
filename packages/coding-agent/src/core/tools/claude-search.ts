@@ -160,7 +160,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 						.sort(
 							(left, right) =>
 								right.mtime - left.mtime ||
-								(left.file < right.file ? -1 : left.file > right.file ? 1 : left.index - right.index),
+								(left.file > right.file ? -1 : left.file < right.file ? 1 : left.index - right.index),
 						)
 						.map(({ line }) => line)
 						.join("\n") + notice;
