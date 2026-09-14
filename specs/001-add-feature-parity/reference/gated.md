@@ -33,5 +33,20 @@
 | SUR-BG-017 | Sleep/shutdown/idle recovery has no local trace | Controlled supervisor restart and idle fixture; physical sleep observation where safe |
 | SUR-BG-018 | Supervisor status, startup, and failure behavior has no local trace | Isolated home; status and safe startup/restart fixture without affecting existing sessions |
 | SUR-BG-019 | Shared-checkout write isolation has no local trace | Restored allowance; disposable repository and edit request, inspect worktree and refusal |
+| SUR-PRINT-001 | Plain print result and in-run failure unobserved | Restored allowance; harmless prompt, invalid flag, and synthetic failure fixtures |
+| SUR-PRINT-002 | Stdin joining and 10 MB boundary unobserved | Restored allowance; disposable piped input, over-limit input, and unreadable stdin fixtures |
+| SUR-PRINT-003 | JSON result schema and failure payload unobserved | Restored allowance; inspect redacted JSON result and failing run |
+| SUR-PRINT-004 | Stream event order, terminal result, and backpressure unobserved | Restored allowance; bounded consumer and broken-pipe fixtures |
+| SUR-PRINT-005 | Partial delta timing and interrupted result unobserved | Restored allowance; stream with partial messages and controlled interruption |
+| SUR-PRINT-006 | Structured output and schema failure unobserved | Restored allowance; valid/invalid schemas and format-annotation fixture |
+| SUR-PRINT-007 | Stream-input framing, EOF, and malformed input unobserved | Restored allowance; synthetic JSONL input and interrupted producer |
+| SUR-PRINT-008 | Replay acknowledgments and queue behavior unobserved | Restored allowance; two synthetic user frames and malformed/queued variants |
+| SUR-PRINT-009 | Child and nested stream forwarding unobserved | Restored allowance; isolated child task with redacted event IDs |
+| SUR-PRINT-010 | Hook lifecycle event order and denial unobserved | Restored allowance; safe local hook fixture and rejection trace |
+| SUR-PRINT-011 | Installed init metadata and error-field availability unobserved | Restored allowance; synthetic plugin/server configuration and redacted init event |
+| SUR-PRINT-012 | Retry event shape and exhaustion unobserved | Controlled test provider or authorized failing endpoint; no paid retry probing |
+| SUR-PRINT-013 | SIGTERM exit and unfinished-turn resumption unobserved | Restored allowance; disposable run and controlled signal fixture |
+| SUR-PRINT-014 | Background shell grace and cleanup unobserved | Restored allowance; harmless short-lived shell child and process inspection |
+| SUR-PRINT-015 | Background child/workflow/monitor wait and idle ceiling unobserved | Restored allowance; bounded synthetic worker and timeout fixture |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.

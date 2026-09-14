@@ -46,3 +46,27 @@ Source: [current agent-view guide](https://code.claude.com/docs/en/agent-view), 
 | SUR-BG-019 | Dispatch a repository-editing session | Shared checkout write is blocked until isolated worktree is created | Worktree conflict or cleanup refusal | Git repository required; nox worktree isolation |
 
 The current guide also describes row summaries, pull-request badges, notification hooks, model and permission inheritance, settings/plugin/MCP propagation, terminal-host recovery, and agent-view keyboard controls. T005 must split those interactions and reconcile their installed-version availability before SUR-004 is complete. No session was dispatched for this inventory because that would spend the reported capped usage.
+
+## Non-interactive protocol leaves (SUR-001 and SUR-002)
+
+Source: [current programmatic-use guide](https://code.claude.com/docs/en/headless), read 2026-09-14, plus [installed help](observations/cli-help-2026-09-14.txt). The installed CLI advertises `-p`, `--input-format`, `--output-format`, partial messages, hook events, and replay. These rows are documentation candidates; no model-backed output or stream was recorded.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-PRINT-001 | Run `-p` with a positional prompt | Plain text result on stdout and exit after one run | Invalid flag on stderr before run; in-run failure on stdout with nonzero exit | Usage-gated; `nox -p` |
+| SUR-PRINT-002 | Pipe text into `-p` with a prompt | Stdin joins request; response goes to selected output | Input above 10 MB fails; unreadable stdin warns and continues with positional prompt | Usage-gated; `nox -p` stdin |
+| SUR-PRINT-003 | Select `--output-format json` | One JSON result with text, session and usage metadata | Model/tool failure payload and exit status | Usage-gated; `nox -p --output-format json` |
+| SUR-PRINT-004 | Select `--output-format stream-json` | Ordered newline-delimited events ending in result and metadata | Slow consumer, broken pipe, truncated terminal stream | Usage-gated; `nox -p --output-format stream-json` |
+| SUR-PRINT-005 | Add `--verbose --include-partial-messages` to stream output | Partial text delta events arrive before complete message | Empty delta, interrupted stream, terminal result after backpressure | Usage-gated; nox stream option |
+| SUR-PRINT-006 | Supply valid `--json-schema` with JSON output | `structured_output` follows the schema while metadata remains available | Invalid schema rejected before run; format annotation is not enforced | Usage-gated; nox structured output |
+| SUR-PRINT-007 | Use `--input-format stream-json` | Framed input messages drive a live print-mode session | Malformed frame, EOF, slow producer, interruption | Usage-gated; nox stream input |
+| SUR-PRINT-008 | Enable `--replay-user-messages` with stream input and output | Input user messages reappear on stdout as acknowledgments | Duplicate or malformed input, termination while queued | Usage-gated; nox replay flag |
+| SUR-PRINT-009 | Enable `--forward-subagent-text` in stream output | Child text/thinking messages include parent tool-use ID; nested IDs preserve hierarchy | Child failure and mixed parent/child order | Version 2.1.211+ documented; nox forwarding option |
+| SUR-PRINT-010 | Enable `--include-hook-events` in stream output | Hook lifecycle events stream around startup and tool activity | Hook denial, invalid output, slow progress | Installed help; nox hook event option |
+| SUR-PRINT-011 | Inspect `system/init` in stream output | First ordinary event reports model, tools, extensions, and optional protocol capabilities | Startup event before init; skipped plugin or server error fields | Versioned fields; nox init event |
+| SUR-PRINT-012 | Trigger a retryable API failure | `system/api_retry` reports attempt, delay, status, and category before retry | Exhaustion, auth failure, missing response | Usage-gated; nox retry event |
+| SUR-PRINT-013 | Send SIGTERM to a running print session | Exit 143; unfinished turn remains resumable; running command tree terminates | Permission prompt unanswered, command killed, `SessionEnd` hook | Local signal plus usage gate; nox process signal behavior |
+| SUR-PRINT-014 | Complete print run with background shell task | Shell ends after short post-result grace period | Late output and process cleanup | Usage-gated; nox print lifecycle |
+| SUR-PRINT-015 | Complete print run with background subagent/workflow/monitor | Process waits for work, then includes result or times out | Idle ceiling, watch timeout, partial result dropped | Usage-gated; nox print lifecycle |
+
+The same guide calls out CI configuration, bare-mode loading, MCP startup diagnostics, and cloud-session print interactions. They need separate leaves under SUR-003, SUR-006, and SUR-010 where they own state or availability; no broad row above closes those families.
