@@ -246,15 +246,15 @@
 
 ### Verification
 
-- [ ] T014 [P] [US1] Add faux-provider and isolated repository scenarios for read, search, edit, command, failure, and denial behavior in `packages/coding-agent/test/suite/parity-core-workflow.test.ts`, keyed to the US1 leaf IDs in `specs/001-add-feature-parity/reference/scenarios.md`.
-- [ ] T015 [P] [US1] Define terminal-state comparison fixtures for US1 in `specs/001-add-feature-parity/reference/pi-visuals.md`; require an approved constitution amendment for any proposed visual exception.
+- [X] T014 [P] [US1] Add faux-provider and isolated repository scenarios for read, search, edit, command, failure, and denial behavior in `packages/coding-agent/test/suite/parity-core-workflow.test.ts`, keyed to the US1 leaf IDs in `specs/001-add-feature-parity/reference/scenarios.md`.
+- [X] T015 [P] [US1] Define terminal-state comparison fixtures for US1 in `specs/001-add-feature-parity/reference/pi-visuals.md`; require an approved constitution amendment for any proposed visual exception.
 
 ### Implementation
 
-- [ ] T016 [US1] Implement the observed context-discovery and prompt-handling leaf contracts in `packages/coding-agent/src/core/resource-loader.ts` and `packages/coding-agent/src/core/agent-session.ts` without changing unrelated Pi loading behavior.
-- [ ] T017 [US1] Implement observed tool availability, approval handoff, execution result, and failure semantics for core file/search/command tools in `packages/coding-agent/src/utils/tools-manager.ts` and `packages/coding-agent/src/core/agent-session.ts`.
-- [ ] T018 [US1] Integrate observed tool activity, error, and recovery states into existing Pi components in `packages/coding-agent/src/modes/interactive/components/tool-execution.ts` and `packages/coding-agent/src/modes/interactive/interactive-mode.ts`.
-- [ ] T019 [US1] Resolve every US1 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md`, run the focused tests in `packages/coding-agent/test/suite/parity-core-workflow.test.ts`, and document Pi visual comparison results in `specs/001-add-feature-parity/reference/pi-visuals.md`.
+- [X] T016 [US1] Implement the observed context-discovery and prompt-handling leaf contracts in `packages/coding-agent/src/core/resource-loader.ts` and `packages/coding-agent/src/core/agent-session.ts` without changing unrelated Pi loading behavior.
+- [X] T017 [US1] Implement observed tool availability, approval handoff, execution result, and failure semantics for core file/search/command tools in `packages/coding-agent/src/utils/tools-manager.ts` and `packages/coding-agent/src/core/agent-session.ts`.
+- [X] T018 [US1] Integrate observed tool activity, error, and recovery states into existing Pi components in `packages/coding-agent/src/modes/interactive/components/tool-execution.ts` and `packages/coding-agent/src/modes/interactive/interactive-mode.ts`.
+- [X] T019 [US1] Resolve every US1 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md`, run the focused tests in `packages/coding-agent/test/suite/parity-core-workflow.test.ts`, and document Pi visual comparison results in `specs/001-add-feature-parity/reference/pi-visuals.md`.
 
 ### Core workflow reference observations
 
@@ -264,9 +264,9 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 - [X] T055 [US1] Observe US1-SEARCH-PATH-001 in an authorized disposable repository: confirm installed path-search availability, matching paths, no-match, and invalid-pattern behavior in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/tools/claude-search.ts` and `find.ts`; then have T013 create implementation and verification tasks.
 - [X] T056 [US1] Observe US1-EDIT-001 in an authorized disposable repository: capture approval, exact file delta, denied edit, and failed edit without unrelated writes in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/utils/tools-manager.ts`; then have T013 create implementation and verification tasks.
 - [X] T057 [US1] Observe US1-COMMAND-001 in an authorized disposable repository: capture permission decision, stdout/stderr, nonzero exit, and interruption for harmless commands in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/utils/tools-manager.ts`; then have T013 create implementation and verification tasks.
-- [ ] T058 [US1] Observe US1-DENY-001 for parent US1-EDIT-001 in an authorized disposable repository: refuse a proposed targeted edit and capture prompt, decision, error, unchanged file, and follow-up state in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
+- [X] T058 [US1] Observe US1-DENY-001 for parent US1-EDIT-001 in an authorized disposable repository: refuse a proposed targeted edit and capture prompt, decision, error, unchanged file, and follow-up state in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
 - [X] T059 [US1] Observe US1-FAIL-001 for parent US1-COMMAND-001 in an authorized disposable repository: trigger a harmless command with nonzero exit and capture result shape, stdout/stderr, side effects, and retry behavior in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
-- [ ] T060 [US1] Observe US1-RECOVER-001 for parent US1-COMMAND-001 in the same authorized session after that nonzero command: capture history, next actions, and a successful continuation in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
+- [X] T060 [US1] Observe US1-RECOVER-001 for parent US1-COMMAND-001 in the same authorized session after that nonzero command: capture history, next actions, and a successful continuation in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
 - [X] T061 [US1] Observe US1-SEARCH-CONTENT-001 in an authorized disposable repository: confirm installed content-search availability, matching text, no-match, and invalid-pattern behavior in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/tools/claude-search.ts` and `grep.ts`; then have T013 create implementation and verification tasks.
 
 ### Feature-family checkpoints

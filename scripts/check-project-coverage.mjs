@@ -61,7 +61,7 @@ export function aggregateCoverage(reports, expectedOwners) {
 }
 
 function childEnvironment(home) {
-	const allowed = ["PATH", "TMPDIR", "TMP", "TEMP", "LANG", "LC_ALL", "TZ", "SystemRoot", "COMSPEC", "PATHEXT"];
+	const allowed = ["PATH", "TMPDIR", "TMP", "TEMP", "LANG", "LC_ALL", "TZ", "SystemRoot", "COMSPEC", "PATHEXT", "COLORTERM", "TERM"];
 	const entries = allowed.filter((key) => process.env[key] !== undefined).map((key) => [key, process.env[key]]);
 	return {
 		...Object.fromEntries(entries),
@@ -69,7 +69,6 @@ function childEnvironment(home) {
 		XDG_CONFIG_HOME: home,
 		PI_AGENT_DIR: join(home, "pi-agent"),
 		PI_OFFLINE: "1",
-		NO_COLOR: "1",
 		NODE_OPTIONS: `--import=${join(ROOT, "scripts", "offline-test-guard.mjs")}`,
 	};
 }
