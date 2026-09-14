@@ -111,3 +111,27 @@ Source: [current CLI reference](https://code.claude.com/docs/en/cli-usage) and [
 | SUR-LIMIT-006 | `-p --max-turns` with bounded run | Error when turn limit reached; queued stream message starts another turn with its own limit | Zero/invalid value and queued message at boundary | Documented flag absent from installed help; nox turn limit pending parser confirmation |
 
 Budget and usage records must use synthetic provider responses in nox tests and redacted reference traces; no ad hoc paid threshold probe is authorized while the reported weekly cap is active.
+
+## Remote-control leaves (SUR-006)
+
+Source: [current remote-control guide](https://code.claude.com/docs/en/remote-control), read 2026-09-14. Installed `remote-control --help` failed its account gate before printing help; [the raw observation](observations/help-remote-control-2026-09-14.txt) is discovery evidence for that failure only. Remote sessions execute locally while browser/mobile devices provide another interface. The controls below are candidate nox surfaces; service behavior remains `gated-unverified`.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-RC-001 | Start `remote-control` server; accept one-time confirmation | Local server runs and displays session URL/QR; decline exits without server | Ineligible account, untrusted workspace, declined consent | Subscription and policy gate; `nox remote-control` |
+| SUR-RC-002 | Start interactive session with `--remote-control` and optional name | Local TUI remains usable while remote device connects | Eligibility failure notifies after interactive start | Subscription and policy gate; `nox --remote-control` |
+| SUR-RC-003 | Toggle `/remote-control` or `/rc` in an active session | Existing conversation becomes remotely accessible or disconnects | Declined consent, failed connect, repeated toggle | Subscription and policy gate; Pi command |
+| SUR-RC-004 | Connect from browser or mobile using URL/QR | Same local session, tools, files, and progress visible on both surfaces | Invalid link, expired session, unauthorized device | Service/client gate; nox remote link |
+| SUR-RC-005 | Send prompt or permission response from either surface | One shared conversation state and ordered tool decisions | Simultaneous messages and dropped device | Service/client gate; nox session sync |
+| SUR-RC-006 | Upload image or file from remote device | Image enters message; other file downloads locally and is referenced | Invalid file, oversized upload, failed download | Service/client gate; nox attachment transport |
+| SUR-RC-007 | Lose network or sleep, then reconnect | Messages, permission prompts, and subtask status queue and replay | Duplicate or stale operation after reconnect | Service/client gate; nox reconnection |
+| SUR-RC-008 | Open local connection-status panel or indicator | Link/QR/status shown; failure reason persists in UI | Narrow terminal hides indicator; takeover or missing remote session | Service/client gate; Pi-styled status |
+| SUR-RC-009 | Resume server with `--continue` or `--session-id` | Prior served session returns if eligible | Conflicting spawn/capacity flags, absent session | Version 2.1.200+ documented; nox server resume |
+| SUR-RC-010 | Configure `--spawn` same-dir, worktree, or session | On-demand sessions share directory, isolate, or reject extras | Missing git repository, concurrent edits, unsupported mode | Service and git gate; nox server spawn mode |
+| SUR-RC-011 | Configure capacity and pre-created session | Concurrent sessions limited; optional first session starts in current directory | Limit reached, incompatible single-session mode | Service gate; nox server capacity |
+| SUR-RC-012 | Configure server permission mode or sandbox | Created sessions inherit controls | Invalid mode, denied tool, sandbox refusal | Policy gate; nox server policy |
+| SUR-RC-013 | Place global flag before server subcommand | Allowed global flags pass; settings-affecting flags reject before server start | Dropped setting, mixed argument order | Installed help unavailable; nox argument validation |
+| SUR-RC-014 | Attempt use with API key, alternate API endpoint, disabled feature flags, or managed policy | Eligibility refusal; no remote session created | Recover with eligible login/configuration or admin enablement | Account/policy gate; nox eligibility check |
+| SUR-RC-015 | End, archive, or take over session from another device | Local indicator and link update while local process continues or reopens | Missing server record, conflicting takeover | Service/client gate; nox remote status |
+
+Trusted-device enrollment, mobile push notifications, web-cloud session creation, teleport, and remote troubleshooting need separate leaves. T005 and T010 remain open.

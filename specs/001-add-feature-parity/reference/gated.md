@@ -71,5 +71,20 @@
 | SUR-LIMIT-004 | Main-run budget threshold and error unobserved | Controlled faux provider or restored allowance with explicit low-cost fixture |
 | SUR-LIMIT-005 | Child budget sharing and concurrent cancellation unobserved | Controlled faux provider with multiple children; confirm installed availability |
 | SUR-LIMIT-006 | Installed parser availability and turn-limit behavior unobserved | Safe parser check, then restored allowance with queued stream input |
+| SUR-RC-001 | Server help and launch blocked by account eligibility | Eligible authenticated account; isolated project, consent yes/no, and URL/QR capture with tokens redacted |
+| SUR-RC-002 | Interactive flag startup and failure notification unobserved | Eligible account plus disposable session; ineligible case without sensitive output |
+| SUR-RC-003 | Active-session command toggle and consent unobserved | Eligible account; disposable session with connect/disconnect and declined consent |
+| SUR-RC-004 | Browser/mobile connection and shared local environment unobserved | Eligible account and authorized second device; synthetic files only |
+| SUR-RC-005 | Cross-surface message and permission order unobserved | Eligible account and second device; synthetic concurrent prompts and denied tool |
+| SUR-RC-006 | Remote attachment download and failure behavior unobserved | Eligible account and second device; synthetic image/file and invalid/failed transfer |
+| SUR-RC-007 | Reconnection queue and replay unobserved | Eligible account; controlled network interruption in disposable session |
+| SUR-RC-008 | Indicator, panel, and takeover failure states unobserved | Eligible account; narrow/wide Pi terminal and second-device takeover fixture |
+| SUR-RC-009 | Server session resume and conflicting flags unobserved | Eligible account; saved disposable session and parser conflict cases |
+| SUR-RC-010 | Server spawn-mode isolation and rejection unobserved | Eligible account; disposable git repository and same-dir/worktree/session modes |
+| SUR-RC-011 | Capacity and pre-creation boundary unobserved | Eligible account; bounded disposable server with capacity and no-precreate variants |
+| SUR-RC-012 | Inherited permission and sandbox rules unobserved | Eligible account; synthetic denied file/command fixture under each mode |
+| SUR-RC-013 | Global/subcommand argument acceptance unobserved | Eligible account for help; safe parser cases for allowed and rejected flag order |
+| SUR-RC-014 | Endpoint, token, feature flag, and managed-policy refusals unobserved | Eligible test account or policy fixture; no live credential material recorded |
+| SUR-RC-015 | Remote end/archive/takeover lifecycle unobserved | Eligible account and second device; disposable session with local status trace |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
