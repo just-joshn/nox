@@ -196,6 +196,8 @@
 - [X] T243 [US1] Observe zero-match count mode with `head_limit: 1` and no offset under localhost-only isolation; add the nox boundary test, verify harness/focused tests and `npm run check`, then commit locally.
 - [X] T244 [US1] Observe count mode with one matching synthetic file, `head_limit: 1`, and explicit `offset: 0` under localhost-only isolation; add the nox boundary test, verify harness/focused tests and `npm run check`, then commit locally.
 - [X] T245 [US1] Observe Grep with an unknown file `type` under localhost-only isolation; compare the reference's error status to nox, verify harness/focused tests and `npm run check`, then commit locally.
+- [X] T246 [US1] Observe Grep with an unsupported `output_mode` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
+- [ ] T247 [US1] Compare nox's unsupported Grep `output_mode` behavior with T246; write a failing test if it falls through, reject the invalid mode at the explicit adapter boundary, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
