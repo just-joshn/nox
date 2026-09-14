@@ -383,6 +383,21 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep files mode offset selects the second file and annotates the header", async () => {
+		writeFileSync(join(cwd, "second.txt"), "alpha\nbeta\n");
+		utimesSync(join(cwd, "fixture.txt"), 1_600_000_000, 1_600_000_000);
+		utimesSync(join(cwd, "second.txt"), 1_700_000_000, 1_700_000_000);
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "files_with_matches", head_limit: 1, offset: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file offset: 1\nfixture.txt" }]);
+	});
+
 	it("Grep -C includes the observed context line format", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-C");
