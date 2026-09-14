@@ -48,7 +48,21 @@ describe("frozen Pi terminal read-tool visuals", () => {
 					ui.requestRender();
 					await terminal.waitForRender();
 					const error = { viewport: terminal.getViewport(), cursor: terminal.getCursorPosition() };
-					expect({ width, theme: themeName, request, error, ansi: terminal.writes }).toMatchSnapshot();
+					const retry = new ToolExecutionComponent(
+						"read",
+						"visual-read-retry",
+						{ path: "notes.txt" },
+						{},
+						createReadToolDefinition(cwd),
+						ui,
+						cwd,
+					);
+					ui.addChild(retry);
+					retry.updateResult({ content: [{ type: "text", text: "one\ntwo" }], isError: false });
+					ui.requestRender();
+					await terminal.waitForRender();
+					const recovery = { viewport: terminal.getViewport(), cursor: terminal.getCursorPosition() };
+					expect({ width, theme: themeName, request, error, recovery, ansi: terminal.writes }).toMatchSnapshot();
 				} finally {
 					ui.stop();
 					initTheme("dark");

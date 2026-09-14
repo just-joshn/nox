@@ -13,6 +13,11 @@ exports[`frozen Pi terminal read-tool visuals > dark at 40 columns 1`] = `
 [2K[48;2;60;40;40m                                        [49m[0m]8;;
 [2K[48;2;60;40;40m [38;2;128;128;128mNo such file[39m                           [49m[0m]8;;
 [2K[48;2;60;40;40m                                        [49m[0m]8;;[?2026l",
+    "[?2026h
+[2K[0m]8;;
+[2K[48;2;40;50;40m                                        [49m[0m]8;;
+[2K[48;2;40;50;40m [38;2;212;212;212mread[39m [38;2;138;190;183mnotes.txt[39m                         [49m[0m]8;;
+[2K[48;2;40;50;40m                                        [49m[0m]8;;[?2026l",
   ],
   "error": {
     "cursor": {
@@ -30,6 +35,38 @@ exports[`frozen Pi terminal read-tool visuals > dark at 40 columns 1`] = `
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
+  "recovery": {
+    "cursor": {
+      "x": 40,
+      "y": 9,
+    },
+    "viewport": [
+      "",
+      "                                        ",
+      " read notes.txt                         ",
+      "                                        ",
+      " No such file                           ",
+      "                                        ",
+      "",
+      "                                        ",
+      " read notes.txt                         ",
+      "                                        ",
       "",
       "",
       "",
@@ -96,6 +133,11 @@ exports[`frozen Pi terminal read-tool visuals > dark at 80 columns 1`] = `
 [2K[48;2;60;40;40m                                                                                [49m[0m]8;;
 [2K[48;2;60;40;40m [38;2;128;128;128mNo such file[39m                                                                   [49m[0m]8;;
 [2K[48;2;60;40;40m                                                                                [49m[0m]8;;[?2026l",
+    "[?2026h
+[2K[0m]8;;
+[2K[48;2;40;50;40m                                                                                [49m[0m]8;;
+[2K[48;2;40;50;40m [38;2;212;212;212mread[39m [38;2;138;190;183mnotes.txt[39m                                                                 [49m[0m]8;;
+[2K[48;2;40;50;40m                                                                                [49m[0m]8;;[?2026l",
   ],
   "error": {
     "cursor": {
@@ -113,6 +155,38 @@ exports[`frozen Pi terminal read-tool visuals > dark at 80 columns 1`] = `
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
+  "recovery": {
+    "cursor": {
+      "x": 80,
+      "y": 9,
+    },
+    "viewport": [
+      "",
+      "                                                                                ",
+      " read notes.txt                                                                 ",
+      "                                                                                ",
+      " No such file                                                                   ",
+      "                                                                                ",
+      "",
+      "                                                                                ",
+      " read notes.txt                                                                 ",
+      "                                                                                ",
       "",
       "",
       "",
@@ -179,6 +253,11 @@ exports[`frozen Pi terminal read-tool visuals > dark at 120 columns 1`] = `
 [2K[48;2;60;40;40m                                                                                                                        [49m[0m]8;;
 [2K[48;2;60;40;40m [38;2;128;128;128mNo such file[39m                                                                                                           [49m[0m]8;;
 [2K[48;2;60;40;40m                                                                                                                        [49m[0m]8;;[?2026l",
+    "[?2026h
+[2K[0m]8;;
+[2K[48;2;40;50;40m                                                                                                                        [49m[0m]8;;
+[2K[48;2;40;50;40m [38;2;212;212;212mread[39m [38;2;138;190;183mnotes.txt[39m                                                                                                         [49m[0m]8;;
+[2K[48;2;40;50;40m                                                                                                                        [49m[0m]8;;[?2026l",
   ],
   "error": {
     "cursor": {
@@ -196,6 +275,38 @@ exports[`frozen Pi terminal read-tool visuals > dark at 120 columns 1`] = `
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
+  "recovery": {
+    "cursor": {
+      "x": 120,
+      "y": 9,
+    },
+    "viewport": [
+      "",
+      "                                                                                                                        ",
+      " read notes.txt                                                                                                         ",
+      "                                                                                                                        ",
+      " No such file                                                                                                           ",
+      "                                                                                                                        ",
+      "",
+      "                                                                                                                        ",
+      " read notes.txt                                                                                                         ",
+      "                                                                                                                        ",
       "",
       "",
       "",
@@ -262,6 +373,11 @@ exports[`frozen Pi terminal read-tool visuals > light at 40 columns 1`] = `
 [2K[48;2;240;232;232m                                        [49m[0m]8;;
 [2K[48;2;240;232;232m [38;2;108;108;108mNo such file[39m                           [49m[0m]8;;
 [2K[48;2;240;232;232m                                        [49m[0m]8;;[?2026l",
+    "[?2026h
+[2K[0m]8;;
+[2K[48;2;232;240;232m                                        [49m[0m]8;;
+[2K[48;2;232;240;232m [38;2;31;35;40mread[39m [38;2;90;128;128mnotes.txt[39m                         [49m[0m]8;;
+[2K[48;2;232;240;232m                                        [49m[0m]8;;[?2026l",
   ],
   "error": {
     "cursor": {
@@ -279,6 +395,38 @@ exports[`frozen Pi terminal read-tool visuals > light at 40 columns 1`] = `
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
+  "recovery": {
+    "cursor": {
+      "x": 40,
+      "y": 9,
+    },
+    "viewport": [
+      "",
+      "                                        ",
+      " read notes.txt                         ",
+      "                                        ",
+      " No such file                           ",
+      "                                        ",
+      "",
+      "                                        ",
+      " read notes.txt                         ",
+      "                                        ",
       "",
       "",
       "",
@@ -345,6 +493,11 @@ exports[`frozen Pi terminal read-tool visuals > light at 80 columns 1`] = `
 [2K[48;2;240;232;232m                                                                                [49m[0m]8;;
 [2K[48;2;240;232;232m [38;2;108;108;108mNo such file[39m                                                                   [49m[0m]8;;
 [2K[48;2;240;232;232m                                                                                [49m[0m]8;;[?2026l",
+    "[?2026h
+[2K[0m]8;;
+[2K[48;2;232;240;232m                                                                                [49m[0m]8;;
+[2K[48;2;232;240;232m [38;2;31;35;40mread[39m [38;2;90;128;128mnotes.txt[39m                                                                 [49m[0m]8;;
+[2K[48;2;232;240;232m                                                                                [49m[0m]8;;[?2026l",
   ],
   "error": {
     "cursor": {
@@ -362,6 +515,38 @@ exports[`frozen Pi terminal read-tool visuals > light at 80 columns 1`] = `
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
+  "recovery": {
+    "cursor": {
+      "x": 80,
+      "y": 9,
+    },
+    "viewport": [
+      "",
+      "                                                                                ",
+      " read notes.txt                                                                 ",
+      "                                                                                ",
+      " No such file                                                                   ",
+      "                                                                                ",
+      "",
+      "                                                                                ",
+      " read notes.txt                                                                 ",
+      "                                                                                ",
       "",
       "",
       "",
@@ -428,6 +613,11 @@ exports[`frozen Pi terminal read-tool visuals > light at 120 columns 1`] = `
 [2K[48;2;240;232;232m                                                                                                                        [49m[0m]8;;
 [2K[48;2;240;232;232m [38;2;108;108;108mNo such file[39m                                                                                                           [49m[0m]8;;
 [2K[48;2;240;232;232m                                                                                                                        [49m[0m]8;;[?2026l",
+    "[?2026h
+[2K[0m]8;;
+[2K[48;2;232;240;232m                                                                                                                        [49m[0m]8;;
+[2K[48;2;232;240;232m [38;2;31;35;40mread[39m [38;2;90;128;128mnotes.txt[39m                                                                                                         [49m[0m]8;;
+[2K[48;2;232;240;232m                                                                                                                        [49m[0m]8;;[?2026l",
   ],
   "error": {
     "cursor": {
@@ -445,6 +635,38 @@ exports[`frozen Pi terminal read-tool visuals > light at 120 columns 1`] = `
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
+  "recovery": {
+    "cursor": {
+      "x": 120,
+      "y": 9,
+    },
+    "viewport": [
+      "",
+      "                                                                                                                        ",
+      " read notes.txt                                                                                                         ",
+      "                                                                                                                        ",
+      " No such file                                                                                                           ",
+      "                                                                                                                        ",
+      "",
+      "                                                                                                                        ",
+      " read notes.txt                                                                                                         ",
+      "                                                                                                                        ",
       "",
       "",
       "",
