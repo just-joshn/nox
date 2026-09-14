@@ -21,16 +21,17 @@
 
 ## First US1 slice gate
 
-Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with pending scenarios in [scenarios.md](scenarios.md). The local read request exited before tool dispatch because the host is not logged in ([observation](observations/us1-unauthenticated.txt)). This is the only observed failure path; it does not establish normal, tool-failure, denial, or recovery behavior. The target paths below are existing nox files, not claims that parity is implemented.
+Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with pending scenarios in [scenarios.md](scenarios.md). Only a local read request was probed; it exited before tool dispatch because the host is not logged in ([observation](observations/us1-unauthenticated.txt)). No other leaf was probed, and this failure does not establish normal, tool-failure, denial, or recovery behavior. The target paths below are existing nox files, not claims that parity is implemented.
 
 | Leaf ID | Observation and scenario | nox target | Evidence task | Implementation and verification task |
 |---------|--------------------------|------------|---------------|--------------------------------------|
-| US1-READ-001 | `US1-READ-NORMAL` pending; shared auth failure observed | `packages/coding-agent/src/utils/tools-manager.ts` | T054 | T013 must create after normal/failure observations |
-| US1-SEARCH-001 | `US1-SEARCH-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T055 | T013 must create after normal/failure observations |
+| US1-READ-001 | `US1-READ-NORMAL` pending; auth failure observed for this request only | `packages/coding-agent/src/utils/tools-manager.ts` | T054 | T013 must create after normal/failure observations |
+| US1-SEARCH-PATH-001 | `US1-SEARCH-PATH-NORMAL/NO-MATCH/INVALID` pending; not probed | `packages/coding-agent/src/utils/tools-manager.ts` | T055 | T013 must create after normal/failure observations |
+| US1-SEARCH-CONTENT-001 | `US1-SEARCH-CONTENT-NORMAL/NO-MATCH/INVALID` pending; not probed | `packages/coding-agent/src/utils/tools-manager.ts` | T061 | T013 must create after normal/failure observations |
 | US1-EDIT-001 | `US1-EDIT-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T056 | T013 must create after normal/failure observations |
 | US1-COMMAND-001 | `US1-COMMAND-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T057 | T013 must create after normal/failure observations |
-| US1-DENY-001 | `US1-DENY-FAILURE` pending | `packages/coding-agent/src/core/agent-session.ts` | T058 | T013 must create after denial observation |
-| US1-FAIL-001 | `US1-TOOL-FAILURE` pending | `packages/coding-agent/src/core/agent-session.ts` | T059 | T013 must create after tool-failure observation |
-| US1-RECOVER-001 | `US1-RECOVER-INTERACTION` pending | `packages/coding-agent/src/core/agent-session.ts` | T060 | T013 must create after recovery observation |
+| US1-DENY-001 | `US1-EDIT-DENY` pending; parent `US1-EDIT-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T058 | T013 must create after denial observation |
+| US1-FAIL-001 | `US1-COMMAND-FAILURE` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T059 | T013 must create after command-failure observation |
+| US1-RECOVER-001 | `US1-COMMAND-RECOVER` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T060 | T013 must create after command-recovery observation |
 
-T002–T006 remain open. T054–T060 require authorized reference access and isolated fixtures. T013 cannot yet create evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.
+T002–T006 remain open. T054–T061 require authorized reference access and isolated fixtures. T013 cannot yet create evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.
