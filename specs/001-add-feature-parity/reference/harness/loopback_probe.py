@@ -196,7 +196,7 @@ def main(executable: str, mode: str = "normal") -> int:
     with tempfile.TemporaryDirectory(prefix="nox-loopback-read-") as root:
         workspace, fixture, outside = prepare_workspace(root, mode)
         read_path = "../outside.txt" if outside else "missing.txt" if mode == "missing" else "fixture.txt"
-        state = ProbeState(read_path=read_path, catalog=mode in {"bare-tools", "default-tools"})
+        state = ProbeState(read_path=read_path, catalog=mode in {"bare-tools", "default-tools", "glob-tools"})
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
@@ -207,14 +207,16 @@ def main(executable: str, mode: str = "normal") -> int:
             "ANTHROPIC_API_KEY": "sk-ant-api03-synthetic",
             "ANTHROPIC_BASE_URL": f"http://127.0.0.1:{server.server_port}",
         }
-        command = [executable, *([] if mode == "default-tools" else ["--bare"]), "-p", f"Read {read_path}",
-                   "--model", "sonnet", "--output-format", "json"]
-        if mode == "default-tools":
+        command = [executable, *([] if mode in {"default-tools", "glob-tools"} else ["--bare"]),
+                   "-p", f"Read {read_path}", "--model", "sonnet", "--output-format", "json"]
+        if mode == "glob-tools":
+            command.extend(["--tools", "Glob"])
+        if mode in {"default-tools", "glob-tools"}:
             if sys.platform != "darwin":
                 raise SystemExit("default-tools requires the verified macOS sandbox")
             profile = '(version 1)(allow default)(deny network*)(allow network-outbound (remote ip "localhost:*"))'
             command = ["sandbox-exec", "-p", profile, *command]
-        if mode != "outside": command.extend(["--allowedTools", "Read"])
+        if mode not in {"outside", "glob-tools"}: command.extend(["--allowedTools", "Read"])
         try:
             process = subprocess.run(command, cwd=workspace, env=env, capture_output=True, text=True, timeout=30)
             output = json.loads(process.stdout)
@@ -241,6 +243,12 @@ def main(executable: str, mode: str = "normal") -> int:
             server.shutdown()
             server.server_close()
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
+    if mode == "glob-tools":
+        matched = (summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
+                   and summary.get("stderr_empty") is True and any(
+                       request.get("catalog", {}).get("Glob") is True
+                       for request in summary.get("requests", [])
+                   ))
     if mode in {"bare-tools", "default-tools"}:
         matched = matched and any(
             request.get("catalog", {}).get("Read") is True
@@ -248,6 +256,7 @@ def main(executable: str, mode: str = "normal") -> int:
             and request["catalog"].get("Grep") is False
             for request in summary.get("requests", [])
         )
+    if state.catalog:
         summary = {**summary, "requests": [
             {key: value for key, value in request.items() if key != "tool_names"}
             for request in summary.get("requests", [])
@@ -257,6 +266,6 @@ def main(executable: str, mode: str = "normal") -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools", "default-tools"}):
-        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools|default-tools]")
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools", "default-tools", "glob-tools"}):
+        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools|default-tools|glob-tools]")
     raise SystemExit(main(sys.argv[1], mode=sys.argv[2] if len(sys.argv) == 3 else "normal"))
