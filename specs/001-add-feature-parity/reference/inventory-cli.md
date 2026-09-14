@@ -346,7 +346,7 @@ The [current official command reference](https://code.claude.com/docs/en/command
 
 ## Documented keyboard shortcut seeds
 
-The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mode) supplies these distinct key tokens across general, editing, display, transcript, and Vim contexts. A token may have multiple context-dependent actions (for example, `Ctrl+T` and `Ctrl+E`). This is a discovery index, not a complete leaf enumeration; context, platform alternatives, gestures, and failure states remain to be split.
+The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mode) supplies these distinct key tokens across general, editing, display, transcript, and Vim contexts. A token may have multiple context-dependent actions (for example, `Ctrl+T` and `Ctrl+E`). This is a discovery index. Context-specific leaves are in [the keyboard inventory](inventory-cli-keyboard.md); remaining gestures and failure states stay unobserved.
 
 | ID | Key token | Discovery | Behavior evidence |
 |----|-----------|-----------|-------------------|
