@@ -154,9 +154,10 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const noticeStart = result.details ? text.lastIndexOf("\n\n[") : -1;
 			const matchText = noticeStart >= 0 ? text.slice(0, noticeStart) : text;
 			const notice = noticeStart >= 0 ? text.slice(noticeStart) : "";
-			const searchPrefix = selected.path
-				? path.relative(ctx?.cwd || cwd, resolveToCwd(selected.path, ctx?.cwd || cwd)).replaceAll("\\", "/")
-				: "";
+			const targetPath = selected.path ? resolveToCwd(selected.path, ctx?.cwd || cwd) : undefined;
+			const directFile = targetPath ? (await stat(targetPath)).isFile() : false;
+			const searchPrefix =
+				targetPath && !directFile ? path.relative(ctx?.cwd || cwd, targetPath).replaceAll("\\", "/") : "";
 			const prefixFile = (file: string) => (searchPrefix ? path.posix.join(searchPrefix, file) : file);
 			if (outputMode === "content" || (outputMode === undefined && selected.path)) {
 				const entries = await Promise.all(
@@ -165,7 +166,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 						if (!match) return { line, file: "", mtime: -Infinity, index };
 						const file = prefixFile(match[1]);
 						return {
-							line: `${file}${match[2]}${line.slice(match[0].length)}`,
+							line: `${directFile ? "" : file}${directFile ? match[2].slice(1, -1) : match[2]}${line.slice(match[0].length)}`,
 							file,
 							mtime: (await stat(path.join(ctx?.cwd || cwd, file))).mtimeMs,
 							index,
