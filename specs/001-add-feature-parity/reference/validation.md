@@ -262,3 +262,5 @@ The installed top-level help has eight short aliases. Four (`-c`, `-h`, `-p`, an
 T220 compared option lines and short aliases in the captured nested `help-*.txt` files with inventory rows linked to each capture. All ordinary nested options have a corresponding row. The two daemon capture exceptions are repeated parent help, already represented by CLI-552; no new leaf was warranted. Invocation behavior and undocumented combinations remain open.
 
 T221 extracted 42 entries from captured nested `Commands:` blocks and matched each command path to an inventory leaf. The `plugin|plugins` usage alias was normalized to the existing plugin family; no printed nested command was missing. This is a help-surface audit, not invocation proof.
+
+T222 ran installed `claude -v` and `claude --version` in a disposable home and cwd under `sandbox-exec` with all network access denied. Both returned exit 0, exactly `2.1.270 (Claude Code)\n` on stdout, empty stderr, and no filesystem entries. Nox's existing argument parser routes `-v` and `--version` to the same version branch; output branding and version numbers are product-specific. No provider call occurred.

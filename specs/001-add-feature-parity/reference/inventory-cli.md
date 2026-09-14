@@ -691,7 +691,7 @@ These inputs are printed by installed 2.1.270 help but were missed in the first 
 | CLI-518 | `self-hosted-runner orchestrator --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
 | CLI-563 | `-d` (short alias for `--debug`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and filtering behavior pending |
 | CLI-564 | `-n` (short alias for `--name`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and session naming pending |
-| CLI-565 | `-v` (short alias for `--version`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and version output pending |
+| CLI-565 | `-v` (short alias for `--version`) | [local help](observations/cli-help-2026-09-14.txt) | [Offline isolated comparison](observations/cli-version-short-alias-2026-09-14.txt): exit 0, identical version stdout, empty stderr and no home/cwd entries; nox parser recognizes both flags, product/version text differs by design |
 | CLI-566 | `-w` (short alias for `--worktree`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and worktree creation pending |
 
 An offline option audit of every captured `help-*.txt` file found no missing nested option names or short aliases. The `help-daemon-status` and `help-daemon-stop` captures print the shared parent daemon help; their `--help, -h` line is the existing daemon help leaf CLI-552, not a separate status or stop option. This audit covers printed help only; it does not close undocumented parser combinations or T002.

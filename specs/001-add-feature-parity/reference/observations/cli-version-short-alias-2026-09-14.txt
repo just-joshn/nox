@@ -1,0 +1,17 @@
+Installed CLI 2.1.270 on macOS; disposable empty HOME and cwd; sandbox-exec denied all network access. No credentials or model request.
+
+Input: claude -v
+Exit: 0
+Stdout: 2.1.270 (Claude Code)\n
+Stderr: empty
+Temporary-home entries after exit: none
+Temporary-cwd entries after exit: none
+
+Input: claude --version
+Exit: 0
+Stdout: 2.1.270 (Claude Code)\n
+Stderr: empty
+Temporary-home entries after exit: none
+Temporary-cwd entries after exit: none
+
+Both invocations used the same isolated environment and produced identical process results.
