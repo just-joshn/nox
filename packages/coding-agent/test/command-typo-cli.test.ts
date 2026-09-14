@@ -43,7 +43,9 @@ describe("command typo preflight", () => {
 		const result = runCli(["udpate"]);
 		expect(result.status).toBe(1);
 		expect(result.stdout).toBe("");
-		expect(result.stderr).toContain(`Did you mean ${APP_NAME} update?`);
+		expect(result.stderr).toBe(
+			`✘ unknown command "udpate"\n  └ Did you mean ${APP_NAME} update?\n\nRun ${APP_NAME} --help to list commands, or ${APP_NAME} -p "udpate" to send as a prompt.\n`,
+		);
 		expect(result.stderr).not.toContain("No API key found");
 		expect(result.sessionCreated).toBe(false);
 		expect(result.homeEntries).toEqual([]);
