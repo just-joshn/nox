@@ -50,6 +50,20 @@
 - **Alternatives considered**: A single checklist item per domain would permit missing options and edge cases.
 - **Evidence**: [Commands](https://code.claude.com/docs/en/commands), [interactive mode](https://code.claude.com/docs/en/interactive-mode), [tools](https://code.claude.com/docs/en/tools-reference), [settings](https://code.claude.com/docs/en/configuration), [permissions](https://code.claude.com/docs/en/permissions), [memory](https://code.claude.com/docs/en/memory), [skills](https://code.claude.com/docs/en/skills), [subagents](https://code.claude.com/docs/en/subagents), [agent teams](https://code.claude.com/docs/en/agent-teams), [hooks](https://code.claude.com/docs/en/hooks), [MCP](https://code.claude.com/docs/en/mcp), [plugins](https://code.claude.com/docs/en/plugins-reference).
 
+## Decision: Treat security guarantees as acceptance boundaries
+
+- **Decision**: Record validation, authorization, protected side effects, and secret disclosure for each externally influenced leaf. Use synthetic credentials in isolated fixtures. If an observed reference behavior conflicts with the constitution's security guarantees, implement the secure behavior, record the discrepancy, and leave parity status open rather than claiming equivalence.
+- **Rationale**: FR-018 and SC-009 make rejection before side effects and non-disclosure measurable. A parity label cannot conceal a security violation.
+- **Alternatives considered**: Reproducing an unsafe reference outcome would violate the constitution. Calling a secure difference equivalent would make the parity audit false.
+- **Evidence**: [spec.md](spec.md), [constitution](../../.specify/memory/constitution.md).
+
+## Decision: Make test-first work and coverage explicit gates
+
+- **Decision**: For each application leaf, state its observed contract and simplest viable change, run a focused failing behavior test, implement, then run relevant unit, integration, and end-to-end checks. Add an aggregate coverage report across affected workspace packages before enforcing the project-wide 80% gate; the repository currently exposes package tests and one agent harness coverage command, not a project-wide coverage command. Keep changes limited to the owning code path with immutable replacement state.
+- **Rationale**: The amended constitution makes these quality requirements mandatory. Recording them as gates prevents the plan from treating passing parity traces alone as sufficient completion evidence.
+- **Alternatives considered**: Testing after implementation could mirror the implementation rather than constrain it. Broad refactoring would make a parity discrepancy harder to attribute.
+- **Evidence**: [constitution](../../.specify/memory/constitution.md), [spec.md](spec.md).
+
 ## Remaining evidence work
 
-The exhaustive leaf inventory, item-level observations, account-gated observations, and performance baselines are not complete. These are research tasks, not unresolved product choices. `plan.md` keeps them as explicit gates; no implementation or parity claim follows from this document alone.
+The exhaustive leaf inventory, item-level observations, account-gated observations, and performance baselines are not complete. The aggregate coverage command and baseline are also missing; task generation must add that work before the 80% gate can pass. These are evidence and tooling tasks, not unresolved product choices. `plan.md` keeps them as explicit gates; no implementation or parity claim follows from this document alone.

@@ -26,16 +26,22 @@ This model describes planning and verification records, not a mandated storage i
 
 ## Scenario and Observation
 
-- **Scenario fields**: item ID, environment fixture, initial state, action sequence, expected decisions, outputs, state and side effects, normalization rules.
-- **Observation fields**: scenario ID, run date, reference snapshot, raw evidence location, normalized result, nox result, comparison status, discrepancy ID.
+- **Scenario fields**: item ID, environment fixture, initial state, action sequence, expected decisions, outputs, state and side effects, normalization rules; for security cases, synthetic sensitive values, input validation boundary, required authorization, protected side effect, and prohibited disclosures.
+- **Observation fields**: scenario ID, run date, reference snapshot, raw evidence location, normalized result, nox result, comparison status, discrepancy ID, and security-gate result where applicable.
 - **Identity**: Scenario ID is stable across runs; observation ID includes run and environment.
-- **Validation**: Normalization rules are declared before comparison and cannot erase decisions, errors, side effects, protocol fields, or event order.
+- **Validation**: Normalization rules are declared before comparison and cannot erase decisions, errors, side effects, protocol fields, event order, or sensitive-data disclosure. A security scenario passes only when authorization and validation precede protected side effects and no prohibited value appears in output, logs, or errors.
 
 ## Discrepancy
 
 - **Fields**: item and scenario IDs, reproduction steps, expected and actual results, impact, status, resolution evidence.
 - **Status transitions**: `open` → `fixing` → `reverified` → `closed`; a regression reopens it.
 - **Validation**: Closing requires a passing fresh comparison, not an implementation-only assertion.
+
+## Project Quality Audit
+
+- **Fields**: run date, tested revision, package coverage inputs, aggregate coverage percentage, unit/integration/end-to-end results, source-size and immutable-update checks, security review findings, and evidence links.
+- **Identity**: Revision plus run date and test environment.
+- **Validation**: An application completion claim requires a reproducible aggregate coverage result of at least 80%, passing relevant test levels, and no unresolved critical security finding. Missing package data cannot be treated as covered.
 
 ## Runtime Entities
 

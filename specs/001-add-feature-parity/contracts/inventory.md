@@ -15,6 +15,7 @@ Each leaf entry MUST record:
 | Discovery provenance | Installed command, official documentation page, and restored-source candidate mapping where applicable; duplicate, obsolete, and open dispositions retained |
 | Behavior | Inputs, defaults, state transitions, outputs, errors, side effects |
 | Scenarios | Normal, failure or denial, persistence, and relevant interactions |
+| Security boundary | For external input, validation decision, required authorization, protected side effect, and sensitive values that must not be disclosed |
 | Status | Discovered, specified, implemented, verified, discrepant, or gated-unverified |
 
 Inventory completeness requires reconciliation against the installed command tree, CLI options, every current official documentation page, remotely read restored-source candidates, and every observed capability. Any unmatched source entry is a gap. The restored source is discovery evidence, not a behavioral contract or implementation source. A gated feature remains an item; it cannot be counted as verified without suitable observation.

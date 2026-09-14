@@ -16,7 +16,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Storage**: Existing session JSONL and settings files; new persisted feature state uses nox-named files and paths
 
-**Testing**: Existing unit tests, focused `node:test`/Vitest tests, `./test.sh` for non-e2e coverage, and isolated black-box comparison fixtures; `npm run check` after code changes
+**Testing**: Write a failing behavior test before each application change, then make it pass and refactor; use focused unit, integration, end-to-end, and isolated black-box comparison fixtures; add an aggregate workspace coverage command and measure project coverage against the 80% constitution gate; run `npm run check` after code changes
 
 **Target Platform**: Existing Pi-supported terminal platforms. Desktop, web, mobile, editor, browser, chat, and CI workflows are reached through nox terminal or CLI controls and connected-service bridges, with equivalent functional outcomes. Platform, account, policy, and service-gated features remain inventory items with explicit availability conditions.
 
@@ -24,7 +24,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Performance Goals**: For each timing-sensitive leaf, measure 30 runs in matched local conditions after warm-up and require nox's p95 user-visible completion time to be no more than 10% above the reference p95. Record workload, hardware, network state, sample count, and any service-imposed variance; do not claim a measured result for inaccessible features.
 
-**Constraints**: Preserve Pi visuals and unrelated behavior; no reference-product name in developed nox code, strings, commands, or configuration paths; no copied reference implementation; no parity claim for unobserved or failing features
+**Constraints**: Preserve Pi visuals and unrelated behavior; no reference-product name in developed nox code, strings, commands, or configuration paths; no copied reference implementation; no parity claim for unobserved or failing features; validate external input before protected side effects, enforce authorization, and redact secrets; keep new logic immutable, focused, and within constitution size limits
 
 **Scale/Scope**: All user-visible features of locally installed reference 2.1.270 plus documented gated surfaces, subject to version refresh before a current-release claim. The count is unknown until the inventory is completed.
 
@@ -68,8 +68,12 @@ For each leaf, the plan requires: surface and availability conditions; normal, d
 | Behavioral parity | Define observable state, output, error, side-effect, and interaction cases per item | Pass as a method; no item verified |
 | Parity verification | Pin release and retain evidence, scenarios, and discrepancy status | Pass as a method; evidence incomplete |
 | Preserve Pi foundation | Map each change to an inventory item and run Pi regression checks | Pass as a method; no change verified |
+| Evidence before changes | State assumptions, observed contract, simplest viable design, and a verifiable result before each leaf implementation | Pass as a method; leaf evidence pending |
+| Small and immutable changes | Change only the owning path, use replacement state, and check function/file size and algorithmic cost | Pass as a design rule; source not yet audited |
+| Security by default | Validate input and authorization before side effects; test redaction and abuse cases with synthetic data; stop on critical findings | Pass as a design rule; security scenarios pending |
+| Test-first completion | Run a failing behavior test before source changes, then unit/integration/end-to-end checks and an 80% project coverage audit | Pending verification; coverage unmeasured |
 
-No constitutional exception is proposed. The missing inventory is unfinished work, not a waived requirement. A reachable implementation task may begin after its leaf inventory and observed contract exist. Inaccessible features stay tracked and prevent a complete-parity claim.
+No constitutional exception is proposed. The missing inventory and unmeasured coverage are unfinished work, not waived requirements. A reachable implementation task may begin after its leaf inventory, observed contract, and failing behavior test exist. Inaccessible features stay tracked and prevent a complete-parity claim.
 
 ## Project Structure
 
@@ -115,15 +119,17 @@ No constitutional violation or exception is planned.
 ## Post-Design Constitution Check
 
 The data model and contracts require a pinned source, leaf inventory, evidence, nox-native surfaces,
-behavioral comparisons, and Pi visual checks. Any intentional visual departure requires a constitution
-amendment before implementation. These rules preserve all five principles as design constraints.
-Coverage and parity remain unverified; the inventory and reference-evidence gates below must pass before
-implementation tasks can be called complete or a full-parity release can be claimed.
+behavioral comparisons, Pi visual checks, input and authorization boundaries, and secret-redaction
+observations. Any intentional visual departure requires a constitution amendment before implementation.
+The design preserves all nine principles. Code-size, immutability, test-first execution, and 80% coverage
+remain implementation gates, not results claimed by this plan. Coverage and parity remain unverified;
+the inventory and reference-evidence gates below must pass before implementation tasks can be called
+complete or a full-parity release can be claimed.
 
 ## Delivery Sequence and Gates
 
 1. **Inventory gate**: Enumerate the installed release with CLI output, official documentation, interactive inspection, and safe probes. Remotely inspect the older restored source map for candidate features and edge cases without cloning or copying it. Record each item and gated condition in the inventory contract. Split broad categories into independently testable leaf items. Reconcile every official documentation page, installed command, and source-map candidate against the inventory; open gaps for every unmatched entry and date any obsolete rationale. For each surface-specific leaf, record the reference interaction sequence and proposed nox control before declaring it implementable.
-2. **Reference-evidence gate**: For each reachable leaf selected for implementation, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures before source work on that leaf. Mark inaccessible features `gated-unverified`, record the access or observation needed, and do not infer behavior from names alone. Gated leaves do not block source work on independently observed leaves, but they block a complete-parity claim.
-3. **Task execution**: Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations and terminal controls for surface-specific workflows; administrative command families. Compare credential storage, redaction, permission scope, and remote or extension data exposure against observed contracts. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
-4. **Verification gate**: Compare normalized observable results for each leaf item, including intermediate interactions, side effects, and failure behavior. Predeclare the Pi visual matrix by affected workflow, normal/denial/error/recovery state, supported terminal width, and theme; compare every required state. Run focused regression tests. Close discrepancies only with evidence.
-5. **Release gate**: Refresh the reference version, inventory, and affected traces. Require every inventoried item to pass and zero known discrepancies before an unqualified complete-parity claim. Report gated-unverified items separately; each prevents that claim.
+2. **Reference-evidence gate**: For each reachable leaf selected for implementation, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures before source work on that leaf. For externally supplied input, identify the protected side effect, authorization decision, and sensitive values before probing. Mark inaccessible features `gated-unverified`, record the access or observation needed, and do not infer behavior from names alone. Gated leaves do not block source work on independently observed leaves, but they block a complete-parity claim.
+3. **Task execution**: State assumptions and a minimal design for each leaf; use the constitution's planner and test-guidance roles when available; write and run its failing behavior test first. Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations and terminal controls for surface-specific workflows; administrative command families. Use focused immutable changes, validate input before protected actions, and compare credential storage, redaction, permission scope, and remote or extension data exposure against observed contracts. Use code review after source work and security review for critical findings. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
+4. **Verification gate**: Compare normalized observable results for each leaf item, including intermediate interactions, side effects, and failure behavior. Predeclare the Pi visual matrix by affected workflow, normal/denial/error/recovery state, supported terminal width, and theme; compare every required state. Run relevant unit, integration, and end-to-end tests, check invalid/empty/boundary/failure inputs, and measure project coverage against 80%. Check immutable updates, function and file limits, and absence of production debug logging. Inspect the diff for secrets, applicable injection and request-forgery defenses, authorization, rate limits, and data leaks. Close discrepancies only with evidence.
+5. **Release gate**: Refresh the reference version, inventory, and affected traces. Require every inventoried item to pass, zero known discrepancies, and the security and coverage gates before an unqualified complete-parity claim. Report gated-unverified items separately; each prevents that claim.
