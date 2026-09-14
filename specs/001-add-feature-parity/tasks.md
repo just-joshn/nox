@@ -164,6 +164,7 @@
 - [X] T211 [US1] Observe reference Grep content `head_limit: 1` across two synthetic files with controlled modification times under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's ordering-before-pagination behavior.
 - [X] T212 [US1] Observe reference Grep `output_mode: files_with_matches, head_limit: 1` across two synthetic files with controlled modification times under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's file-list pagination.
 - [X] T213 [US1] Write a failing nox test for the observed Grep file-list `head_limit: 1` result; paginate sorted explicit file results and format the observed header, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T214 [US1] Observe reference Grep `output_mode: files_with_matches, head_limit: 1` with exactly one synthetic matching file under localhost-only isolation; retain exact allowlisted header and unchanged state, then compare nox's boundary.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

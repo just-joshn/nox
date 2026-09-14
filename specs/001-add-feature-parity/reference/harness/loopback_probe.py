@@ -26,7 +26,7 @@ SEARCH_MODES = frozenset({
     "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored", "glob-fd-ignore",
     "glob-git-metadata", "grep-ignored", "grep-fd-ignore", "grep-git-metadata", "grep-hidden",
     "grep-mtime", "grep-mtime-tie", "grep-content-multiple", "grep-content-tie",
-    "grep-content-tie-reversed", "grep-content-page", "grep-files-page",
+    "grep-content-tie-reversed", "grep-content-page", "grep-files-page", "grep-files-exact",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -363,14 +363,14 @@ def main(executable: str, mode: str = "normal") -> int:
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
                            tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode in {"glob-recursive", "glob-git-metadata"} else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files", "grep-files-page"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count"} else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files", "grep-files-page", "grep-files-exact"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count"} else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
                            context_lines=1 if mode == "grep-context" else None,
                            context_side="-A" if mode == "grep-after-context" else "-B" if mode == "grep-before-context" else None,
                            file_glob="*.txt" if mode == "grep-glob-filter" else None,
-                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-content-page", "grep-files-page"} else None,
+                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-content-page", "grep-files-page", "grep-files-exact"} else None,
                            offset=1 if mode == "grep-offset" else 2 if mode == "grep-offset-end" else 0 if mode == "grep-offset-zero" else None,
                            file_type="py" if mode == "grep-type-filter" else None,
                            context_alias=1 if mode == "grep-context-alias" else None,
