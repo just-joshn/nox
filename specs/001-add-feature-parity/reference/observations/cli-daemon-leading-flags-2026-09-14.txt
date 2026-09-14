@@ -1,0 +1,13 @@
+Snapshot: installed CLI 2.1.270, macOS, isolated temporary homes, 2026-09-14
+Input: claude --dangerously-skip-permissions daemon status
+Exit: 1
+Outcome: daemon status: not running; socket path omitted; no interactive authentication output
+Temporary-home entries: .claude.json
+Input: claude --allow-dangerously-skip-permissions daemon status
+Exit: 1
+Outcome: daemon status: not running; socket path omitted; no interactive authentication output
+Temporary-home entries: .claude.json
+Input: claude --bare daemon status
+Exit: 1
+Outcome: interactive startup reached authentication; no daemon status output
+Temporary-home entries: .claude.json, backups, projects, sessions

@@ -44,3 +44,7 @@ The outside-workspace trace test failed before the harness mode was added. With 
 ## CLI typo dispatch observation (2026-09-14)
 
 In a temporary home, installed CLI 2.1.270 invoked with `udpate` exited 1 with empty stdout and a stderr suggestion for `update`; no interactive session or prompt was observed. The CLI created `.claude.json` and `backups/` in that home before exiting. The [isolated trace](observations/cli-typo-2026-09-14.txt) records only the diagnostic and entry names. This is a reference observation for CLI-519, not a nox parity result.
+
+## Leading-flag daemon dispatch observation (2026-09-14)
+
+In three isolated temporary homes, installed CLI 2.1.270 routed `--dangerously-skip-permissions daemon status` and `--allow-dangerously-skip-permissions daemon status` to daemon status, reporting an absent supervisor and exiting 1. With `--bare daemon status`, it entered interactive startup and stopped at the login check instead of printing daemon status. The [normalized trace](observations/cli-daemon-leading-flags-2026-09-14.txt) excludes socket paths and credentials. No model request was made. These observations cover CLI-520–522 routing only; they do not establish nox parity.

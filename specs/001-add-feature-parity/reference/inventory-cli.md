@@ -664,9 +664,9 @@ The [official CLI reference](https://code.claude.com/docs/en/cli-usage) also dis
 | ID | Input | Documented decision | State |
 |----|-------|---------------------|-------|
 | CLI-519 | Misspelled CLI subcommand with a close match | Suggest the closest subcommand and exit without starting a session | [Installed typo probe](observations/cli-typo-2026-09-14.txt): exit 1, empty stdout, suggestion on stderr; temporary-home config entries created; nox mapping pending |
-| CLI-520 | Leading `--dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | Documented only; introduced before installed release |
-| CLI-521 | Leading `--allow-dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | Documented only; introduced before installed release |
-| CLI-522 | Other leading flag before `daemon <subcommand>` | Start an interactive session rather than dispatching the daemon subcommand | Documented only |
+| CLI-520 | Leading `--dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | [Isolated dispatch probe](observations/cli-daemon-leading-flags-2026-09-14.txt): daemon status reached; exit 1 because supervisor absent |
+| CLI-521 | Leading `--allow-dangerously-skip-permissions` before `daemon <subcommand>` | Dispatch the daemon subcommand | [Isolated dispatch probe](observations/cli-daemon-leading-flags-2026-09-14.txt): daemon status reached; exit 1 because supervisor absent |
+| CLI-522 | Other leading flag before `daemon <subcommand>` | Start an interactive session rather than dispatching the daemon subcommand | [Isolated `--bare` probe](observations/cli-daemon-leading-flags-2026-09-14.txt): interactive startup reached login check, not daemon status |
 | CLI-523 | `daemon stop --any --keep-workers` | Stop an on-demand supervisor while leaving detached sessions running | Documented only; session lifecycle unobserved |
 | CLI-524 | `agents --json --all` | Include completed background sessions in the JSON array | Documented only; session lifecycle unobserved |
 
