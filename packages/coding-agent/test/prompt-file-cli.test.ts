@@ -12,19 +12,23 @@ function runCli(flag: string) {
 	const root = mkdtempSync(join(tmpdir(), "nox-prompt-file-cli-"));
 	const missing = join(root, "missing.txt");
 	try {
-		const result = spawnSync(process.execPath, ["--import", sourceResolverPath, cliPath, "-p", flag, missing, "noop"], {
-			cwd: root,
-			env: {
-				HOME: root,
-				[ENV_AGENT_DIR]: join(root, "agent"),
-				[ENV_SESSION_DIR]: join(root, "sessions"),
-				PI_OFFLINE: "1",
-				NO_COLOR: "1",
-				PATH: process.env.PATH ?? "",
+		const result = spawnSync(
+			process.execPath,
+			["--import", sourceResolverPath, cliPath, "-p", flag, missing, "noop"],
+			{
+				cwd: root,
+				env: {
+					HOME: root,
+					[ENV_AGENT_DIR]: join(root, "agent"),
+					[ENV_SESSION_DIR]: join(root, "sessions"),
+					PI_OFFLINE: "1",
+					NO_COLOR: "1",
+					PATH: process.env.PATH ?? "",
+				},
+				encoding: "utf8",
+				timeout: 10_000,
 			},
-			encoding: "utf8",
-			timeout: 10_000,
-		});
+		);
 		if (result.error) throw result.error;
 		return { status: result.status, stdout: result.stdout, stderr: result.stderr, missing };
 	} finally {

@@ -2,6 +2,7 @@
  * CLI argument parsing and help display
  */
 
+import { accessSync, constants, statSync } from "node:fs";
 import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
 import chalk from "chalk";
 import { APP_NAME, CONFIG_DIR_NAME, ENV_AGENT_DIR, ENV_SESSION_DIR } from "../config.ts";
@@ -70,6 +71,16 @@ export function normalizeSessionName(value: string): string | undefined {
 	return name.length > 0 ? name : undefined;
 }
 
+function promptFileError(path: string): "not found" | "cannot be read" | "is not a regular file" | undefined {
+	try {
+		if (!statSync(path).isFile()) return "is not a regular file";
+		accessSync(path, constants.R_OK);
+		return undefined;
+	} catch (error) {
+		return (error as NodeJS.ErrnoException).code === "ENOENT" ? "not found" : "cannot be read";
+	}
+}
+
 export function parseArgs(args: string[]): Args {
 	const result: Args = {
 		messages: [],
@@ -77,6 +88,8 @@ export function parseArgs(args: string[]): Args {
 		unknownFlags: new Map(),
 		diagnostics: [],
 	};
+	let inlineSystemPrompt = false;
+	let systemPromptFile: string | undefined;
 
 	for (let i = 0; i < args.length; i++) {
 		const arg = args[i];
@@ -111,9 +124,31 @@ export function parseArgs(args: string[]): Args {
 			result.apiKey = args[++i];
 		} else if (arg === "--system-prompt" && i + 1 < args.length) {
 			result.systemPrompt = args[++i];
+			inlineSystemPrompt = true;
+		} else if (arg === "--system-prompt-file") {
+			const value = args[i + 1];
+			if (value === undefined || value.startsWith("--")) {
+				result.diagnostics.push({ type: "error", message: "--system-prompt-file requires a value" });
+			} else {
+				systemPromptFile = value;
+				i++;
+			}
 		} else if (arg === "--append-system-prompt" && i + 1 < args.length) {
 			result.appendSystemPrompt = result.appendSystemPrompt ?? [];
 			result.appendSystemPrompt.push(args[++i]);
+		} else if (arg === "--append-system-prompt-file") {
+			const value = args[i + 1];
+			if (value === undefined || value.startsWith("--")) {
+				result.diagnostics.push({ type: "error", message: "--append-system-prompt-file requires a value" });
+			} else {
+				i++;
+				const error = promptFileError(value);
+				if (error) {
+					result.diagnostics.push({ type: "error", message: `Append system prompt file ${error}: ${value}` });
+				} else {
+					result.appendSystemPrompt = [...(result.appendSystemPrompt ?? []), value];
+				}
+			}
 		} else if (arg === "--name" || arg === "-n") {
 			if (i + 1 < args.length) {
 				result.name = args[++i];
@@ -260,6 +295,19 @@ export function parseArgs(args: string[]): Args {
 			result.diagnostics.push({ type: "error", message: `Unknown option: ${arg}` });
 		} else if (!arg.startsWith("-")) {
 			result.messages.push(arg);
+		}
+	}
+	if (inlineSystemPrompt && systemPromptFile !== undefined) {
+		result.diagnostics.push({
+			type: "error",
+			message: "Cannot use both --system-prompt and --system-prompt-file. Please use only one.",
+		});
+	} else if (systemPromptFile !== undefined) {
+		const error = promptFileError(systemPromptFile);
+		if (error) {
+			result.diagnostics.push({ type: "error", message: `System prompt file ${error}: ${systemPromptFile}` });
+		} else {
+			result.systemPrompt = systemPromptFile;
 		}
 	}
 
