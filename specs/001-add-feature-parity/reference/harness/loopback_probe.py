@@ -22,7 +22,7 @@ SEARCH_MODES = frozenset({
     "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
     "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
     "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
-    "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files",
+    "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files", "glob-recursive",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -195,6 +195,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "python_match" if text == "Found 1 file\nfixture.py" and tool_name == "Grep" else
                              "multiline_content" if text == "fixture.txt:1:alpha\nfixture.txt:2:beta" and tool_name == "Grep" else
                              "glob_two_files" if text == "fixture.txt\nsecond.txt" and tool_name == "Glob" else
+                             "glob_recursive" if text == "fixture.txt\nnested/fixture.txt" and tool_name == "Glob" else
                              "no_matches_found" if text == "No matches found" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
@@ -300,7 +301,7 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
         (workspace / "fixture.py").write_text(FIXTURE_CONTENT)
     if mode in {"grep-head-limit", "grep-offset", "grep-offset-end", "grep-offset-zero"}:
         fixture.write_text("alpha\nalpha\n")
-    if mode in {"glob-path", "grep-path", "grep-path-files"}:
+    if mode in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"}:
         (workspace / "nested").mkdir()
         (workspace / "nested" / "fixture.txt").write_text(FIXTURE_CONTENT)
     outside = Path(root, "outside.txt") if mode == "outside" else None
@@ -317,7 +318,7 @@ def main(executable: str, mode: str = "normal") -> int:
         state = ProbeState(read_path=read_path,
                            catalog=mode in CATALOG_MODES,
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
-                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else None,
+                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode == "glob-recursive" else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
                            output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count"} else None,
                            ignore_case=mode == "grep-ignore-case",
@@ -369,7 +370,7 @@ def main(executable: str, mode: str = "normal") -> int:
                 "python_unchanged": (workspace / "fixture.py").read_text() == FIXTURE_CONTENT
                                     if mode == "grep-type-filter" else None,
                 "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
-                                    if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
+                                    if mode in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
             }
         except (json.JSONDecodeError, ValueError):
@@ -389,7 +390,7 @@ def main(executable: str, mode: str = "normal") -> int:
         matched = ((mode not in {"grep-count-multiple", "glob-two-files"} or summary.get("second_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
                    and (mode != "grep-type-filter" or summary.get("python_unchanged") is True)
-                   and (mode not in {"glob-path", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
+                   and (mode not in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
                    and len(requests) == 3 and requests[1]["response"] == "tool"

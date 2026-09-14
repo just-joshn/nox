@@ -25,6 +25,14 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\nsecond.txt" }]);
 	});
 
+	it("Glob recursive pattern includes root and nested paths", async () => {
+		mkdirSync(join(cwd, "nested"));
+		writeFileSync(join(cwd, "nested", "fixture.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "**/*.txt" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\nnested/fixture.txt" }]);
+	});
+
 	it.each([
 		["Glob", "*.txt", "fixture.txt"],
 		["Grep", "alpha", "Found 1 file\nfixture.txt"],

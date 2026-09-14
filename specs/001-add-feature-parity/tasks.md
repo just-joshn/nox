@@ -138,6 +138,7 @@
 - [X] T185 [US1] Write a failing nox test for observed multiline count output, enable ripgrep multiline mode in the explicit count helper, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T186 [US1] Reconcile the synthetic Glob/Grep normal, no-match, invalid, and option traces into the US1 search inventory, scenarios, reconciliation, and gated register; correct nox source targets, preserve real-service and interactive gates, then commit locally.
 - [X] T187 [US1] Observe reference Glob `*.txt` with two synthetic matching files under localhost-only isolation; retain exact allowlisted order and unchanged-file state, then compare nox's explicit adapter.
+- [X] T188 [US1] Observe reference Glob `**/*.txt` with root and nested synthetic matches under localhost-only isolation; retain exact allowlisted paths and unchanged-file state, then compare nox's explicit adapter.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
