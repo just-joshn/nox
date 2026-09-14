@@ -117,7 +117,7 @@
 - [X] T164 [US1] Observe reference Grep `head_limit: 1` in content mode with two synthetic matching lines under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
 - [X] T165 [US1] Write a failing nox test for observed Grep content `head_limit: 1`, implement the explicit schema and pagination result for that observed branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T166 [US1] Observe reference Grep `head_limit: 1, offset: 1` in content mode with two synthetic matching lines under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
-- [ ] T167 [US1] Write a failing nox test for observed Grep content `head_limit: 1, offset: 1`, implement the explicit offset schema and pagination result for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T167 [US1] Write a failing nox test for observed Grep content `head_limit: 1, offset: 1`, implement the explicit offset schema and pagination result for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

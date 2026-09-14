@@ -66,6 +66,22 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep offset paginates content matches", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("offset");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 1, offset: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:2:alpha\n\n[Showing results with pagination = offset: 1]" },
+		]);
+	});
+
 	it.each([
 		[undefined, "nested/fixture.txt:1:alpha"],
 		["files_with_matches", "Found 1 file\nnested/fixture.txt"],

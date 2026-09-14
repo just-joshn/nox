@@ -17,6 +17,7 @@ const grepSchema = Type.Object({
 	path: Type.Optional(Type.String()),
 	glob: Type.Optional(Type.String()),
 	head_limit: Type.Optional(Type.Integer({ minimum: 1 })),
+	offset: Type.Optional(Type.Integer({ minimum: 0 })),
 	output_mode: Type.Optional(
 		Type.Union([Type.Literal("files_with_matches"), Type.Literal("content"), Type.Literal("count")]),
 	),
@@ -80,6 +81,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const selected = input as typeof input & {
 				output_mode?: "files_with_matches" | "content" | "count";
 				head_limit?: number;
+				offset?: number;
 				"-i"?: boolean;
 				"-n"?: boolean;
 				"-o"?: boolean;
@@ -122,16 +124,22 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 						? prefixed.replaceAll(/:\d+: /g, ":")
 						: prefixed.replaceAll(/(:\d+:|-\d+-) /g, "$1");
 				const lines = formatted.split("\n");
-				const limited = selected.head_limit ? lines.slice(0, selected.head_limit).join("\n") : formatted;
+				const offset = selected.offset ?? 0;
+				const limited = lines
+					.slice(offset, selected.head_limit ? offset + selected.head_limit : undefined)
+					.join("\n");
+				const pagination =
+					offset > 0
+						? `offset: ${offset}`
+						: selected.head_limit && lines.length > selected.head_limit
+							? `limit: ${selected.head_limit}`
+							: undefined;
 				return {
 					...result,
 					content: [
 						{
 							type: "text" as const,
-							text:
-								selected.head_limit && lines.length > selected.head_limit
-									? `${limited}\n\n[Showing results with pagination = limit: ${selected.head_limit}]`
-									: limited,
+							text: pagination ? `${limited}\n\n[Showing results with pagination = ${pagination}]` : limited,
 						},
 					],
 				};
