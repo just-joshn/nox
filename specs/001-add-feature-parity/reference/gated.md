@@ -6,6 +6,9 @@
 |---------|----------------------|------------------------------|
 | CLI-098 | `remote-control --help` exited before help with an account-login requirement | Eligible authenticated account, then safe help and isolated start/attach/failure observations |
 | CLI-534 | Desktop MCP import is visible in installed help, but no disposable Desktop configuration or import transition has been compared | Synthetic Desktop configuration in a disposable home on supported macOS/WSL; compare scope, conflicts, failure, and persisted server entries without real credentials |
+| CLI-535 | Default/local Desktop MCP import side effects unobserved | Synthetic Desktop configuration in a disposable home; compare local-scope persistence and conflicts |
+| CLI-536 | User-scope Desktop MCP import side effects unobserved | Synthetic Desktop configuration in a disposable home; compare user-scope persistence and conflicts |
+| CLI-537 | Project-scope Desktop MCP import side effects unobserved | Synthetic Desktop configuration and disposable project; compare project-scope persistence and conflicts |
 | EXT-034 | Bundled skill is documented as gated; invocation unobserved | Eligible account and isolated invocation fixture after availability is confirmed |
 | EXT-007 | Discover account-synced skill: documentation-only; installed transition and failure behavior unobserved | Eligible managed or account-synced configuration; isolated precedence and policy allow/deny fixtures |
 | EXT-040 | Discover managed agent and precedence: documentation-only; installed transition and failure behavior unobserved | Eligible managed or account-synced configuration; isolated precedence and policy allow/deny fixtures |

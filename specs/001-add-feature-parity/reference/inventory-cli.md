@@ -236,7 +236,11 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-138 | `daemon logs` | observed-help | Pending |
 | CLI-139 | `daemon uninstall` | observed-help | Pending |
 | CLI-140 | `daemon stop` | observed-help | Pending |
-| CLI-534 | `mcp add-from-claude-desktop` | observed-help; macOS and WSL only | Import behavior, scope, conflict handling, and failure path unobserved |
+| CLI-534 | `mcp add-from-claude-desktop` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt); macOS and WSL only | Import behavior, conflict handling, and failure path unobserved |
+| CLI-535 | `mcp add-from-claude-desktop --scope local` (default) | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | Import target and persistence unobserved |
+| CLI-536 | `mcp add-from-claude-desktop --scope user` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | Import target and persistence unobserved |
+| CLI-537 | `mcp add-from-claude-desktop --scope project` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | Import target and persistence unobserved |
+| CLI-538 | `mcp add-from-claude-desktop -h, --help` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | Exit 0, usage on stdout, empty stderr; no import attempted |
 
 ## Documented interactive command invocations
 
