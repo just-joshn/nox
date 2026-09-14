@@ -45,11 +45,23 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
+	it("Glob preserves find order when modification times tie", async () => {
+		writeFileSync(join(cwd, ".hidden.txt"), "alpha\nbeta\n");
+		utimesSync(join(cwd, "fixture.txt"), 1_600_000_000, 1_600_000_000);
+		utimesSync(join(cwd, ".hidden.txt"), 1_600_000_000, 1_600_000_000);
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "*.txt" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: ".hidden.txt\nfixture.txt" }]);
+	});
+
 	it("Glob keeps the result-limit notice after ordering matches", async () => {
 		for (let index = 0; index < 1001; index++) writeFileSync(join(cwd, `extra-${index}.txt`), "alpha\n");
 		const tool = createAllToolDefinitions(cwd).Glob;
 		const result = await tool.execute("call-1", { pattern: "*.txt" }, undefined, undefined, {} as never);
-		expect(result.content[0]?.text?.includes("1000 results limit reached")).toBe(true);
+		expect(result.content[0]).toMatchObject({
+			type: "text",
+			text: expect.stringContaining("1000 results limit reached"),
+		});
 	});
 
 	it.each([

@@ -23,7 +23,7 @@ SEARCH_MODES = frozenset({
     "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
     "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
     "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files", "glob-recursive",
-    "glob-hidden", "glob-mtime",
+    "glob-hidden", "glob-mtime", "glob-mtime-tie",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -298,11 +298,14 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
         (workspace / "second.txt").write_text("alpha\n")
     if mode == "glob-two-files":
         (workspace / "second.txt").write_text(FIXTURE_CONTENT)
-    if mode in {"glob-hidden", "glob-mtime"}:
+    if mode in {"glob-hidden", "glob-mtime", "glob-mtime-tie"}:
         (workspace / ".hidden.txt").write_text(FIXTURE_CONTENT)
     if mode == "glob-mtime":
         os.utime(workspace / ".hidden.txt", (1_600_000_000, 1_600_000_000))
         os.utime(fixture, (1_700_000_000, 1_700_000_000))
+    if mode == "glob-mtime-tie":
+        os.utime(workspace / ".hidden.txt", (1_600_000_000, 1_600_000_000))
+        os.utime(fixture, (1_600_000_000, 1_600_000_000))
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
     if mode == "grep-type-filter":
@@ -378,10 +381,13 @@ def main(executable: str, mode: str = "normal") -> int:
                 "python_unchanged": (workspace / "fixture.py").read_text() == FIXTURE_CONTENT
                                     if mode == "grep-type-filter" else None,
                 "hidden_unchanged": (workspace / ".hidden.txt").read_text() == FIXTURE_CONTENT
-                                    if mode in {"glob-hidden", "glob-mtime"} else None,
+                                    if mode in {"glob-hidden", "glob-mtime", "glob-mtime-tie"} else None,
                 "mtime_unchanged": (fixture.stat().st_mtime == 1_700_000_000 and
                                     (workspace / ".hidden.txt").stat().st_mtime == 1_600_000_000)
                                    if mode == "glob-mtime" else None,
+                "mtime_tie_unchanged": (fixture.stat().st_mtime == 1_600_000_000 and
+                                        (workspace / ".hidden.txt").stat().st_mtime == 1_600_000_000)
+                                       if mode == "glob-mtime-tie" else None,
                 "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
                                     if mode in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
@@ -403,8 +409,9 @@ def main(executable: str, mode: str = "normal") -> int:
         matched = ((mode not in {"grep-count-multiple", "glob-two-files"} or summary.get("second_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
                    and (mode != "grep-type-filter" or summary.get("python_unchanged") is True)
-                   and (mode not in {"glob-hidden", "glob-mtime"} or summary.get("hidden_unchanged") is True)
+                   and (mode not in {"glob-hidden", "glob-mtime", "glob-mtime-tie"} or summary.get("hidden_unchanged") is True)
                    and (mode != "glob-mtime" or summary.get("mtime_unchanged") is True)
+                   and (mode != "glob-mtime-tie" or summary.get("mtime_tie_unchanged") is True)
                    and (mode not in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True

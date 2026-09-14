@@ -69,7 +69,7 @@ export function createClaudeGlobToolDefinition(cwd: string) {
 								mtime: (await stat(path.join(searchRoot, file))).mtimeMs,
 							})),
 						);
-			const ordered = matches.toSorted((left, right) => left.mtime - right.mtime || left.index - right.index);
+			const ordered = [...matches].sort((left, right) => left.mtime - right.mtime || left.index - right.index);
 			const output =
 				matchText === "No files found matching pattern"
 					? "No files found"
