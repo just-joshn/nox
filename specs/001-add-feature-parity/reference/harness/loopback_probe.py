@@ -20,7 +20,7 @@ SEARCH_MODES = frozenset({
     "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line",
     "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context",
     "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
-    "grep-offset",
+    "grep-offset", "grep-head-exact",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -299,14 +299,14 @@ def main(executable: str, mode: str = "normal") -> int:
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
                            tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
                            context_lines=1 if mode == "grep-context" else None,
                            context_side="-A" if mode == "grep-after-context" else "-B" if mode == "grep-before-context" else None,
                            file_glob="*.txt" if mode == "grep-glob-filter" else None,
-                           head_limit=1 if mode in {"grep-head-limit", "grep-offset"} else None,
+                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact"} else None,
                            offset=1 if mode == "grep-offset" else None)
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()

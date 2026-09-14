@@ -66,6 +66,18 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep head_limit omits pagination when all matches fit", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha" }]);
+	});
+
 	it("Grep offset paginates content matches", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
 		const tool = createAllToolDefinitions(cwd).Grep;
