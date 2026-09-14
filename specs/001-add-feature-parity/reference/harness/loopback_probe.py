@@ -22,7 +22,7 @@ SEARCH_MODES = frozenset({
     "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
     "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
     "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
-    "grep-multiline-explicit-files", "grep-multiline-count",
+    "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -194,6 +194,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "offset_end" if text == "No entries at this offset\n\n[Showing results with pagination = offset: 2]" and tool_name == "Grep" else
                              "python_match" if text == "Found 1 file\nfixture.py" and tool_name == "Grep" else
                              "multiline_content" if text == "fixture.txt:1:alpha\nfixture.txt:2:beta" and tool_name == "Grep" else
+                             "glob_two_files" if text == "fixture.txt\nsecond.txt" and tool_name == "Glob" else
                              "no_matches_found" if text == "No matches found" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
@@ -291,6 +292,8 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     fixture.write_text("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT)
     if mode == "grep-count-multiple":
         (workspace / "second.txt").write_text("alpha\n")
+    if mode == "glob-two-files":
+        (workspace / "second.txt").write_text(FIXTURE_CONTENT)
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
     if mode == "grep-type-filter":
@@ -360,7 +363,7 @@ def main(executable: str, mode: str = "normal") -> int:
                 "stderr_empty": not process.stderr,
                 "requests": state.requests,
                 "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode in {"grep-count-multiple", "grep-head-limit", "grep-offset", "grep-offset-end", "grep-offset-zero"} else FIXTURE_CONTENT),
-                "second_unchanged": (workspace / "second.txt").read_text() == "alpha\n" if mode == "grep-count-multiple" else None,
+                "second_unchanged": (workspace / "second.txt").read_text() == (FIXTURE_CONTENT if mode == "glob-two-files" else "alpha\n") if mode in {"grep-count-multiple", "glob-two-files"} else None,
                 "markdown_unchanged": (workspace / "fixture.md").read_text() == FIXTURE_CONTENT
                                       if mode == "grep-glob-filter" else None,
                 "python_unchanged": (workspace / "fixture.py").read_text() == FIXTURE_CONTENT
@@ -383,7 +386,7 @@ def main(executable: str, mode: str = "normal") -> int:
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
     if mode in SEARCH_MODES:
         requests = summary.get("requests", [])
-        matched = ((mode != "grep-count-multiple" or summary.get("second_unchanged") is True)
+        matched = ((mode not in {"grep-count-multiple", "glob-two-files"} or summary.get("second_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
                    and (mode != "grep-type-filter" or summary.get("python_unchanged") is True)
                    and (mode not in {"glob-path", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)

@@ -18,6 +18,13 @@ describe("explicit Claude search tools", () => {
 		expect(createCodingToolDefinitions(cwd).map((tool) => tool.name)).not.toContain("Grep");
 	});
 
+	it("Glob returns two matching files in the observed order", async () => {
+		writeFileSync(join(cwd, "second.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Glob;
+		const result = await tool.execute("call-1", { pattern: "*.txt" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt\nsecond.txt" }]);
+	});
+
 	it.each([
 		["Glob", "*.txt", "fixture.txt"],
 		["Grep", "alpha", "Found 1 file\nfixture.txt"],
