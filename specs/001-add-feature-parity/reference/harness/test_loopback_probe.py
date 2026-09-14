@@ -157,6 +157,8 @@ class LoopbackProbeTests(unittest.TestCase):
         self.assertIn('\\"-i\\": true', insensitive.decode())
         matching = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", only_matching=True)
         self.assertIn('\\"-o\\": true', matching.decode())
+        context = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", context_lines=1)
+        self.assertIn('\\"-C\\": 1', context.decode())
 
     def test_search_result_summary_retains_fixture_match_without_raw_text(self):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})
@@ -172,6 +174,7 @@ class LoopbackProbeTests(unittest.TestCase):
         self.assertEqual(summarize_search_result({"content": "nested/fixture.txt"}, "Glob")["result_format"], "nested_match")
         self.assertEqual(summarize_search_result({"content": "fixture.txt:1:alpha"}, "Grep")["result_format"], "content_match")
         self.assertEqual(summarize_search_result({"content": "fixture.txt:alpha"}, "Grep")["result_format"], "content_no_line")
+        self.assertEqual(summarize_search_result({"content": "fixture.txt:1:alpha\nfixture.txt-2-beta"}, "Grep")["result_format"], "content_context")
         self.assertEqual(summarize_search_result({"content": "fixture.txt:1\n\nFound 1 total occurrence across 1 file."}, "Grep")["result_format"], "count_match")
         self.assertEqual(summarize_search_result({"content": "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files."}, "Grep")["result_format"], "count_multiple")
         self.assertEqual(summarize_search_result({"content": "No matches found\n\nFound 0 total occurrences across 0 files."}, "Grep")["result_format"], "count_no_match")
