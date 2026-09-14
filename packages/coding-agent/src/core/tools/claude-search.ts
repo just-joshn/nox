@@ -1,6 +1,7 @@
 import path from "node:path";
 import { Type } from "typebox";
 import { executeClaudeGrepCount } from "./claude-grep-count.ts";
+import { executeClaudeGrepMultiline } from "./claude-grep-multiline.ts";
 import { executeClaudeGrepOnly } from "./claude-grep-only.ts";
 import { executeClaudeGrepSidedContext } from "./claude-grep-sided-context.ts";
 import { createFindToolDefinition } from "./find.ts";
@@ -27,6 +28,7 @@ const grepSchema = Type.Object({
 	"-o": Type.Optional(Type.Boolean()),
 	"-C": Type.Optional(Type.Integer({ minimum: 0 })),
 	context: Type.Optional(Type.Integer({ minimum: 0 })),
+	multiline: Type.Optional(Type.Boolean()),
 	"-A": Type.Optional(Type.Integer({ minimum: 0 })),
 	"-B": Type.Optional(Type.Integer({ minimum: 0 })),
 });
@@ -90,10 +92,13 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-o"?: boolean;
 				"-C"?: number;
 				context?: number;
+				multiline?: boolean;
 				"-A"?: number;
 				"-B"?: number;
 			};
 			const outputMode = selected.output_mode;
+			if (outputMode === "content" && selected.multiline)
+				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && selected["-o"])
 				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);

@@ -127,7 +127,7 @@
 - [X] T174 [US1] Observe reference Grep content `context: 1` around a synthetic match under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
 - [X] T175 [US1] Write a failing nox test for observed Grep `context: 1`, implement its explicit schema and symmetric context mapping, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T176 [US1] Observe reference Grep content `multiline: true` with a two-line synthetic pattern under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
-- [ ] T177 [US1] Write a failing nox test for observed Grep multiline content output, implement a bounded no-shell explicit path for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T177 [US1] Write a failing nox test for observed Grep multiline content output, implement a bounded no-shell explicit path for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

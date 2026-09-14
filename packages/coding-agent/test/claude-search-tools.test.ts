@@ -202,6 +202,19 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha\nfixture.txt-2-beta" }]);
 	});
 
+	it("Grep multiline matches a pattern spanning two lines", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("multiline");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha\nbeta", output_mode: "content", multiline: true },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha\nfixture.txt:2:beta" }]);
+	});
+
 	it.each([
 		["-A", "fixture.txt:2:alpha\nfixture.txt-3-after"],
 		["-B", "fixture.txt-1-before\nfixture.txt:2:alpha"],
