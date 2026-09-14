@@ -343,6 +343,14 @@ The [current official command reference](https://code.claude.com/docs/en/command
 | CLI-238 | `/exit` | documented; local interaction unobserved | Pending |
 | CLI-239 | `/help` | documented; local interaction unobserved | Pending |
 | CLI-240 | `/login` | documented; local interaction unobserved | Pending |
+| CLI-493 | `/config [key=value ...]` | documented; local interaction unobserved | Pending |
+| CLI-494 | `/theme` | documented; local interaction unobserved | Pending |
+| CLI-495 | `/upgrade` | documented; local interaction unobserved | Pending |
+| CLI-496 | `/settings` (alias of `/config`) | documented; local interaction unobserved | Pending |
+| CLI-497 | `/bashes` (alias of `/tasks`) | documented; local interaction unobserved | Pending |
+| CLI-498 | `/reset` (alias of `/clear`) | documented; local interaction unobserved | Pending |
+| CLI-499 | `/new` (alias of `/clear`) | documented; local interaction unobserved | Pending |
+| CLI-500 | `/tp` (alias of `/teleport`) | documented; local interaction unobserved | Pending |
 
 ## Documented keyboard shortcut seeds
 
@@ -637,6 +645,34 @@ Each row is an invokable command-option input from the installed 2.1.270 help ca
 | CLI-479 | `ultrareview --post` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
 | CLI-480 | `ultrareview --timeout` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
 | CLI-481 | `update -h, --help` | [local help](observations/help-update-2026-09-14.txt) | Observed help; behavior pending |
+
+## Documented interactive dispatch leaves
+
+The [current command reference](https://code.claude.com/docs/en/commands) distinguishes these dispatch and timing behaviors. They were reviewed on 2026-09-14 against installed release 2.1.270. Documentation establishes candidates, not local behavior or a nox parity result. Each row requires an isolated interaction scenario before implementation.
+
+| ID | Interaction | Documented contract | Evidence state |
+|----|-------------|---------------------|----------------|
+| CLI-482 | Command token after non-command text | A command is recognized only at the start of a message | Documented only |
+| CLI-483 | Text following a command name | Trailing text becomes the command's arguments | Documented only |
+| CLI-484 | Consecutive skill invocations at message start | Up to six skills load and receive the trailing arguments | Documented only |
+| CLI-485 | Ordinary command submitted during an active response | The command queues until the current turn finishes | Documented only |
+| CLI-486 | `/status` during an active response | Runs immediately without interrupting the response | Documented only |
+| CLI-487 | `/tasks` during an active response | Runs immediately without interrupting the response | Documented only |
+| CLI-488 | `/add-dir` during an active response | Confirm the directory immediately; after confirmation, the next tool call in the same turn may access it | Documented only |
+| CLI-489 | `/bug` during an active response | The consent dialog opens immediately | Documented only |
+| CLI-490 | `/usage` during an active response | Runs immediately without interrupting the response | Documented only |
+| CLI-491 | `/theme` during an active response in fullscreen rendering | The dialog opens immediately without waiting for the turn to finish | Documented only |
+| CLI-492 | `/help` during an active response in fullscreen rendering | The dialog opens immediately without waiting for the turn to finish | Documented only |
+
+The same reference documents menu matching separately from command execution. These cases need distinct menu and submitted-text comparisons.
+
+| ID | Interaction | Documented contract | Evidence state |
+|----|-------------|---------------------|----------------|
+| CLI-501 | Partial command name or alias with matching prefix or word | Highlight the top suggestion, ignoring `:`, `_`, and `-` separators; `Enter` runs it | Documented only |
+| CLI-502 | Misspelled command with close menu matches | Do not highlight a suggestion; `Tab` or arrows can select one, while `Enter` submits the typed text and reports an unknown command | Documented only |
+| CLI-503 | Unavailable command queried in the menu | Omit it; show a no-match message when no available command matches | Documented only |
+| CLI-504 | Hidden available command queried by partial name | Omit it until its full name is typed | Documented only |
+| CLI-505 | Hidden available command queried by full name | Show it and allow execution | Documented only |
 
 ## Missing discovery work
 
