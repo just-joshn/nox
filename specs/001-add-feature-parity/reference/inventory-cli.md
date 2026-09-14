@@ -415,6 +415,229 @@ The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mod
 | KEY-063 | `y` | documented; context and variants pending | Pending |
 | KEY-064 | `r{char}` | documented; context and variants pending | Pending |
 
+## Command-specific option inputs from local help
+
+Each row is an invokable command-option input from the installed 2.1.270 help capture. The rows preserve the command context, including repeated `--help` flags, because command parsers can differ. They do not yet split accepted values, aliases, or option interactions; the raw linked help gives the printed value syntax and any stated default. These are discovery leaves only, not passing behavioral comparisons.
+
+| ID | Input | Evidence | State |
+|----|-------|----------|-------|
+| CLI-266 | `agents --add-dir` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-267 | `agents --agent` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-268 | `agents --all` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-269 | `agents --allow-dangerously-skip-permissions` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-270 | `agents --cwd` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-271 | `agents --dangerously-skip-permissions` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-272 | `agents --effort` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-273 | `agents -h, --help` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-274 | `agents --json` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-275 | `agents --mcp-config` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-276 | `agents --model` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-277 | `agents --permission-mode` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-278 | `agents --plugin-dir` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-279 | `agents --restricted` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-280 | `agents --setting-sources` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-281 | `agents --settings` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-282 | `agents --strict-mcp-config` | [local help](observations/help-agents-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-283 | `auth -h, --help` | [local help](observations/help-auth-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-284 | `auth login --claudeai` | [local help](observations/help-auth-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-285 | `auth login --console` | [local help](observations/help-auth-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-286 | `auth login --email` | [local help](observations/help-auth-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-287 | `auth login -h, --help` | [local help](observations/help-auth-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-288 | `auth login --sso` | [local help](observations/help-auth-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-289 | `auth logout -h, --help` | [local help](observations/help-auth-logout-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-290 | `auth status -h, --help` | [local help](observations/help-auth-status-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-291 | `auth status --json` | [local help](observations/help-auth-status-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-292 | `auth status --text` | [local help](observations/help-auth-status-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-293 | `auto-mode -h, --help` | [local help](observations/help-auto-mode-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-294 | `auto-mode config -h, --help` | [local help](observations/help-auto-mode-config-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-295 | `auto-mode critique -h, --help` | [local help](observations/help-auto-mode-critique-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-296 | `auto-mode critique --model` | [local help](observations/help-auto-mode-critique-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-297 | `auto-mode defaults -h, --help` | [local help](observations/help-auto-mode-defaults-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-298 | `auto-mode defaults --label` | [local help](observations/help-auto-mode-defaults-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-299 | `auto-mode reset -h, --help` | [local help](observations/help-auto-mode-reset-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-300 | `auto-mode reset -y, --yes` | [local help](observations/help-auto-mode-reset-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-301 | `daemon --json-path` | [local help](observations/help-daemon-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-302 | `daemon --log-file` | [local help](observations/help-daemon-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-303 | `daemon status --json-path` | [local help](observations/help-daemon-status-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-304 | `daemon status --log-file` | [local help](observations/help-daemon-status-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-305 | `daemon stop --json-path` | [local help](observations/help-daemon-stop-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-306 | `daemon stop --log-file` | [local help](observations/help-daemon-stop-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-307 | `doctor -h, --help` | [local help](observations/help-doctor-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-308 | `gateway --config` | [local help](observations/help-gateway-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-309 | `gateway -h, --help` | [local help](observations/help-gateway-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-310 | `import --dry-run` | [local help](observations/help-import-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-311 | `import -h, --help` | [local help](observations/help-import-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-312 | `import --yes` | [local help](observations/help-import-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-313 | `install --force` | [local help](observations/help-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-314 | `install -h, --help` | [local help](observations/help-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-315 | `mcp -h, --help` | [local help](observations/help-mcp-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-316 | `mcp add --callback-port` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-317 | `mcp add --client-id` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-318 | `mcp add --client-secret` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-319 | `mcp add -e, --env` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-320 | `mcp add -H, --header` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-321 | `mcp add -h, --help` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-322 | `mcp add -s, --scope` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-323 | `mcp add -t, --transport` | [local help](observations/help-mcp-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-324 | `mcp add-json --client-secret` | [local help](observations/help-mcp-add-json-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-325 | `mcp add-json -h, --help` | [local help](observations/help-mcp-add-json-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-326 | `mcp add-json -s, --scope` | [local help](observations/help-mcp-add-json-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-327 | `mcp get -h, --help` | [local help](observations/help-mcp-get-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-328 | `mcp list -h, --help` | [local help](observations/help-mcp-list-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-329 | `mcp login -h, --help` | [local help](observations/help-mcp-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-330 | `mcp login --no-browser` | [local help](observations/help-mcp-login-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-331 | `mcp logout -h, --help` | [local help](observations/help-mcp-logout-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-332 | `mcp remove -h, --help` | [local help](observations/help-mcp-remove-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-333 | `mcp remove -s, --scope` | [local help](observations/help-mcp-remove-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-334 | `mcp reset-project-choices -h, --help` | [local help](observations/help-mcp-reset-project-choices-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-335 | `mcp serve -d, --debug` | [local help](observations/help-mcp-serve-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-336 | `mcp serve -h, --help` | [local help](observations/help-mcp-serve-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-337 | `mcp serve --verbose` | [local help](observations/help-mcp-serve-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-338 | `plugin -h, --help` | [local help](observations/help-plugin-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-339 | `plugin details -h, --help` | [local help](observations/help-plugin-details-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-340 | `plugin disable -a, --all` | [local help](observations/help-plugin-disable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-341 | `plugin disable -h, --help` | [local help](observations/help-plugin-disable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-342 | `plugin disable --json` | [local help](observations/help-plugin-disable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-343 | `plugin disable -s, --scope` | [local help](observations/help-plugin-disable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-344 | `plugin enable -h, --help` | [local help](observations/help-plugin-enable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-345 | `plugin enable --json` | [local help](observations/help-plugin-enable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-346 | `plugin enable -s, --scope` | [local help](observations/help-plugin-enable-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-347 | `plugin eval --ablation` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-348 | `plugin eval --allow-real-servers` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-349 | `plugin eval --allow-tools` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-350 | `plugin eval --case` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-351 | `plugin eval -j, --concurrency` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-352 | `plugin eval --eval-dir` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-353 | `plugin eval -h, --help` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-354 | `plugin eval --json` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-355 | `plugin eval --judge-model` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-356 | `plugin eval --keep-temp` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-357 | `plugin eval --max-cost-usd` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-358 | `plugin eval --mocks` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-359 | `plugin eval --model` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-360 | `plugin eval --no-publish` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-361 | `plugin eval --no-scaffold` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-362 | `plugin eval --output-dir` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-363 | `plugin eval --publish-report` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-364 | `plugin eval --report` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-365 | `plugin eval --runs` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-366 | `plugin eval --scaffold` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-367 | `plugin eval --tag` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-368 | `plugin eval --threshold` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-369 | `plugin eval --trust-plugin` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-370 | `plugin eval --verbose` | [local help](observations/help-plugin-eval-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-371 | `plugin eval init --bare` | [local help](observations/help-plugin-eval-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-372 | `plugin eval init --eval-dir` | [local help](observations/help-plugin-eval-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-373 | `plugin eval init -h, --help` | [local help](observations/help-plugin-eval-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-374 | `plugin eval init -i, --interactive` | [local help](observations/help-plugin-eval-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-375 | `plugin init --author` | [local help](observations/help-plugin-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-376 | `plugin init --author-email` | [local help](observations/help-plugin-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-377 | `plugin init --description` | [local help](observations/help-plugin-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-378 | `plugin init -f, --force` | [local help](observations/help-plugin-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-379 | `plugin init -h, --help` | [local help](observations/help-plugin-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-380 | `plugin init --with` | [local help](observations/help-plugin-init-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-381 | `plugin install --config` | [local help](observations/help-plugin-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-382 | `plugin install -h, --help` | [local help](observations/help-plugin-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-383 | `plugin install --json` | [local help](observations/help-plugin-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-384 | `plugin install -s, --scope` | [local help](observations/help-plugin-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-385 | `plugin install -y, --yes` | [local help](observations/help-plugin-install-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-386 | `plugin list --available` | [local help](observations/help-plugin-list-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-387 | `plugin list -h, --help` | [local help](observations/help-plugin-list-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-388 | `plugin list --json` | [local help](observations/help-plugin-list-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-389 | `plugin marketplace -h, --help` | [local help](observations/help-plugin-marketplace-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-390 | `plugin marketplace add --claudeai` | [local help](observations/help-plugin-marketplace-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-391 | `plugin marketplace add -h, --help` | [local help](observations/help-plugin-marketplace-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-392 | `plugin marketplace add --scope` | [local help](observations/help-plugin-marketplace-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-393 | `plugin marketplace add --sparse` | [local help](observations/help-plugin-marketplace-add-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-394 | `plugin marketplace list -h, --help` | [local help](observations/help-plugin-marketplace-list-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-395 | `plugin marketplace list --json` | [local help](observations/help-plugin-marketplace-list-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-396 | `plugin marketplace remove -h, --help` | [local help](observations/help-plugin-marketplace-remove-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-397 | `plugin marketplace remove --scope` | [local help](observations/help-plugin-marketplace-remove-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-398 | `plugin marketplace update -h, --help` | [local help](observations/help-plugin-marketplace-update-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-399 | `plugin prune --dry-run` | [local help](observations/help-plugin-prune-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-400 | `plugin prune -h, --help` | [local help](observations/help-plugin-prune-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-401 | `plugin prune -s, --scope` | [local help](observations/help-plugin-prune-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-402 | `plugin prune -y, --yes` | [local help](observations/help-plugin-prune-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-403 | `plugin tag --dry-run` | [local help](observations/help-plugin-tag-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-404 | `plugin tag -f, --force` | [local help](observations/help-plugin-tag-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-405 | `plugin tag -h, --help` | [local help](observations/help-plugin-tag-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-406 | `plugin tag -m, --message` | [local help](observations/help-plugin-tag-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-407 | `plugin tag --push` | [local help](observations/help-plugin-tag-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-408 | `plugin tag --remote` | [local help](observations/help-plugin-tag-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-409 | `plugin uninstall -h, --help` | [local help](observations/help-plugin-uninstall-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-410 | `plugin uninstall --json` | [local help](observations/help-plugin-uninstall-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-411 | `plugin uninstall --keep-data` | [local help](observations/help-plugin-uninstall-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-412 | `plugin uninstall --prune` | [local help](observations/help-plugin-uninstall-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-413 | `plugin uninstall -s, --scope` | [local help](observations/help-plugin-uninstall-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-414 | `plugin uninstall -y, --yes` | [local help](observations/help-plugin-uninstall-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-415 | `plugin update -h, --help` | [local help](observations/help-plugin-update-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-416 | `plugin update --json` | [local help](observations/help-plugin-update-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-417 | `plugin update -s, --scope` | [local help](observations/help-plugin-update-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-418 | `plugin update -y, --yes` | [local help](observations/help-plugin-update-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-419 | `plugin validate -h, --help` | [local help](observations/help-plugin-validate-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-420 | `plugin validate --json` | [local help](observations/help-plugin-validate-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-421 | `plugin validate --strict` | [local help](observations/help-plugin-validate-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-422 | `project -h, --help` | [local help](observations/help-project-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-423 | `project purge --all` | [local help](observations/help-project-purge-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-424 | `project purge --dry-run` | [local help](observations/help-project-purge-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-425 | `project purge -h, --help` | [local help](observations/help-project-purge-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-426 | `project purge -i, --interactive` | [local help](observations/help-project-purge-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-427 | `project purge -y, --yes` | [local help](observations/help-project-purge-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-428 | `self-hosted-runner --api-url` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-429 | `self-hosted-runner --environment-secret-file` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-430 | `self-hosted-runner --lock-to-account` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-431 | `self-hosted-runner --client-label` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-432 | `self-hosted-runner --proxy-authorization-command` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-433 | `self-hosted-runner --proxy-authorization-file` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-434 | `self-hosted-runner --capacity` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-435 | `self-hosted-runner --base-dir` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-436 | `self-hosted-runner --exec-path` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-437 | `self-hosted-runner --hooks-dir` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-438 | `self-hosted-runner --session-stop-grace-sec` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-439 | `self-hosted-runner --post-session-hook-timeout-sec` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-440 | `self-hosted-runner --drain-wait-sec` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-441 | `self-hosted-runner --git-ssh-rewrite` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-442 | `self-hosted-runner --git-host-rewrite` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-443 | `self-hosted-runner --use-anthropic-git-proxy` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-444 | `self-hosted-runner --configure-git` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-445 | `self-hosted-runner --push-outcome-on-release` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-446 | `self-hosted-runner --trust-workspace` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-447 | `self-hosted-runner --remove-session-state` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-448 | `self-hosted-runner --confine-repo-settings` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-449 | `self-hosted-runner --health-port` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-450 | `self-hosted-runner --log-level` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-451 | `self-hosted-runner --log-file` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-452 | `self-hosted-runner --exit-if-unused-min` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-453 | `self-hosted-runner --drain-grace-sec` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-454 | `self-hosted-runner --retire-at` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-455 | `self-hosted-runner --defer-shutdown-max-min` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-456 | `self-hosted-runner --release-idle-session-min` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-457 | `self-hosted-runner --startup-timeout-min` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-458 | `self-hosted-runner --kill-session-after-min` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-459 | `self-hosted-runner --debug-token-dir` | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-460 | `self-hosted-runner orchestrator --api-url` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-461 | `self-hosted-runner orchestrator --environment-secret-file` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-462 | `self-hosted-runner orchestrator --hooks-dir` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-463 | `self-hosted-runner orchestrator --hook-concurrency` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-464 | `self-hosted-runner orchestrator --hook-timeout` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-465 | `self-hosted-runner orchestrator --expected-spawn-seconds` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-466 | `self-hosted-runner orchestrator --min-idle` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-467 | `self-hosted-runner orchestrator --scm-connector-host` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-468 | `self-hosted-runner orchestrator --scm-connector-id` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-469 | `self-hosted-runner orchestrator --scm-connector-provider` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-470 | `self-hosted-runner orchestrator --scm-connector-ca-file` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-471 | `self-hosted-runner orchestrator --scm-connector-host-rewrite` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-472 | `self-hosted-runner orchestrator --health-port` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-473 | `self-hosted-runner orchestrator --log-level` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-474 | `self-hosted-runner orchestrator --debug-dir` | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-475 | `setup-token -h, --help` | [local help](observations/help-setup-token-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-476 | `ultrareview -h, --help` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-477 | `ultrareview --json` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-478 | `ultrareview --no-post` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-479 | `ultrareview --post` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-480 | `ultrareview --timeout` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
+| CLI-481 | `update -h, --help` | [local help](observations/help-update-2026-09-14.txt) | Observed help; behavior pending |
+
 ## Missing discovery work
 
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) says help is incomplete. This table has not been reconciled against every documented flag and command, nor every command-specific option, alias, combination, and failure. Do not mark T002 complete.
