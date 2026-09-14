@@ -55,6 +55,7 @@ function saveAuthStorage(storage: AuthStorage): void {
  *
  */
 export async function resolveApiKey(provider: string): Promise<string | undefined> {
+	if (process.env.PI_OFFLINE === "1") return undefined;
 	const storage = loadAuthStorage();
 	const entry = storage[provider];
 
@@ -67,18 +68,16 @@ export async function resolveApiKey(provider: string): Promise<string | undefine
 	if (entry.type === "oauth") {
 		const oauth = builtinProviders().find((candidate) => candidate.id === provider)?.auth.oauth;
 		if (!oauth) return undefined;
-		let credential = entry;
 		try {
-			if (Date.now() >= credential.expires) {
-				credential = await oauth.refresh(credential, new AbortController().signal);
+			if (Date.now() >= entry.expires) {
+				const refreshed = await oauth.refresh(entry, new AbortController().signal);
+				saveAuthStorage({ ...storage, [provider]: refreshed });
+				return (await oauth.toAuth(refreshed)).apiKey;
 			}
-		} catch (error) {
-			console.log(JSON.stringify(error));
+			return (await oauth.toAuth(entry)).apiKey;
+		} catch {
 			return undefined;
 		}
-		storage[provider] = credential;
-		saveAuthStorage(storage);
-		return (await oauth.toAuth(credential)).apiKey;
 	}
 
 	return undefined;
