@@ -22,13 +22,14 @@ class ProbeState:
     read_path: str = "fixture.txt"
     catalog: bool = False
     tool_name: str = "Read"
+    tool_pattern: str | None = None
 
 
 def sse(event: str, payload: dict) -> str:
     return f"event: {event}\ndata: {json.dumps(payload, separators=(',', ':'))}\n\n"
 
 
-def message_response(model: str, kind: str, read_path: str, tool_name: str = "Read") -> bytes:
+def message_response(model: str, kind: str, read_path: str, tool_name: str = "Read", tool_pattern: str | None = None) -> bytes:
     message = {
         "id": "msg_synthetic",
         "type": "message",
@@ -42,8 +43,8 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
     events = [sse("message_start", {"type": "message_start", "message": message})]
     if kind == "tool":
         block = {"type": "tool_use", "id": "toolu_synthetic", "name": tool_name, "input": {}}
-        tool_input = ({"pattern": "*.txt"} if tool_name == "Glob" else
-                      {"pattern": "alpha"} if tool_name == "Grep" else {"file_path": read_path})
+        tool_input = ({"pattern": tool_pattern or "*.txt"} if tool_name == "Glob" else
+                      {"pattern": tool_pattern or "alpha"} if tool_name == "Grep" else {"file_path": read_path})
         delta = {"type": "input_json_delta", "partial_json": json.dumps(tool_input)}
         stop_reason = "tool_use"
     else:
@@ -183,7 +184,7 @@ def make_handler(state: ProbeState):
                                                      else summarize_result(item) for item in results],
                  **({"catalog": catalog_summary(names)} if state.catalog else {})}
             )
-            body = message_response(request["model"], kind, state.read_path, state.tool_name)
+            body = message_response(request["model"], kind, state.read_path, state.tool_name, state.tool_pattern)
             self.send_response(200)
             self.send_header("Content-Type", "text/event-stream")
             self.send_header("Content-Length", str(len(body)))
@@ -212,9 +213,12 @@ def main(executable: str, mode: str = "normal") -> int:
     with tempfile.TemporaryDirectory(prefix="nox-loopback-read-") as root:
         workspace, fixture, outside = prepare_workspace(root, mode)
         read_path = "../outside.txt" if outside else "missing.txt" if mode == "missing" else "fixture.txt"
-        selected_tool = {"glob-tools": "Glob", "grep-tools": "Grep", "glob-call": "Glob", "grep-call": "Grep"}.get(mode)
-        state = ProbeState(read_path=read_path, catalog=mode in {"bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call"},
-                           tool_name=selected_tool if mode in {"glob-call", "grep-call"} else "Read")
+        selected_tool = {"glob-tools": "Glob", "grep-tools": "Grep", "glob-call": "Glob", "grep-call": "Grep",
+                         "glob-no-match": "Glob"}.get(mode)
+        state = ProbeState(read_path=read_path,
+                           catalog=mode in {"bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match"},
+                           tool_name=selected_tool if mode in {"glob-call", "grep-call", "glob-no-match"} else "Read",
+                           tool_pattern="absent-*.zzz" if mode == "glob-no-match" else None)
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
@@ -225,16 +229,16 @@ def main(executable: str, mode: str = "normal") -> int:
             "ANTHROPIC_API_KEY": "sk-ant-api03-synthetic",
             "ANTHROPIC_BASE_URL": f"http://127.0.0.1:{server.server_port}",
         }
-        command = [executable, *([] if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call"} else ["--bare"]),
+        command = [executable, *([] if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match"} else ["--bare"]),
                    "-p", f"Read {read_path}", "--model", "sonnet", "--output-format", "json"]
         if selected_tool:
             command.extend(["--tools", selected_tool])
-        if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call"}:
+        if mode in {"default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match"}:
             if sys.platform != "darwin":
                 raise SystemExit("default-tools requires the verified macOS sandbox")
             profile = '(version 1)(allow default)(deny network*)(allow network-outbound (remote ip "localhost:*"))'
             command = ["sandbox-exec", "-p", profile, *command]
-        if mode not in {"outside", "glob-tools", "grep-tools", "glob-call", "grep-call"}: command.extend(["--allowedTools", "Read"])
+        if mode not in {"outside", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match"}: command.extend(["--allowedTools", "Read"])
         try:
             process = subprocess.run(command, cwd=workspace, env=env, capture_output=True, text=True, timeout=30)
             output = json.loads(process.stdout)
@@ -261,13 +265,13 @@ def main(executable: str, mode: str = "normal") -> int:
             server.shutdown()
             server.server_close()
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
-    if mode in {"glob-call", "grep-call"}:
+    if mode in {"glob-call", "grep-call", "glob-no-match"}:
         requests = summary.get("requests", [])
         matched = (summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
                    and len(requests) == 3 and requests[1]["response"] == "tool"
                    and len(requests[2]["tool_results"]) == 1
-                   and requests[2]["tool_results"][0] == {"is_error": False, "fixture_name_present": True})
+                   and requests[2]["tool_results"][0] == {"is_error": False, "fixture_name_present": mode != "glob-no-match"})
     elif selected_tool:
         matched = (summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and any(
@@ -291,6 +295,6 @@ def main(executable: str, mode: str = "normal") -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call"}):
-        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools|default-tools|glob-tools|grep-tools|glob-call|grep-call]")
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools", "default-tools", "glob-tools", "grep-tools", "glob-call", "grep-call", "glob-no-match"}):
+        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools|default-tools|glob-tools|grep-tools|glob-call|grep-call|glob-no-match]")
     raise SystemExit(main(sys.argv[1], mode=sys.argv[2] if len(sys.argv) == 3 else "normal"))

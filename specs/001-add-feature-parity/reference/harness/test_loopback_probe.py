@@ -146,6 +146,8 @@ class LoopbackProbeTests(unittest.TestCase):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})
         self.assertEqual(result, {"is_error": False, "fixture_name_present": True})
         self.assertNotIn("private", json.dumps(result))
+        self.assertEqual(summarize_search_result({"is_error": False, "content": "No files found"}),
+                         {"is_error": False, "fixture_name_present": False})
 
 
 if __name__ == "__main__":
