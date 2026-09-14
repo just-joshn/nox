@@ -519,12 +519,12 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
-	it("Grep count mode reports one occurrence", async () => {
+	it.each([undefined, 1])("Grep count mode reports one occurrence with head_limit %s", async (head_limit) => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(JSON.stringify(tool.parameters.properties.output_mode)).toContain("count");
 		const result = await tool.execute(
 			"call-1",
-			{ pattern: "alpha", output_mode: "count" },
+			{ pattern: "alpha", output_mode: "count", head_limit },
 			undefined,
 			undefined,
 			{} as never,
