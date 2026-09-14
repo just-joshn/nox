@@ -9,4 +9,4 @@ This guide is for an isolated, authorized test environment. It does not assert t
 5. Run safe local reference probes and nox probes with the same inputs. Preserve raw output and side-effect records. Do not invoke paid models or external services in an ad hoc probe.
 6. Compare behavior and Pi terminal states. Record each mismatch as a discrepancy; mark the inventory item `verified` only when all applicable cases pass.
 7. For code changes, run `npm run check` and the focused test files from the package root. Run `./test.sh` for non-e2e coverage when appropriate. Do not run `npm test` or `npm run build` without a separate request.
-8. Before a complete-parity claim, refresh the reference version, reconcile every inventory source, and require zero `discrepant` and zero `gated-unverified` items in the claimed scope.
+8. Before an unqualified complete-parity claim, refresh the reference version, reconcile every inventory source, and require every inventoried item to pass with zero `discrepant` and zero `gated-unverified` items.

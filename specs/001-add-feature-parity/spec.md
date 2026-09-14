@@ -27,7 +27,7 @@ A user starts nox in a repository, asks it to inspect or change files, reviews p
 **Acceptance Scenarios**:
 
 1. **Given** a repository and a new session, **When** the user asks for a code change, **Then** nox discovers context, presents tool activity, applies approved edits, and reports the result with the reference assistant's observable behavior.
-2. **Given** equivalent terminal width, theme, and interaction state, **When** the user performs the same action in Pi and nox, **Then** nox's layout, colors, text treatment, and interaction feedback match Pi except for controls required by added capabilities.
+2. **Given** equivalent terminal width, theme, and interaction state, **When** the user performs the same action in Pi and nox, **Then** nox's layout, colors, text treatment, and interaction feedback match Pi; any intentional exception has an approved constitution amendment.
 3. **Given** a tool failure or denied action, **When** execution ends, **Then** the user sees the same decision and recovery options as in the reference assistant.
 
 ---
@@ -95,7 +95,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 
 - **FR-001**: The parity inventory MUST enumerate every user-visible feature, command, option, setting, shortcut, protocol, and integration available in the installed reference release and identify its availability conditions. Each inventory item MUST have an evidence source, expected behavior, nox status, and verification scenarios.
 - **FR-002**: For every applicable inventory item, nox MUST match the reference's observable inputs, defaults, outputs, errors, state transitions, permissions, persistence, and side effects. No item may be marked complete based on interface similarity alone.
-- **FR-003**: nox MUST retain Pi's visual presentation across terminal views and interactions. Added controls MUST use Pi's visual language and alter existing views only where necessary to expose the added behavior.
+- **FR-003**: nox MUST retain Pi's visual presentation across terminal views and interactions. Added controls MUST use Pi's visual language. Any intentional visual departure from Pi MUST receive a constitution amendment before implementation.
 - **FR-004**: nox MUST support the reference's interactive conversation lifecycle, including context discovery, prompt handling, tool use, interruption, compaction, session naming, continuation, resumption, and forking.
 - **FR-005**: nox MUST support the reference's file, search, command, web, and other built-in tool capabilities with equivalent availability, approval, execution, and result behavior.
 - **FR-006**: nox MUST support all reference permission modes and rules, including scope, prompts, allow and deny lists, restricted modes, and behavior when no approver is present.
@@ -120,11 +120,11 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 
 ### Measurable Outcomes
 
-- **SC-001**: 100% of inventory items applicable to the tested account and platform have passing normal, failure, and relevant interaction scenarios against the recorded reference release.
+- **SC-001**: An unqualified 100% parity claim requires every inventoried feature, including platform-, account-, policy-, and service-gated features, to have passing normal, failure, and relevant interaction scenarios against the recorded reference release. An inaccessible or unverified item prevents that claim.
 - **SC-002**: 0 known behavioral discrepancies remain for items marked complete.
-- **SC-003**: 100% of compared Pi terminal states match their approved visual reference except documented controls needed for added capabilities.
+- **SC-003**: 100% of compared Pi terminal states match their approved visual reference. Any necessary departure is governed by an approved constitution amendment.
 - **SC-004**: 100% of documented reference command and option behaviors applicable to the tested environment are discoverable and produce equivalent outcomes through nox-specific names.
-- **SC-005**: In a representative task study, 100% of users who can complete each task in the reference can complete it in nox with the same permissions and available services.
+- **SC-005**: All four end-to-end journeys in User Stories 1–4 have passing matched-environment acceptance scenarios, including each story's stated error or recovery cases; a gated or unverified journey prevents a complete-parity claim.
 - **SC-006**: A release audit finds 0 mentions of the reference product in developed nox application code, user-facing strings, command names, and configuration filenames and paths.
 
 ## Assumptions
@@ -134,4 +134,4 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - "Identical" means externally observable behavior under equivalent inputs and conditions, rather than duplication of private internals or nondeterministic model wording.
 - The reference CLI and official user documentation are evidence sources. Reference program code is not copied or adapted into nox.
 - Existing configuration paths or commands containing the reference product's name do not need to work unchanged. Users access equivalent behavior through nox-specific names and paths. Specification and verification evidence may identify the reference explicitly.
-- The existing Pi experience is the visual baseline; feature behavior takes precedence only when the new capability cannot be presented without an additional control.
+- The existing Pi experience is the visual baseline. A necessary visual departure requires a constitution amendment before implementation.

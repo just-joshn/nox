@@ -22,7 +22,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Project Type**: Monorepo terminal coding agent with CLI, interactive TUI, RPC, model transport, and extensibility packages
 
-**Performance Goals**: Match the reference's observable latency and throughput per feature under matched conditions; no universal threshold can be inferred from CLI help
+**Performance Goals**: For each timing-sensitive leaf, measure 30 runs in matched local conditions after warm-up and require nox's p95 user-visible completion time to be no more than 10% above the reference p95. Record workload, hardware, network state, sample count, and any service-imposed variance; do not claim a measured result for inaccessible features.
 
 **Constraints**: Preserve Pi visuals and unrelated behavior; no reference-product name in developed nox code, strings, commands, or configuration paths; no copied reference implementation; no parity claim for unobserved or failing features
 
@@ -34,7 +34,7 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 | Principle | Design gate | Current result |
 |-----------|-------------|----------------|
-| Pi visual fidelity | Use existing TUI components and compare Pi reference states; require documented visual exceptions | Pass as a plan; no implementation verified |
+| Pi visual fidelity | Use existing TUI components and compare Pi reference states; obtain a constitution amendment before any intentional visual departure | Pass as a plan; no implementation verified |
 | Complete feature coverage | Inventory all CLI, interactive, settings, extension, and gated surfaces before declaring coverage | Pending evidence; first execution gate |
 | Behavioral parity | Define observable state, output, error, side-effect, and interaction cases per item | Pass as a method; no item verified |
 | Parity verification | Pin release and retain evidence, scenarios, and discrepancy status | Pass as a method; evidence incomplete |
@@ -86,7 +86,8 @@ No constitutional violation or exception is planned.
 ## Post-Design Constitution Check
 
 The data model and contracts require a pinned source, leaf inventory, evidence, nox-native surfaces,
-behavioral comparisons, and Pi visual checks. They preserve all five principles as design constraints.
+behavioral comparisons, and Pi visual checks. Any intentional visual departure requires a constitution
+amendment before implementation. These rules preserve all five principles as design constraints.
 Coverage and parity remain unverified; the inventory and reference-evidence gates below must pass before
 implementation slices can be called complete or a full-parity release can be claimed.
 
@@ -94,6 +95,6 @@ implementation slices can be called complete or a full-parity release can be cla
 
 1. **Inventory gate**: Enumerate the installed release with CLI output, official documentation, interactive inspection, and safe probes. Record each item and gated condition in the inventory contract. Split broad categories into independently testable leaf items. Reconcile the official documentation index and command list against the inventory; open gaps for every unmatched entry.
 2. **Reference-evidence gate**: For each leaf item, capture normal, denial/error, persistence, and relevant interaction traces in isolated fixtures. Mark inaccessible features `gated-unverified`; do not infer their behavior from names alone. Acquire access or a valid external observation before claiming parity.
-3. **Architecture slices**: Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations; administrative command families. Preserve each Pi path unless a documented behavior requires change.
+3. **Architecture slices**: Implement in dependency order: settings and naming; permissions and tools; session lifecycle; interactive controls; non-interactive protocol; skills/agents/hooks/external connections/plugins; background/worktree/remote integrations; administrative command families. Preserve each Pi visual path. Obtain a constitution amendment before any intentional visual departure.
 4. **Verification gate**: Compare normalized observable results for each leaf item, including side effects and failure behavior. Run focused regression tests and Pi visual comparisons. Close discrepancies only with evidence.
-5. **Release gate**: Refresh the reference version, inventory, and affected traces. Require 100% passing applicable items and zero known discrepancies before a complete-parity claim. Report gated-unverified items separately; they prevent an unqualified 100% claim.
+5. **Release gate**: Refresh the reference version, inventory, and affected traces. Require every inventoried item to pass and zero known discrepancies before an unqualified complete-parity claim. Report gated-unverified items separately; each prevents that claim.
