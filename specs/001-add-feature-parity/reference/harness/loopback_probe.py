@@ -25,6 +25,7 @@ SEARCH_MODES = frozenset({
     "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files", "glob-recursive",
     "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored", "glob-fd-ignore",
     "glob-git-metadata", "grep-ignored", "grep-fd-ignore", "grep-git-metadata", "grep-hidden",
+    "grep-mtime",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -203,6 +204,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "glob_ignored" if text == "fixture.txt\nignored.txt" and tool_name == "Glob" else
                              "glob_git_metadata" if text == "fixture.txt\n.git/inner.txt" and tool_name == "Glob" else
                              "grep_hidden" if text == "Found 2 files\n.hidden.txt\nfixture.txt" and tool_name == "Grep" else
+                             "grep_mtime" if text == "Found 2 files\nfixture.txt\n.hidden.txt" and tool_name == "Grep" else
                              "no_matches_found" if text == "No matches found" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
@@ -302,9 +304,12 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
         (workspace / "second.txt").write_text("alpha\n")
     if mode == "glob-two-files":
         (workspace / "second.txt").write_text(FIXTURE_CONTENT)
-    if mode in {"glob-hidden", "glob-mtime", "glob-mtime-tie", "grep-hidden"}:
+    if mode in {"glob-hidden", "glob-mtime", "glob-mtime-tie", "grep-hidden", "grep-mtime"}:
         (workspace / ".hidden.txt").write_text(FIXTURE_CONTENT)
     if mode == "glob-mtime":
+        os.utime(workspace / ".hidden.txt", (1_600_000_000, 1_600_000_000))
+        os.utime(fixture, (1_700_000_000, 1_700_000_000))
+    if mode == "grep-mtime":
         os.utime(workspace / ".hidden.txt", (1_600_000_000, 1_600_000_000))
         os.utime(fixture, (1_700_000_000, 1_700_000_000))
     if mode == "glob-mtime-tie":
@@ -393,10 +398,10 @@ def main(executable: str, mode: str = "normal") -> int:
                 "python_unchanged": (workspace / "fixture.py").read_text() == FIXTURE_CONTENT
                                     if mode == "grep-type-filter" else None,
                 "hidden_unchanged": (workspace / ".hidden.txt").read_text() == FIXTURE_CONTENT
-                                    if mode in {"glob-hidden", "glob-mtime", "glob-mtime-tie", "grep-hidden"} else None,
+                                    if mode in {"glob-hidden", "glob-mtime", "glob-mtime-tie", "grep-hidden", "grep-mtime"} else None,
                 "mtime_unchanged": (fixture.stat().st_mtime == 1_700_000_000 and
                                     (workspace / ".hidden.txt").stat().st_mtime == 1_600_000_000)
-                                   if mode == "glob-mtime" else None,
+                                   if mode in {"glob-mtime", "grep-mtime"} else None,
                 "mtime_tie_unchanged": (fixture.stat().st_mtime == 1_600_000_000 and
                                         (workspace / ".hidden.txt").stat().st_mtime == 1_600_000_000)
                                        if mode == "glob-mtime-tie" else None,
@@ -429,8 +434,8 @@ def main(executable: str, mode: str = "normal") -> int:
         matched = ((mode not in {"grep-count-multiple", "glob-two-files"} or summary.get("second_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
                    and (mode != "grep-type-filter" or summary.get("python_unchanged") is True)
-                   and (mode not in {"glob-hidden", "glob-mtime", "glob-mtime-tie", "grep-hidden"} or summary.get("hidden_unchanged") is True)
-                   and (mode != "glob-mtime" or summary.get("mtime_unchanged") is True)
+                   and (mode not in {"glob-hidden", "glob-mtime", "glob-mtime-tie", "grep-hidden", "grep-mtime"} or summary.get("hidden_unchanged") is True)
+                   and (mode not in {"glob-mtime", "grep-mtime"} or summary.get("mtime_unchanged") is True)
                    and (mode != "glob-mtime-tie" or summary.get("mtime_tie_unchanged") is True)
                    and (mode not in {"glob-ignored", "grep-ignored"} or summary.get("ignored_unchanged") is True)
                    and (mode not in {"glob-fd-ignore", "grep-fd-ignore"} or summary.get("fd_ignore_unchanged") is True)
