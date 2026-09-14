@@ -247,12 +247,12 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-542 | `mcp add-from-claude-desktop --scope managed` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
 | CLI-543 | `mcp add-from-claude-desktop --scope agent` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
 | CLI-544 | `mcp add-from-claude-desktop --scope invalid` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Exit 1, empty stdout, accepted-scope list on stderr; no import attempted |
-| CLI-545 | `auth help [command]` | [local help](observations/help-auth-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt) for `status`: exit 0, usage stdout, empty stderr; unknown target pending |
-| CLI-546 | `auto-mode help [command]` | [local help](observations/help-auto-mode-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt) for `config`: same result; unknown target pending |
-| CLI-547 | `mcp help [command]` | [local help](observations/help-mcp-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt) for `list`: same result; unknown target pending |
-| CLI-548 | `plugin help [command]` | [local help](observations/help-plugin-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt) for `list`: same result; unknown target pending |
-| CLI-549 | `plugin marketplace help [command]` | [local help](observations/help-plugin-marketplace-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt) for `list`: same result; unknown target pending |
-| CLI-550 | `project help [command]` | [local help](observations/help-project-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt) for `purge`: same result; unknown target pending |
+| CLI-545 | `auth help [command]` | [local help](observations/help-auth-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `status` exits 0 with usage stdout; unknown target exits 1 with parent help on stderr |
+| CLI-546 | `auto-mode help [command]` | [local help](observations/help-auto-mode-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `config` and unknown-target paths observed |
+| CLI-547 | `mcp help [command]` | [local help](observations/help-mcp-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `list` and unknown-target paths observed |
+| CLI-548 | `plugin help [command]` | [local help](observations/help-plugin-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `list` and unknown-target paths observed |
+| CLI-549 | `plugin marketplace help [command]` | [local help](observations/help-plugin-marketplace-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `list` and unknown-target paths observed |
+| CLI-550 | `project help [command]` | [local help](observations/help-project-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `purge` and unknown-target paths observed |
 
 ## Documented interactive command invocations
 

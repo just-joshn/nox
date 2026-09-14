@@ -18,4 +18,7 @@ Exit: 0; stdout begins `Usage: claude plugin marketplace list [options]`; stderr
 Input: claude project help purge
 Exit: 0; stdout begins `Usage: claude project purge [options] [path]`; stderr empty.
 
-The complete help pages were already captured separately in dated help files. Unknown targets and help-only startup side effects remain unobserved.
+Input: each of the six families above with `help nonexistent_synthetic` in a fresh disposable home.
+For each: exit 1, empty stdout, parent-family usage and command list on stderr. No target-specific help appeared. Home side effects were not inspected.
+
+The complete help pages were already captured separately in dated help files. Help-only startup side effects remain unobserved.
