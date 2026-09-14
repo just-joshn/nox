@@ -41,7 +41,7 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 | CLI-031 | `--include-hook-events` | observed-help | Pending | Pending |
 | CLI-032 | `--include-partial-messages` | observed-help | Pending | Pending |
 | CLI-033 | `--input-format` | observed-help | Pending | Pending |
-| CLI-034 | `--json-schema` | observed-help | Pending | Pending |
+| CLI-034 | `--json-schema` | observed-help | Parser preflight for malformed JSON only; valid output unsupported | [Malformed JSON rejection](observations/schema-invalid-2026-09-14.txt) matched; valid schema and other variants pending |
 | CLI-035 | `--max-budget-usd` | observed-help | Pending | Pending |
 | CLI-036 | `--mcp-config` | observed-help | Pending | Pending |
 | CLI-037 | `--model` | observed-help | Pending | Pending |

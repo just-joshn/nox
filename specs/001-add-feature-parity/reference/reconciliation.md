@@ -18,7 +18,7 @@
 2. No interactive reference session or paid model call was run. Interactive command and tool behavior remains undocumented at leaf level.
 3. No extension fixture or external connection was run. Precedence, lifecycle, and failure cases remain unobserved.
 4. No remote, browser, IDE, desktop, mobile, enterprise, or hosted flow was exercised. Product availability cannot be inferred from documentation alone.
-5. No nox implementation has been compared against these surfaces. Every discovered capability remains unverified.
+5. The SUR-LIMIT-002 malformed-JSON parser variant has an isolated nox/reference CLI comparison in [validation.md](validation.md). Valid structured output and every full capability leaf remain unverified.
 
 ## First US1 slice gate
 
