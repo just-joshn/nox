@@ -119,6 +119,18 @@ describe("explicit Claude search tools", () => {
 		expect(tool.parameters.properties.head_limit).toMatchObject({ minimum: 0 });
 	});
 
+	it("Grep direct-file content mode reports no matches", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", path: "fixture.txt", output_mode: "content" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "No matches found" }]);
+	});
+
 	it("Grep -i matches an uppercase query against lowercase content", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-i");
