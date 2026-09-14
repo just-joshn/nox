@@ -694,6 +694,13 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow();
 	});
 
+	it("Grep rejects an unsupported output mode", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		await expect(
+			tool.execute("call-1", { pattern: "alpha", output_mode: "bogus" } as never, undefined, undefined, {} as never),
+		).rejects.toThrow();
+	});
+
 	it("Glob preserves the search path in its result", async () => {
 		mkdirSync(join(cwd, "nested"));
 		writeFileSync(join(cwd, "nested", "fixture.txt"), "alpha\nbeta\n");

@@ -110,6 +110,8 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-B"?: number;
 			};
 			const outputMode = selected.output_mode;
+			if (outputMode !== undefined && !["files_with_matches", "content", "count"].includes(outputMode))
+				throw new Error("Invalid Grep output_mode");
 			if (selected.multiline && outputMode !== "count")
 				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal, outputMode !== "content");
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
