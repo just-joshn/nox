@@ -89,7 +89,8 @@ specified or reverified. The feature inventory and parity evidence MUST record t
 reference release or observation date so a moving target can be assessed. When
 Claude Code changes, nox MUST update its inventory, specifications, and behavior to
 restore parity. Observable behavior is the acceptance standard; nox does not need
-to reproduce Claude Code's private implementation.
+to reproduce Claude Code's private implementation. Equivalent user-facing capabilities
+MUST be accessed through nox-native names, commands, and configuration paths.
 
 ## Development and Review Gates
 
@@ -124,4 +125,4 @@ date. Reviewers MUST check changes against these principles and require correcti
 or an approved amendment for any conflict. AGENTS.md supplies operational
 development instructions where they do not conflict with this constitution.
 
-**Version**: 1.1.0 | **Ratified**: 2026-09-13 | **Last Amended**: 2026-09-14
+**Version**: 1.1.1 | **Ratified**: 2026-09-13 | **Last Amended**: 2026-09-14
