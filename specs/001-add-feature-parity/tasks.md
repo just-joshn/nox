@@ -125,7 +125,7 @@
 - [X] T172 [US1] Observe reference Grep `type: py` with matching synthetic `.py` and `.txt` files under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
 - [X] T173 [US1] Write a failing nox test for observed Grep `type: py` filtering, implement the explicit schema and safe type filtering for that branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T174 [US1] Observe reference Grep content `context: 1` around a synthetic match under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
-- [ ] T175 [US1] Write a failing nox test for observed Grep `context: 1`, implement its explicit schema and symmetric context mapping, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T175 [US1] Write a failing nox test for observed Grep `context: 1`, implement its explicit schema and symmetric context mapping, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

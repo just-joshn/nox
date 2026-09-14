@@ -26,6 +26,7 @@ const grepSchema = Type.Object({
 	"-n": Type.Optional(Type.Boolean()),
 	"-o": Type.Optional(Type.Boolean()),
 	"-C": Type.Optional(Type.Integer({ minimum: 0 })),
+	context: Type.Optional(Type.Integer({ minimum: 0 })),
 	"-A": Type.Optional(Type.Integer({ minimum: 0 })),
 	"-B": Type.Optional(Type.Integer({ minimum: 0 })),
 });
@@ -88,6 +89,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-n"?: boolean;
 				"-o"?: boolean;
 				"-C"?: number;
+				context?: number;
 				"-A"?: number;
 				"-B"?: number;
 			};
@@ -103,7 +105,7 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				{
 					...input,
 					ignoreCase: selected["-i"],
-					context: selected["-C"],
+					context: selected["-C"] ?? selected.context,
 				},
 				signal,
 				onUpdate,
