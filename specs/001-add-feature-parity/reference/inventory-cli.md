@@ -160,8 +160,8 @@ The [CLI reference](https://code.claude.com/docs/en/cli-usage) specifies these o
 | CLI-257 | `--tmux` without `--worktree` | Requires worktree option | Documented only |
 | CLI-258 | `--ref` with `--environment` | Base remote checkout on selected ref | Documented only |
 | CLI-259 | `--allow-dangerously-skip-permissions` with `--permission-mode plan` | Start in plan and add bypass to mode cycle | Documented only |
-| CLI-260 | `--append-subagent-system-prompt` with `--append-subagent-system-prompt-file` | Mutually exclusive | Documented only |
-| CLI-261 | `--system-prompt` with `--system-prompt-file` | Mutually exclusive | Documented only |
+| CLI-260 | `--append-subagent-system-prompt` with `--append-subagent-system-prompt-file` | Mutually exclusive | [Isolated parser trace](observations/cli-prompt-conflicts-2026-09-14.txt): exit 1, empty stdout, exact conflict stderr, config entries created |
+| CLI-261 | `--system-prompt` with `--system-prompt-file` | Mutually exclusive | [Isolated parser trace](observations/cli-prompt-conflicts-2026-09-14.txt): exit 1, empty stdout, exact conflict stderr, config entries created |
 | CLI-262 | `--exclude-dynamic-system-prompt-sections` with either replacement prompt flag | Exclusion is ignored | Documented only |
 | CLI-263 | `--permission-prompts none` in print mode | Deny requests without a prompt handler | Documented only |
 | CLI-264 | `--no-session-persistence` outside print mode | Print-mode restriction | Documented only |
