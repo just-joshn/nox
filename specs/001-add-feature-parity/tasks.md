@@ -169,6 +169,7 @@
 - [X] T216 [US1] Write a failing nox test for observed Grep file-list `offset: 1` output; apply offset after sorting and format the observed header, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T217 [US1] Observe reference Grep `output_mode: files_with_matches, head_limit: 1, offset: 2` across two synthetic matching files under localhost-only isolation; retain exact allowlisted empty-page result and unchanged state, then compare nox's boundary.
 - [X] T218 [US1] Write a failing nox test for observed Grep file-list offset-past-end text, implement that explicit boundary without changing other modes, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T219 [Setup] Reconcile installed top-level help short aliases against the CLI inventory; add any missing aliases as independently testable leaves, validate the audit, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

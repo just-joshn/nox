@@ -687,6 +687,10 @@ These inputs are printed by installed 2.1.270 help but were missed in the first 
 | CLI-516 | `self-hosted-runner --drain-wait-bg-tasks-sec` (deprecated alias for `--drain-wait-sec`) | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; alias acceptance and shutdown behavior pending |
 | CLI-517 | `self-hosted-runner --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
 | CLI-518 | `self-hosted-runner orchestrator --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
+| CLI-563 | `-d` (short alias for `--debug`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and filtering behavior pending |
+| CLI-564 | `-n` (short alias for `--name`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and session naming pending |
+| CLI-565 | `-v` (short alias for `--version`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and version output pending |
+| CLI-566 | `-w` (short alias for `--worktree`) | [local help](observations/cli-help-2026-09-14.txt) | Observed help; alias acceptance and worktree creation pending |
 
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) also distinguishes these startup dispatch inputs. They are documentation-backed candidates for installed 2.1.270; local invocation behavior remains unobserved.
 
