@@ -17,5 +17,6 @@ This map records the naming rule without asserting an implementation. Every inve
 | Chat and CI workflows | Terminal or CLI controls and connected-service bridges with matched triggers, decisions, and side effects | Pending leaf inventory and observations |
 | CLI-034 / SUR-LIMIT-002 malformed schema | `nox -p --json-schema <value>` parser preflight | Observed malformed JSON rejection matched in isolated CLI test; valid structured output unavailable and remaining variants unverified |
 | CLI-246 / SUR-BG-003 print conflict | `nox --bg -p <task>` preflight | Conflict decision matched; advice differs as DISC-001 because background launch and lifecycle are unavailable |
+| CLI-519 misspelled subcommand | `nox <misspelled-command>` suggests the closest nox subcommand, for example `nox udpate` → `nox update` | Reference parser and side effects observed; nox parser, executable naming, and result comparison pending |
 
 The spec's name prohibition excludes literal compatibility paths and commands. A proposed name or delivery route does not prove the underlying feature exists or behaves the same way. Surface-specific workflows remain open until their observed contracts and nox outcomes are compared.
