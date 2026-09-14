@@ -114,6 +114,13 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow("Path not found");
 	});
 
+	it("Glob rejects a missing search path", async () => {
+		const tool = createAllToolDefinitions(cwd).Glob;
+		await expect(
+			tool.execute("call-1", { pattern: "*.txt", path: "absent-dir" }, undefined, undefined, {} as never),
+		).rejects.toThrow();
+	});
+
 	it("Grep advertises the observed zero head limit boundary", () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties.head_limit).toMatchObject({ minimum: 0 });

@@ -226,6 +226,7 @@
 - [X] T273 [US1] Align the explicit Grep `head_limit` schema with the observed accepted zero boundary from T254; write a failing schema test, change the minimum, verify focused tests and `npm run check`, then commit locally.
 - [X] T274 [US1] Observe direct-file Grep content with a nonmatching pattern under localhost-only isolation; verify nox's empty content result, harness/focused tests and `npm run check`, then commit locally.
 - [X] T275 [US1] Observe direct-file Grep count with a nonmatching pattern under localhost-only isolation; verify nox's zero-total result, harness/focused tests and `npm run check`, then commit locally.
+- [X] T276 [US1] Observe Glob with a nonexistent path under localhost-only isolation; verify nox raises an error, harness/focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
