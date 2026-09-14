@@ -81,6 +81,21 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep count mode counts matching lines when a line has two occurrences", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha alpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:1\n\nFound 1 total occurrence across 1 file." },
+		]);
+	});
+
 	it("Grep count mode reports per-file and total occurrences", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
 		writeFileSync(join(cwd, "second.txt"), "alpha\n");

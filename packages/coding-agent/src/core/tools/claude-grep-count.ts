@@ -16,7 +16,7 @@ export async function executeClaudeGrepCount(cwd: string, input: CountInput, sig
 	const rgPath = await ensureTool("rg");
 	if (!rgPath) throw new Error("ripgrep (rg) is not available and could not be downloaded");
 	const searchPath = resolveToCwd(input.path || ".", cwd);
-	const args = ["--count-matches", "--with-filename", "--hidden", "--color=never"];
+	const args = ["--count", "--with-filename", "--hidden", "--color=never"];
 	if (input["-i"]) args.push("--ignore-case");
 	if (input.glob) args.push("--glob", input.glob);
 	args.push("--", input.pattern, searchPath);

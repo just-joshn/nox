@@ -100,6 +100,7 @@
 - [X] T147 [US1] Write a failing nox count-mode no-match test, implement the observed zero-total result without changing other Grep modes, verify focused tests and `npm run check`, then commit locally.
 - [X] T148 [US1] Observe reference Grep count mode against a disposable file with 101 matching lines through the localhost-only endpoint, retaining only exact synthetic count classification and unchanged-file state.
 - [X] T149 [US1] Compare nox's explicit count mode with the observed 101-line fixture; if it truncates, fix the long-term counting path without changing lower-case Pi grep and verify/commit locally.
+- [X] T150 [US1] Observe reference Grep count mode with two occurrences on one synthetic line under localhost-only isolation, classify only exact fixed result text, compare the nox count helper, and commit the validation.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
