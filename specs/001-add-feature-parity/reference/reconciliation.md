@@ -26,7 +26,7 @@ Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with p
 
 | Leaf ID | Observation and scenario | nox target | Evidence task | Implementation and verification task |
 |---------|--------------------------|------------|---------------|--------------------------------------|
-| US1-READ-001 | `US1-READ-NORMAL` partial synthetic loopback trace; missing-path, permission, and real-service cases pending | `packages/coding-agent/src/utils/tools-manager.ts` | T054 / T100 | T013 must create after normal/failure observations |
+| US1-READ-001 | `US1-READ-NORMAL` and `US1-READ-MISSING` partial synthetic loopback traces; exact error, permission, and real-service cases pending | `packages/coding-agent/src/utils/tools-manager.ts` | T054 / T100 | T013 must create after normal/failure observations |
 | US1-SEARCH-PATH-001 | `US1-SEARCH-PATH-NORMAL/NO-MATCH/INVALID` pending; not probed | `packages/coding-agent/src/utils/tools-manager.ts` | T055 | T013 must create after normal/failure observations |
 | US1-SEARCH-CONTENT-001 | `US1-SEARCH-CONTENT-NORMAL/NO-MATCH/INVALID` pending; not probed | `packages/coding-agent/src/utils/tools-manager.ts` | T061 | T013 must create after normal/failure observations |
 | US1-EDIT-001 | `US1-EDIT-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T056 | T013 must create after normal/failure observations |
@@ -35,4 +35,4 @@ Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with p
 | US1-FAIL-001 | `US1-COMMAND-FAILURE` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T059 | T013 must create after command-failure observation |
 | US1-RECOVER-001 | `US1-COMMAND-RECOVER` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T060 | T013 must create after command-recovery observation |
 
-T002–T006 remain open. T054's normal read has a synthetic loopback trace, while its failure/permission cases and real-service comparison remain open. T055–T061 still require either safe matched loopback fixtures or restored reference usage. T013 cannot yet create complete evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.
+T002–T006 remain open. T054's normal and missing-path result shapes have synthetic loopback traces, while exact error text, permission behavior, and real-service comparison remain open. T055–T061 still require either safe matched loopback fixtures or restored reference usage. T013 cannot yet create complete evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.

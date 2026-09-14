@@ -1,0 +1,44 @@
+{
+  "exit_code": 0,
+  "result": "synthetic completion",
+  "is_error": false,
+  "stderr_empty": true,
+  "requests": [
+    {
+      "model": "claude-haiku-4-5-20251001",
+      "tool_names": [],
+      "response": "text",
+      "tool_results": []
+    },
+    {
+      "model": "claude-sonnet-5",
+      "tool_names": [
+        "Bash",
+        "Edit",
+        "Read"
+      ],
+      "response": "tool",
+      "tool_results": []
+    },
+    {
+      "model": "claude-sonnet-5",
+      "tool_names": [
+        "Bash",
+        "Edit",
+        "Read"
+      ],
+      "response": "text",
+      "tool_results": [
+        {
+          "is_error": false,
+          "content_types": [
+            "text"
+          ],
+          "text": "1\talpha\n2\tbeta\n3\t",
+          "text_matches_fixture": true
+        }
+      ]
+    }
+  ],
+  "fixture_unchanged": true
+}
