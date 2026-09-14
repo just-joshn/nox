@@ -74,6 +74,11 @@ The [memory guide](https://code.claude.com/docs/en/memory) distinguishes instruc
 | MEM-016 | User-scope instruction or rule is symlinked outside the working directory in a Cowork session → skip it | Desktop Cowork gate; source file may contain private data | Documented; platform-gated |
 | MEM-017 | `/init` runs with an existing project instruction file → propose improvements rather than overwrite it | Interactive command; current file and side effects need isolated comparison | Documented; trace pending |
 | MEM-018 | `CLAUDE_CODE_NEW_INIT=1` and `/init` → select instructions, skills, and hooks for a reviewable proposal before writing | Feature environment flag; installed availability and intermediate decisions pending | Documented; trace pending |
+| MEM-019 | Block-level HTML comment in an instruction file → omit it from injected context but preserve it in direct file reads | Startup and lazy instruction loading; comments in code blocks stay visible | [Memory guide](https://code.claude.com/docs/en/memory#how-claudemd-files-load); trace pending |
+| MEM-020 | Additional-directory instruction loading is enabled but `local` setting source is excluded → skip its local instruction file | `--add-dir`, opt-in environment variable, and `--setting-sources` interaction | [Memory guide](https://code.claude.com/docs/en/memory#load-from-additional-directories); trace pending |
+| MEM-021 | A rule's brace expansion exceeds its shared 1,000-pattern or 4 MiB budget → leave that expression literal and unmatched | Other patterns in the list remain eligible; v2.1.217+ behavior | [Memory guide](https://code.claude.com/docs/en/memory#path-specific-rules); trace pending |
+| MEM-022 | Rule path glob has an invalid bracket expression → that pattern matches nothing while other patterns continue | v2.1.207+ behavior; literal `[` requires escaping | [Memory guide](https://code.claude.com/docs/en/memory#path-specific-rules); trace pending |
+| MEM-023 | Project rule symlink points outside the working directory → only unscoped rules load after external-import approval | Approval is triggered by a project `@path` import, not the symlink alone | [Memory guide](https://code.claude.com/docs/en/memory#share-rules-across-projects-with-symlinks); trace pending |
 
 ## Permission leaves
 
@@ -102,6 +107,11 @@ The [permission reference](https://code.claude.com/docs/en/permissions) defines 
 | PERM-019 | `/permissions` changes a rule mid-turn → next tool call uses new rule | Current installed version above v2.1.234 gate | Documented; trace pending |
 | PERM-020 | PreToolUse hook blocks a call → no permission rule can re-allow it | Hook exit 2 stops before rules; deny/ask still apply after hook allow | Documented; trace pending |
 | PERM-021 | Project allow rule is untrusted → approval not active until workspace trust | Untracked local allow rule is trusted; tracked local file follows trust | Documented; trace pending |
+| PERM-022 | `Bash(ls *)` allow rule evaluates `ls`, `ls -la`, and `lsof` → allow the first two but not `lsof` | Space before sole trailing wildcard also matches bare command | [Permission guide](https://code.claude.com/docs/en/permissions#wildcard-patterns); trace pending |
+| PERM-023 | `Bash(ls*)` allow rule evaluates `lsof` → match it as well as `ls` | No space before wildcard; separate pattern input from PERM-022 | [Permission guide](https://code.claude.com/docs/en/permissions#wildcard-patterns); trace pending |
+| PERM-024 | Allow rule uses a tool-name glob without literal `mcp__<server>__` prefix → skip it with a warning | Deny/ask globs have broader matching; server-specific MCP allow globs remain valid | [Permission guide](https://code.claude.com/docs/en/permissions#tool-name-wildcards); trace pending |
+| PERM-025 | Read-only compound command changes directory with `cd` → prompt despite otherwise read-only subcommands | Evaluate the directory transition separately | [Permission guide](https://code.claude.com/docs/en/permissions#read-only-commands); trace pending |
+| PERM-026 | Read-only command redirects output → prompt except for `/dev/null` redirection | Redirect target is a protected side effect | [Permission guide](https://code.claude.com/docs/en/permissions#read-only-commands); trace pending |
 
 ## Built-in tool leaves
 
@@ -176,6 +186,8 @@ The [model configuration reference](https://code.claude.com/docs/en/model-config
 | MODEL-013 | `modelSettings` specifies a per-model effort → resolve against global effort | Per-model setting and `effortLevel` have special precedence | Documented; trace pending |
 | MODEL-014 | Prompt contains `ultrathink` → deeper reasoning instruction for one turn | API effort level unchanged; other thinking phrases are literal | Documented; trace pending |
 | MODEL-015 | Custom provider model capabilities declared → enable listed features only | Capability suffix variables govern effort/thinking detection | Documented; provider probe pending |
+| MODEL-016 | Enterprise role effort cap and managed `maxEffortLevel` both apply → use the lower cap | Role limit requires eligible Enterprise account; managed cap applies to other providers too | [Model guide](https://code.claude.com/docs/en/model-config#organization-effort-limits); account-gated |
+| MODEL-017 | Organization default model is enabled → supersede user/project/local saved model at next launch | CLI, environment, managed settings, and invocation `--settings` retain higher precedence; Anthropic API auth gate | [Model guide](https://code.claude.com/docs/en/model-config#organization-default-model); account-gated |
 
 ## First US1 slice: stable tracking leaves
 
