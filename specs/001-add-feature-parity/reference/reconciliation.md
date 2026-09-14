@@ -14,7 +14,7 @@
 
 ## Open evidence and access gaps
 
-1. Authentication is available to the CLI outside the sandbox. The user's weekly usage cap is reportedly reached, so model-backed behavior remains `gated-unverified`. Managed policy and service connections were not inspected.
+1. Authentication is available to the CLI outside the sandbox. The user's weekly usage cap is reportedly reached, so real-service model behavior remains `gated-unverified`. A synthetic loopback Messages fixture now captures a partial read tool cycle without account usage; managed policy and service connections were not inspected.
 2. No interactive reference session or paid model call was run. Interactive command and tool behavior remains undocumented at leaf level.
 3. No extension fixture or external connection was run. Precedence, lifecycle, and failure cases remain unobserved.
 4. No remote, browser, IDE, desktop, mobile, enterprise, or hosted flow was exercised. Product availability cannot be inferred from documentation alone.
@@ -26,7 +26,7 @@ Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with p
 
 | Leaf ID | Observation and scenario | nox target | Evidence task | Implementation and verification task |
 |---------|--------------------------|------------|---------------|--------------------------------------|
-| US1-READ-001 | `US1-READ-NORMAL` pending; auth failure observed for this request only | `packages/coding-agent/src/utils/tools-manager.ts` | T054 | T013 must create after normal/failure observations |
+| US1-READ-001 | `US1-READ-NORMAL` partial synthetic loopback trace; missing-path, permission, and real-service cases pending | `packages/coding-agent/src/utils/tools-manager.ts` | T054 / T100 | T013 must create after normal/failure observations |
 | US1-SEARCH-PATH-001 | `US1-SEARCH-PATH-NORMAL/NO-MATCH/INVALID` pending; not probed | `packages/coding-agent/src/utils/tools-manager.ts` | T055 | T013 must create after normal/failure observations |
 | US1-SEARCH-CONTENT-001 | `US1-SEARCH-CONTENT-NORMAL/NO-MATCH/INVALID` pending; not probed | `packages/coding-agent/src/utils/tools-manager.ts` | T061 | T013 must create after normal/failure observations |
 | US1-EDIT-001 | `US1-EDIT-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T056 | T013 must create after normal/failure observations |
@@ -35,4 +35,4 @@ Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with p
 | US1-FAIL-001 | `US1-COMMAND-FAILURE` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T059 | T013 must create after command-failure observation |
 | US1-RECOVER-001 | `US1-COMMAND-RECOVER` pending; parent `US1-COMMAND-001`; not probed | `packages/coding-agent/src/core/agent-session.ts` | T060 | T013 must create after command-recovery observation |
 
-T002–T006 remain open. T054–T061 require restored reference usage and isolated fixtures; authentication alone is insufficient while the reported cap is active. T013 cannot yet create evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.
+T002–T006 remain open. T054's normal read has a synthetic loopback trace, while its failure/permission cases and real-service comparison remain open. T055–T061 still require either safe matched loopback fixtures or restored reference usage. T013 cannot yet create complete evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.

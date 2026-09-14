@@ -100,7 +100,7 @@
 | EXT-307 | Resolve managed agent precedence over project agent: documentation-only; installed transition and failure behavior unobserved | Eligible managed or account-synced configuration; isolated precedence and policy allow/deny fixtures |
 | EXT-312 | Focus a session in agent view: documentation-only; installed transition and failure behavior unobserved | Eligible team or agent-view account and isolated multi-session fixture; capture normal, refusal, failure, and recovery transitions |
 | EXT-313 | Steer a session in agent view: documentation-only; installed transition and failure behavior unobserved | Eligible team or agent-view account and isolated multi-session fixture; capture normal, refusal, failure, and recovery transitions |
-| US1-READ-001 | No tool-dispatch trace; prior sandbox request stopped at authentication | Restored usage allowance and an authorized disposable repository read fixture |
+| US1-READ-001 | Synthetic loopback normal read trace captured; missing-path, permission boundary, content limits, and real-service behavior unobserved | Disposable loopback failure/denial fixtures, then restored usage allowance for matched real-service observation |
 | US1-SEARCH-PATH-001 | Installed path-search availability and behavior unobserved | Restored usage allowance and matched path/no-match/invalid-pattern fixtures |
 | US1-SEARCH-CONTENT-001 | Installed content-search availability and behavior unobserved | Restored usage allowance and matched content/no-match/invalid-pattern fixtures |
 | US1-EDIT-001 | Edit approval and side effects unobserved | Restored usage allowance and disposable edit/denial/failure fixtures |

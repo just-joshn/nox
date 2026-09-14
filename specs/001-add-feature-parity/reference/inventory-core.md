@@ -178,7 +178,7 @@ These IDs split the initial coding journey for evidence collection. The installe
 
 | ID | Leaf behavior to observe | Discovery evidence | nox target | Current status |
 |----|--------------------------|--------------------|------------|----------------|
-| US1-READ-001 | Read an in-scope text file and report result | Installed `--tools` help names `Read`; official tools reference | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: weekly cap reported by user |
+| US1-READ-001 | Read an in-scope text file and report result | Installed `--tools` help names `Read`; [synthetic loopback normal trace](observations/read-loopback-2026-09-14.json) | `packages/coding-agent/src/utils/tools-manager.ts` | Partial normal tool-cycle observation; missing/error/permission and real-service cases `gated-unverified` |
 | US1-SEARCH-PATH-001 | Find fixture paths matching a pattern | Official tools reference names `Glob`; installed availability pending | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: weekly cap reported by user |
 | US1-SEARCH-CONTENT-001 | Find matching text in fixture files | Official tools reference names `Grep`; installed availability pending | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: weekly cap reported by user |
 | US1-EDIT-001 | Apply a targeted edit to an in-scope file | Installed `--tools` help names `Edit`; official tools reference | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: weekly cap reported by user |
