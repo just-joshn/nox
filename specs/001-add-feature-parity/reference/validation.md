@@ -260,3 +260,5 @@ Nox's explicit Grep file-list adapter now emits the reference's single-line mess
 The installed top-level help has eight short aliases. Four (`-c`, `-h`, `-p`, and `-r`) already appeared in CLI inventory inputs; T219 added the missing `-d`, `-n`, `-v`, and `-w` as CLI-563–CLI-566. An offline extraction confirmed all 65 installed long flags and all eight short aliases now appear in the top-level inventory or additional-alias leaves. Alias invocation behavior remains unobserved, and T002 stays open.
 
 T220 compared option lines and short aliases in the captured nested `help-*.txt` files with inventory rows linked to each capture. All ordinary nested options have a corresponding row. The two daemon capture exceptions are repeated parent help, already represented by CLI-552; no new leaf was warranted. Invocation behavior and undocumented combinations remain open.
+
+T221 extracted 42 entries from captured nested `Commands:` blocks and matched each command path to an inventory leaf. The `plugin|plugins` usage alias was normalized to the existing plugin family; no printed nested command was missing. This is a help-surface audit, not invocation proof.

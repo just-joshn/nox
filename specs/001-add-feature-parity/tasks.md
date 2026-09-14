@@ -171,6 +171,7 @@
 - [X] T218 [US1] Write a failing nox test for observed Grep file-list offset-past-end text, implement that explicit boundary without changing other modes, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T219 [Setup] Reconcile installed top-level help short aliases against the CLI inventory; add any missing aliases as independently testable leaves, validate the audit, then commit locally.
 - [X] T220 [Setup] Reconcile every captured nested-help option and short alias against evidence-linked CLI leaves; explain shared daemon help and record remaining scope, then commit locally.
+- [X] T221 [Setup] Reconcile captured nested `Commands:` entries and command aliases against CLI inventory leaves; record coverage and its limits, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

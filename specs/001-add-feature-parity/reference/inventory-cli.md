@@ -138,6 +138,8 @@ The additional flags above came from the [current official CLI reference](https:
 
 On 2026-09-14, the installed CLI returned help with exit code 0 for 36 command paths: `auth login|logout|status`; `mcp add|add-json|get|list|login|logout|remove|reset-project-choices|serve`; `plugin details|disable|enable|eval|init|install|list|marketplace|prune|tag|uninstall|update|validate`; `project purge`; `auto-mode config|critique|defaults|reset`; and `install`, `respawn`, `doctor`, `update`, `setup-token`. Four third-level `plugin marketplace` paths (`add`, `list`, `remove`, `update`) and `plugin eval init` also returned help. The [dated raw files](observations/) retain the option descriptions, defaults, and usage signatures. A successful help exit is discovery evidence only; it does not establish executable behavior or availability under the current account.
 
+An offline audit of the captured `Commands:` blocks found 42 command entries. Each has an inventory leaf, including the printed `plugin|plugins` parent alias and `help [command]` dispatch entries. This does not establish that unprinted commands are absent.
+
 The [current official CLI reference](https://code.claude.com/docs/en/cli-usage) documents `daemon`, `remote-control`, and `self-hosted-runner` command families that are absent from this installation's top-level help. Direct `--help` probes exposed the daemon and runner trees. `remote-control --help` instead exited 1 with an account-login requirement before showing help; its behavior is gated-unverified. The same page states that `--help` is incomplete, so absent help is not proof of absence.
 
 ## Documented CLI interaction leaves
