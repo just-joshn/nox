@@ -648,6 +648,17 @@ Each row is an invokable command-option input from the installed 2.1.270 help ca
 | CLI-480 | `ultrareview --timeout` | [local help](observations/help-ultrareview-2026-09-14.txt) | Observed help; behavior pending |
 | CLI-481 | `update -h, --help` | [local help](observations/help-update-2026-09-14.txt) | Observed help; behavior pending |
 
+## Additional installed-help option aliases
+
+These inputs are printed by installed 2.1.270 help but were missed in the first command-option pass. Deprecated aliases remain separate leaves because their parser and failure behavior can differ from the preferred option. Invocation and result behavior is unobserved.
+
+| ID | Input | Evidence | State |
+|----|-------|----------|-------|
+| CLI-515 | `daemon stop --keep-workers` | [local help](observations/help-daemon-stop-2026-09-14.txt) | Observed help; supervisor and detached-session outcome pending |
+| CLI-516 | `self-hosted-runner --drain-wait-bg-tasks-sec` (deprecated alias for `--drain-wait-sec`) | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; alias acceptance and shutdown behavior pending |
+| CLI-517 | `self-hosted-runner --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
+| CLI-518 | `self-hosted-runner orchestrator --pool-secret-file` (deprecated alias for `--environment-secret-file`) | [local help](observations/help-self-hosted-runner-orchestrator-2026-09-14.txt) | Observed help; alias acceptance and credential handling pending |
+
 ## Documented interactive dispatch leaves
 
 The [current command reference](https://code.claude.com/docs/en/commands) distinguishes these dispatch and timing behaviors. They were reviewed on 2026-09-14 against installed release 2.1.270. Documentation establishes candidates, not local behavior or a nox parity result. Each row requires an isolated interaction scenario before implementation.
