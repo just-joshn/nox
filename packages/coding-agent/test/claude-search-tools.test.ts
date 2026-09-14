@@ -77,6 +77,23 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha\nfixture.txt-2-beta" }]);
 	});
 
+	it.each([
+		["-A", "fixture.txt:2:alpha\nfixture.txt-3-after"],
+		["-B", "fixture.txt-1-before\nfixture.txt:2:alpha"],
+	])("Grep %s includes only the observed side of context", async (flag, expected) => {
+		writeFileSync(join(cwd, "fixture.txt"), "before\nalpha\nafter\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty(flag);
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", [flag]: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: expected }]);
+	});
+
 	it("Grep count mode reports one occurrence", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(JSON.stringify(tool.parameters.properties.output_mode)).toContain("count");

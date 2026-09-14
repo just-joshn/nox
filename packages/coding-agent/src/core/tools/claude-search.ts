@@ -2,6 +2,7 @@ import path from "node:path";
 import { Type } from "typebox";
 import { executeClaudeGrepCount } from "./claude-grep-count.ts";
 import { executeClaudeGrepOnly } from "./claude-grep-only.ts";
+import { executeClaudeGrepSidedContext } from "./claude-grep-sided-context.ts";
 import { createFindToolDefinition } from "./find.ts";
 import { createGrepToolDefinition } from "./grep.ts";
 
@@ -21,6 +22,8 @@ const grepSchema = Type.Object({
 	"-n": Type.Optional(Type.Boolean()),
 	"-o": Type.Optional(Type.Boolean()),
 	"-C": Type.Optional(Type.Integer({ minimum: 0 })),
+	"-A": Type.Optional(Type.Integer({ minimum: 0 })),
+	"-B": Type.Optional(Type.Integer({ minimum: 0 })),
 });
 
 function resultText(result: { content: Array<{ type: string; text?: string }> }): string {
@@ -78,11 +81,15 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-n"?: boolean;
 				"-o"?: boolean;
 				"-C"?: number;
+				"-A"?: number;
+				"-B"?: number;
 			};
 			const outputMode = selected.output_mode;
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && selected["-o"])
 				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);
+			if (outputMode === "content" && (selected["-A"] !== undefined || selected["-B"] !== undefined))
+				return executeClaudeGrepSidedContext(ctx?.cwd || cwd, selected, signal);
 			const result = await grep.execute(
 				id,
 				{ ...input, ignoreCase: selected["-i"], context: selected["-C"] },
