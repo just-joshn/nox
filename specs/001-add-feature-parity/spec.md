@@ -135,6 +135,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - The baseline is the locally installed reference release 2.1.270, observed on 2026-09-13. A later release requires inventory refresh before a current-parity claim.
 - "All features" includes features gated by account, platform, policy, or connected services; those conditions are recorded rather than silently excluding the feature.
 - "Identical" means externally observable behavior under equivalent inputs and conditions, rather than duplication of private internals or nondeterministic model wording.
-- The reference CLI and official user documentation are evidence sources. Reference program code is not copied or adapted into nox.
+- The installed reference CLI and current official user documentation are primary behavior sources. The older, unofficial [restored source map](https://github.com/ChinaSiro/claude-code-sourcemap/tree/main/restored-src) is a secondary discovery source for candidate features, edge cases, and architecture questions. It may be read remotely, but MUST NOT be cloned or copied into nox. Reference program code is not copied or adapted into nox.
+- This is the only feature specification for the complete-parity effort. Delivery increments are tasks within its single plan and task document, not separate feature specifications.
 - Existing configuration paths or commands containing the reference product's name do not need to work unchanged. Users access equivalent behavior through nox-specific names and paths. Specification and verification evidence may identify the reference explicitly.
 - The existing Pi experience is the visual baseline. A necessary visual departure requires a constitution amendment before implementation.

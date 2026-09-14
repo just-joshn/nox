@@ -6,7 +6,7 @@
 
 **Tests**: The spec requires observable comparison and independent verification for each story. Use isolated fixtures and the faux provider; do not use paid provider calls for ad hoc checks.
 
-**Organization**: Tasks are grouped by user story. Each source slice is blocked until its leaf inventory, observed contract, and item-level tasks exist. Exhaustive inventory and verification remain required for a complete-parity claim. No story may be called complete from a domain heading alone.
+**Organization**: This is the only task document for the complete-parity effort. Tasks are grouped by user story and feature family; these are delivery increments, not separate specifications. Each code task needs its leaf inventory and observed contract. Exhaustive inventory and verification remain required for a complete-parity claim. No family may be called complete from a domain heading alone.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -18,7 +18,7 @@
 
 **Purpose**: Establish a reproducible reference snapshot and the complete feature boundary.
 
-- [ ] T001 Record installed reference version, platform, date, account and policy conditions, and safe CLI observations in `specs/001-add-feature-parity/reference/snapshot.md`; preserve raw outputs under `specs/001-add-feature-parity/reference/observations/` without inspecting reference implementation code.
+- [ ] T001 Record installed reference version, platform, date, account and policy conditions, and safe CLI observations in `specs/001-add-feature-parity/reference/snapshot.md`; preserve raw outputs under `specs/001-add-feature-parity/reference/observations/`. Inspect the older restored source map remotely for feature discovery, but do not clone or copy it into nox.
 - [ ] T002 [P] Enumerate every CLI flag, subcommand, option combination, and documented interactive command or shortcut as leaf entries in `specs/001-add-feature-parity/reference/inventory-cli.md`; reconcile local help with official command documentation and mark unobserved entries.
 - [ ] T003 [P] Enumerate settings, instruction loading, memory, permission modes, built-in tools, and model controls as leaf entries in `specs/001-add-feature-parity/reference/inventory-core.md`; record defaults, scope, precedence, and availability conditions.
 - [ ] T004 [P] Enumerate skills, custom commands, agents, teams, hooks, external connections, plugins, and marketplaces as leaf entries in `specs/001-add-feature-parity/reference/inventory-extensions.md`; include triggers, lifecycle events, and gated variants.
@@ -39,19 +39,19 @@
 - [ ] T010 Record the evidence gap and access needed for every gated or otherwise unobservable leaf ID in `specs/001-add-feature-parity/reference/gated.md`; keep those IDs `gated-unverified` and excluded from any unqualified complete-parity claim.
 - [ ] T011 Predeclare the required Pi visual matrix in `specs/001-add-feature-parity/reference/pi-visuals.md`: every affected workflow and its relevant normal, denial, error, and recovery states across supported terminal widths and themes, including prompts, menus, tool results, and errors. Capture reference states, identify any proposed intentional departure, and require a constitution amendment before its implementation.
 - [ ] T012 Define discrepancy ownership, reproduction format, and closure evidence in `specs/001-add-feature-parity/reference/discrepancies.md`; require fresh passing reference comparison before `closed` and reopen on regression.
-- [ ] T013 Solely own creation of explicit implementation and verification tasks in `specs/001-add-feature-parity/tasks.md` for each reachable, observed leaf selected for the next story slice; each task must name its leaf ID, observed contract, target file, dependency, and passing scenario before source implementation of that leaf. Start with the US1 read/search/edit/command/denial/failure/recovery slice, listing its stable IDs and reference observations in `specs/001-add-feature-parity/reference/reconciliation.md`. Add discovery or access tasks for gated leaves without inventing contracts. Continue expanding the task set as inventory work proceeds; T046 cannot close until every inventory leaf has item-level task and scenario coverage.
+- [ ] T013 Expand every family task below into explicit implementation and verification subtasks in this `tasks.md` for each reachable, observed leaf; each subtask names its leaf ID, observed contract, target file, dependency, and passing scenario before source implementation. Start with the read/search/edit/command/denial/failure/recovery leaves. Add discovery or access subtasks for gated leaves without inventing contracts. T046 cannot close until every inventory leaf has item-level task and scenario coverage.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
 ---
 
-## Phase 3: User Story 1 — Work in a Familiar Terminal (Priority: P1) MVP Slice
+## Phase 3: User Story 1 — Work in a Familiar Terminal (Priority: P1)
 
 **Goal**: Match the reference's core coding workflow inside Pi's terminal presentation.
 
 **Independent Test**: In matched disposable repositories, compare a read, search, edit, command, denial, failure, and recovery journey; compare corresponding Pi terminal states.
 
-**First-slice evidence checkpoint**: Before T016–T018, `specs/001-add-feature-parity/reference/reconciliation.md` must list the stable leaf IDs for the selected US1 read/search/edit/command/denial/failure/recovery behaviors, each ID's reference observation and normal/failure scenarios from `specs/001-add-feature-parity/reference/scenarios.md`, target source file, explicit implementation and verification task created by T013, and dependency. A domain heading or an unobserved behavior does not satisfy this checkpoint.
+**Evidence checkpoint**: Before T016–T018, `specs/001-add-feature-parity/reference/reconciliation.md` must list the stable leaf IDs for the US1 read/search/edit/command/denial/failure/recovery behaviors, each ID's reference observation and normal/failure scenarios from `specs/001-add-feature-parity/reference/scenarios.md`, target source file, explicit implementation and verification subtask created by T013, and dependency. A domain heading or an unobserved behavior does not satisfy this checkpoint.
 
 ### Verification
 
@@ -162,7 +162,7 @@
 
 ```text
 Reference discovery (T001–T007, continuing as new leaves are found)
-    → Per-slice evidence (T008–T012 and T054–T061 for first US1 leaf IDs)
+    → Per-feature evidence (T008–T012 and T054–T061 for core workflow leaf IDs)
         → Explicit implementation and verification tasks (T013 for observed IDs)
             → US1 / US2 / US3 / US4 source and verification slices
                 → Full inventory and all leaf tasks complete (T046)
@@ -171,7 +171,7 @@ Reference discovery (T001–T007, continuing as new leaves are found)
 
 - US1 and US2 are P1. Each source slice depends on evidence and explicit tasks for its own leaves, not completion of every Phase 2 item; shared `agent-session.ts` edits must be serialized or isolated.
 - US3 and US4 are P2. Each source slice depends on evidence and explicit tasks for its own leaves. US4's remote connections may consume US3 connection behavior, but its protocol and worktree slices remain independently demonstrable.
-- Within each story, observed scenarios precede behavior changes, core state changes precede UI/CLI integration, and discrepancy closure follows verification. Run `npm run check` with full output after each code-change slice and fix all errors, warnings, and infos before continuing; run each created or modified focused test file until it passes. Record results in `specs/001-add-feature-parity/reference/validation.md`.
+- Within each story, observed scenarios precede behavior changes, core state changes precede UI/CLI integration, and discrepancy closure follows verification. Run `npm run check` with full output after each code-change task and fix all errors, warnings, and infos before continuing; run each created or modified focused test file until it passes. Record results in `specs/001-add-feature-parity/reference/validation.md`.
 - T046 can expose missing leaf tasks. Such tasks are added in the owning story phase and completed before T051–T052. T053 follows all validation.
 
 ## Parallel Execution Examples
@@ -184,8 +184,8 @@ Reference discovery (T001–T007, continuing as new leaves are found)
 
 ## Implementation Strategy
 
-1. Continue Phases 1–2 until the complete inventory exists. An independently observed slice may start when its own leaf contracts and tasks are ready; inaccessible leaves stay tracked as open work.
-2. Deliver US1 as the first demonstrable Pi-styled coding workflow. This is an MVP slice, not a full-parity release.
+1. Continue Phases 1–2 until the complete inventory exists. An independently observed task may start when its own leaf contracts are ready; inaccessible leaves stay tracked as open work.
+2. Deliver US1 as the first demonstrable Pi-styled coding workflow, then continue through every task and family in this document.
 3. Deliver US2, US3, and US4 as independent increments, keeping each capability's comparison status visible.
 4. Do not call the project 100% parity while any discovered leaf is unimplemented, discrepant, or gated-unverified.
 
@@ -196,7 +196,7 @@ Reference discovery (T001–T007, continuing as new leaves are found)
 - The custom `checklists/parity.md` is reviewer-owned requirements quality review; it is not an implementation progress checklist.
 - Commits occur only on explicit user request under `AGENTS.md`.
 
-## First-Slice Reference Evidence Tasks
+## Core Workflow Reference Evidence Tasks
 
 These tasks are listed after the original 53 IDs to preserve stable task numbering. They precede T013 for the selected US1 leaves and do not authorize source implementation without observed normal, failure, and relevant interaction contracts. An earlier sandboxed read request failed before tool dispatch because credentials were inaccessible there. Authentication was later confirmed outside the sandbox, but the user reported a weekly usage cap; no model-backed probes should run until usage is restored. The other leaves were not probed.
 
@@ -208,3 +208,27 @@ These tasks are listed after the original 53 IDs to preserve stable task numberi
 - [ ] T059 [US1] Observe US1-FAIL-001 for parent US1-COMMAND-001 in an authorized disposable repository: trigger a harmless command with nonzero exit and capture result shape, stdout/stderr, side effects, and retry behavior in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
 - [ ] T060 [US1] Observe US1-RECOVER-001 for parent US1-COMMAND-001 in the same authorized session after that nonzero command: capture history, next actions, and a successful continuation in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/core/agent-session.ts`; then have T013 create implementation and verification tasks.
 - [ ] T061 [US1] Observe US1-SEARCH-CONTENT-001 in an authorized disposable repository: confirm installed content-search availability, matching text, no-match, and invalid-pattern behavior in `specs/001-add-feature-parity/reference/scenarios.md`; target `packages/coding-agent/src/utils/tools-manager.ts`; then have T013 create implementation and verification tasks.
+
+## Complete Feature-Family Task Register
+
+These tasks keep every currently identified family in this one document. Each requires discovery, clean-room behavior contracts, nox implementation, and matched verification for all its leaves. T013 adds leaf-level subtasks here as observations become available; a family task cannot close while a leaf is missing, gated, or discrepant. The current [official documentation index](https://code.claude.com/docs/llms.txt), installed 2.1.270 command tree, and older [restored source map](https://github.com/ChinaSiro/claude-code-sourcemap/tree/main/restored-src) are all discovery inputs. Only current documentation and observed current behavior establish a parity contract. No source code from the restored tree enters nox.
+
+- [ ] T062 [US1] Reconcile every official documentation page, linked reference page, installed command and flag, and restored-source feature module against the feature-family table in `plan.md`; record URL/module path, version, candidate capability, duplicate mapping, and unmatched gap in `reference/source-reconciliation.md`. Add every unmatched capability to this task document and inventory before closing T006.
+- [ ] T063 [US1] Specify the clean-room agent-turn state machine in `contracts/observable-behavior.md`: inputs, context and instruction precedence, planning, tool selection, streaming events, retries, interruption, completion, usage accounting, and nondeterministic output normalization. Implement each observed leaf in `packages/agent/src/` and `packages/coding-agent/src/core/`; verify matched traces and Pi states in focused tests and `reference/scenarios.md`.
+- [ ] T064 [US1] Inventory and contract every built-in tool family in `reference/inventory-core.md`, including file read/write/edit, path and content search, shell/PowerShell, web retrieval/search, notebook editing, language-server actions, user questions, tool discovery, and mode/worktree/task controls. Implement observed input validation, permissions, output, limits, cancellation, and errors in owning `packages/coding-agent/src/core/` and `packages/coding-agent/src/utils/` modules; verify each leaf with isolated fixtures.
+- [ ] T065 [US2] Contract model/provider selection, aliases, effort, thinking, budgets, fallback, capability limits, transport, and usage display in `reference/scenarios.md`. Implement observed leaves in `packages/ai/src/` and `packages/coding-agent/src/core/agent-session.ts`; verify normal, unavailable, rate-limited, and restart cases without paid ad-hoc test calls.
+- [ ] T066 [US2] Contract trust, permission modes/rules, managed policy, sandbox boundaries, restricted operation, credential reuse, secret redaction, and unattended decisions in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/core/permissions.ts` and owning security modules; verify allow, deny, policy-blocked, restart, and data-disclosure cases with synthetic secrets.
+- [ ] T067 [US2] Contract session identity, history, rename, resume, fork, rewind, compaction, auto memory, background state, and cross-surface continuation in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/core/session-manager.ts` and related owning modules; verify persistence, crash, changed-repository, and context-limit cases.
+- [ ] T068 [US1] Inventory all interactive commands, input/editor behavior, keybindings, vim mode, output styles, themes, accessibility, help/status, notifications, and voice/buddy behavior in `reference/inventory-cli.md`. Implement functional controls in `packages/coding-agent/src/modes/interactive/` using Pi visual primitives; verify each normal, prompt, denial, error, and recovery cell in `reference/pi-visuals.md`.
+- [ ] T069 [US3] Contract settings scopes, validation, precedence, environment overrides, managed policy, migrations, instruction files, rules, and memory in `reference/scenarios.md`. Implement observed leaves through nox-native names in `packages/coding-agent/src/config.ts` and `packages/coding-agent/src/core/`; verify conflicts, invalid values, restart, and isolation.
+- [ ] T070 [US3] Contract skills, built-in and custom commands, argument processing, discovery, invocation, and lifecycle in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/core/skills.ts` and command owners; verify duplicate names, disabled entries, errors, and precedence.
+- [ ] T071 [US3] Inventory every hook event, matcher, input/output schema, command and prompt hook, asynchronous behavior, ordering, blocking, and failure policy in `reference/inventory-extensions.md`. Implement observed leaves in `packages/coding-agent/src/core/hooks.ts`; verify ordering, cancellation, invalid output, restart, and secret exposure.
+- [ ] T072 [US3] Contract built-in/custom agents, subagents, teams, task state, messages, delegation, concurrency, isolation, and coordination in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/core/` and `packages/agent/src/`; verify success, partial failure, cancellation, overlapping edits, and resume.
+- [ ] T073 [US3] Contract plugins, marketplaces, MCP servers/tools/resources/prompts, external authentication, discovery, enablement, installation, update, and removal in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/core/` and `packages/coding-agent/src/cli/`; verify scope, offline/error, permission, redaction, and lifecycle cases.
+- [ ] T074 [US4] Contract noninteractive text/JSON/streaming input and output, structured schemas, partial messages, budgets, event ordering, RPC/SDK-style control, and exit statuses in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/modes/print-mode.ts`, `packages/coding-agent/src/modes/rpc/`, and relevant protocol owners; verify malformed input, backpressure, interruption, and failures.
+- [ ] T075 [US4] Contract CLI startup, every subcommand and flag, auth/setup, diagnostics, update, import, project state, external management, and administrative errors in `reference/scenarios.md`. Implement observed leaves in `packages/coding-agent/src/cli/` under nox-native names; verify help, defaults, invalid combinations, exit codes, and state changes.
+- [ ] T076 [US4] Contract worktrees, repository/source-control operations, background agents, local scheduling/loops, cloud routines, triggers, hosted review, and notifications in `reference/scenarios.md`. Implement each observed leaf in `packages/coding-agent/src/core/` and CLI controls; verify isolation, side effects, logs, cancellation, restart, and cleanup.
+- [ ] T077 [US4] Contract remote control, cloud/web sessions, teleport/handoff, desktop/mobile/editor/browser/chat/CI connections, channels, enterprise gateways, self-hosted runners, artifacts, and deep links in `reference/scenarios.md`. Implement every observed workflow through a nox terminal/CLI control and necessary connected-service bridge in `packages/coding-agent/src/`; verify entry, intermediate interactions, state, data disclosure, failure, disconnect, and resume. Keep service-gated leaves open until access permits matched observation.
+- [ ] T078 [US4] Reconcile each terminal, VS Code, JetBrains, desktop, web, mobile, Chrome, Slack, GitHub/GitLab CI, and SDK documentation workflow to a nox control in `reference/surface-map.md`. Create leaf subtasks in this document for any missing control and verify Pi visual consistency where nox presents it in the terminal.
+- [ ] T079 [US1] Audit every implemented feature family against the restored tree's candidate module list in `reference/source-reconciliation.md`; investigate unmatched names through current documentation and safe current-CLI observations, add real missing features to this task document, and reject obsolete source-only behavior with dated evidence.
+- [ ] T080 [US1] Perform the final three-way coverage audit in `reference/reconciliation.md`: current official docs, installed current reference, and restored-source candidate list must each map to a documented leaf, an explicit obsolete/duplicate rationale, or a gated open item. Close only after all resulting implementation/verification subtasks in this document pass; then run T046–T053.
