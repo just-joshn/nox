@@ -9,6 +9,8 @@ interface CountInput {
 	glob?: string;
 	type?: string;
 	multiline?: boolean;
+	head_limit?: number;
+	offset?: number;
 	"-i"?: boolean;
 }
 
@@ -44,6 +46,9 @@ export async function executeClaudeGrepCount(cwd: string, input: CountInput, sig
 		});
 	const total = counts.reduce((sum, entry) => sum + entry.count, 0);
 	const summary = `Found ${total} total occurrence${total === 1 ? "" : "s"} across ${counts.length} file${counts.length === 1 ? "" : "s"}.`;
-	const files = counts.length ? counts.map(({ file, count }) => `${file}:${count}`).join("\n") : "No matches found";
-	return { content: [{ type: "text" as const, text: `${files}\n\n${summary}` }], details: undefined };
+	const offset = input.offset ?? 0;
+	const page = counts.slice(offset, input.head_limit ? offset + input.head_limit : undefined);
+	const files = counts.length ? page.map(({ file, count }) => `${file}:${count}`).join("\n") : "No matches found";
+	const pagination = offset > 0 && counts.length ? ` with pagination = offset: ${offset}` : "";
+	return { content: [{ type: "text" as const, text: `${files}\n\n${summary}${pagination}` }], details: undefined };
 }
