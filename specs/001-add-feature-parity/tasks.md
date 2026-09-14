@@ -219,6 +219,8 @@
 - [X] T266 [US1] Observe nonempty Grep content on a single synthetic file under localhost-only isolation; verify nox's direct-file formatting, harness/focused tests and `npm run check`, then commit locally.
 - [X] T267 [US1] Observe `files_with_matches` Grep on a single synthetic file under localhost-only isolation; verify nox's direct-file file-list formatting, harness/focused tests and `npm run check`, then commit locally.
 - [X] T268 [US1] Observe count-mode Grep on a single synthetic file under localhost-only isolation; verify nox's direct-file count formatting, harness/focused tests and `npm run check`, then commit locally.
+- [X] T269 [US1] Observe Grep on a single synthetic file with omitted `output_mode` under localhost-only isolation; retain exact allowlisted default result and unchanged state, verify harness tests, then commit locally.
+- [ ] T270 [US1] Write a failing nox test for T269 direct-file default Grep mode, select the observed file-list branch without changing directory-path defaults, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
