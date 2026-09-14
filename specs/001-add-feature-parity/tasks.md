@@ -107,6 +107,8 @@
 - [X] T154 [US1] Write a failing nox test for the observed `-o` output and schema, implement only that explicit field, verify focused and neighboring tests plus `npm run check`, and commit locally.
 - [X] T155 [US1] Observe reference Grep content mode with `-C: 1` around a synthetic match under localhost-only isolation; retain an exact allowlisted context result and unchanged-file state.
 - [X] T156 [US1] Write a failing nox test for the observed `-C` schema and output, map the flag through the explicit Grep adapter without changing lower-case Pi grep, verify and commit locally.
+- [X] T157 [US1] Observe reference Grep content mode with `-A: 1` and `-B: 1` separately in a three-line synthetic file under localhost-only isolation, retaining only exact allowlisted results.
+- [ ] T158 [US1] Write failing nox tests for the observed one-sided context flags, implement their explicit schema and result semantics, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
