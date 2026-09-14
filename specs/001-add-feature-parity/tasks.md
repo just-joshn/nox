@@ -211,6 +211,8 @@
 - [X] T258 [US1] Compare nox's negative Grep `-C` behavior with T257; write a failing test and validate explicit context input before searching, verify focused tests and `npm run check`, then commit locally.
 - [X] T259 [US1] Observe Grep content with `context: -1` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
 - [X] T260 [US1] Compare nox's negative Grep `context` alias behavior with T259; write a failing test and validate the alias before searching, verify focused tests and `npm run check`, then commit locally.
+- [X] T261 [US1] Observe Grep content with `-A: -1` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
+- [ ] T262 [US1] Compare nox's negative Grep `-A` behavior with T261; write a failing test and validate sided-context input before searching, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
