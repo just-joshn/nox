@@ -200,6 +200,8 @@
 - [X] T247 [US1] Compare nox's unsupported Grep `output_mode` behavior with T246; write a failing test if it falls through, reject the invalid mode at the explicit adapter boundary, verify focused tests and `npm run check`, then commit locally.
 - [X] T248 [US1] Observe Grep content with `head_limit: -1` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
 - [X] T249 [US1] Compare nox's negative Grep head-limit behavior with T248; write a failing test and reject the invalid value before searching, verify focused tests and `npm run check`, then commit locally.
+- [X] T250 [US1] Observe Grep content with `offset: -1` under localhost-only isolation; retain tool-error status and fixture state, verify harness tests, then commit locally.
+- [ ] T251 [US1] Compare nox's negative Grep offset behavior with T250; write a failing test and reject the invalid value before searching, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
