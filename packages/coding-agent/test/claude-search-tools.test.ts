@@ -129,6 +129,14 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep excludes a matching file listed in .ignore", async () => {
+		writeFileSync(join(cwd, ".ignore"), "ignored.txt\n");
+		writeFileSync(join(cwd, "ignored.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute("call-1", { pattern: "alpha" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
 	it("Grep type py filters matching Python files", async () => {
 		writeFileSync(join(cwd, "fixture.py"), "alpha\nbeta\n");
 		const tool = createAllToolDefinitions(cwd).Grep;
