@@ -30,6 +30,13 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
+	it("Grep -i matches an uppercase query against lowercase content", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("-i");
+		const result = await tool.execute("call-1", { pattern: "ALPHA", "-i": true }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
 	it.each(["Glob", "Grep"])("%s rejects an invalid bracket pattern", async (name) => {
 		const tool = createAllToolDefinitions(cwd)[name as ToolName];
 		await expect(tool.execute("call-1", { pattern: "[" }, undefined, undefined, {} as never)).rejects.toThrow();

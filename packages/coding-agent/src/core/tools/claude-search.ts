@@ -13,6 +13,7 @@ const grepSchema = Type.Object({
 	path: Type.Optional(Type.String()),
 	glob: Type.Optional(Type.String()),
 	output_mode: Type.Optional(Type.Union([Type.Literal("files_with_matches"), Type.Literal("content")])),
+	"-i": Type.Optional(Type.Boolean()),
 });
 
 function resultText(result: { content: Array<{ type: string; text?: string }> }): string {
@@ -64,8 +65,9 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 		renderResult: undefined,
 		async execute(...args: Parameters<typeof grep.execute>) {
 			const [id, input, signal, onUpdate, ctx] = args;
-			const outputMode = (input as typeof input & { output_mode?: "files_with_matches" | "content" }).output_mode;
-			const result = await grep.execute(id, input, signal, onUpdate, ctx);
+			const selected = input as typeof input & { output_mode?: "files_with_matches" | "content"; "-i"?: boolean };
+			const outputMode = selected.output_mode;
+			const result = await grep.execute(id, { ...input, ignoreCase: selected["-i"] }, signal, onUpdate, ctx);
 			const text = resultText(result);
 			if (text === "No matches found")
 				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
