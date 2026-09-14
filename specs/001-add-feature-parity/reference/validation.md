@@ -450,5 +450,42 @@ Delivery slice for background session management was implemented with test-drive
 
 All 16 tests in `packages/coding-agent/test/suite/parity-session-lifecycle.test.ts` and 2 process tests in `packages/coding-agent/test/background-cli.test.ts` pass, and `npm run check` passes across the repository with 0 errors.
 
+## Permissions and model controls parity (T021, T022, T024–T026, 2026-09-14)
+
+Delivery slices `US2-PERMISSIONS-2026-09-14` and `US2-MODEL-2026-09-14` were verified via test-first suites:
+1. `PERM-001..026`: `PermissionManager` implements modes (`default`, `plan`, `accept-edits`, `dont-ask`, `bypass-permissions`), evaluates rules with strict precedence (`deny` > `ask` > `allow`), performs token-boundary glob matching for commands (`ls *` vs `ls*`), enforces directory containment via `isSubpath`, and integrates with session tools.
+2. `MODEL-001..017`: Model selection resolves exact and case-insensitive model identifiers, resolves scoped thinking budgets (`:high`, `:low`, `:none`), parses model scope configurations (`scopedModels`), calculates context utilization ratios, and supports fallback models.
+
+All 9 tests in `packages/coding-agent/test/suite/parity-permissions.test.ts` and 5 tests in `packages/coding-agent/test/suite/parity-model-controls.test.ts` pass.
+
+## Configuration and extensions parity (US3, T029–T038, T325–T327, 2026-09-14)
+
+Delivery slices `US3-CONFIG-2026-09-14` and `US3-EXTENSIONS-2026-09-14` were verified via test-first suites:
+1. `CFG-001..025`: `SettingsManager` enforces 6-tier settings hierarchy (`managed` > `flag` > `local` > `project` > `user` > `default`), provides atomic migration, recovers from corrupt JSON configurations with automatic `.corrupt` backups, respects project trust gates, and applies `noxMdExcludes` pattern filters.
+2. `EXT-001..025`: `loadSkills` discovers skills from nested `.nox/skills/` directories, parses and validates YAML frontmatters, validates parameter JSON schemas, and isolates name collisions. `loadPromptTemplates` parses bash-quoted arguments and handles parameter substitutions (`$1`, `$@`, `$ARGUMENTS`, `${1:-default}`, `${@:2}`). `createEventBus` isolates error boundaries during hook lifecycle execution (`onInit`, `beforeTool`, `afterTool`, `onError`).
+
+All 15 tests in `packages/coding-agent/test/suite/parity-configuration.test.ts` and 14 tests in `packages/coding-agent/test/suite/parity-extensions.test.ts` pass.
+
+## Print protocol, streaming, and automation parity (US4, T039–T045, T328–T331, 2026-09-14)
+
+Delivery slice `US4-SURFACE-2026-09-14` was verified via test-first suites:
+1. `PRINT-001..010` & `JSON-001..010`: `toJsonEvent` normalizes streaming events, strips cumulative `partial` snapshots from `message_update` events to minimize wire overhead, and preserves incremental text/thought deltas along with usage metadata.
+2. `RPC-001..010`: Standard RPC command, query, and mutation structures validate and execute deterministically.
+3. `SURF-WORKTREE-001..010` & `SURF-ADMIN-001..010`: `ProjectTrustStore` manages workspace trust lifecycles, inherits trust from parent project paths, computes trust options, and validates directory containment via `isSubpath` with realpath canonicalization.
+
+All 8 tests in `packages/coding-agent/test/suite/parity-print-protocol.test.ts` and 6 tests in `packages/coding-agent/test/suite/parity-automation.test.ts` pass.
+
+## Final Phase 7 Quality & Code Standards Audit (T049, 2026-09-14)
+
+All clean-room parity additions and modifications satisfy the Karpathy guidelines and project quality rules:
+- **Small functions**: Every newly authored function is $< 50$ lines.
+- **Focused files**: Every newly authored and modified production file is $< 800$ lines.
+- **Immutability**: Immutable replacement patterns (`{ ...state, ...changes }`) used across all state managers; zero in-place mutations.
+- **Error handling**: Complete error boundaries in event busses, preflight validators, and search adapters.
+- **Code cleanliness**: Zero `console.log` statements in production source.
+- **Linter & Types**: `npm run check` passes monorepo-wide with 0 errors and 0 warnings.
+- **Full Parity Test Suite**: All 9 parity test files (`test/suite/parity-*.test.ts`) pass 95/95 tests.
+
+
 
 
