@@ -339,6 +339,23 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "second.txt:1:alpha\nfixture.txt:1:alpha" }]);
 	});
 
+	it("Grep content head limit selects the newest file first", async () => {
+		writeFileSync(join(cwd, "second.txt"), "alpha\nbeta\n");
+		utimesSync(join(cwd, "fixture.txt"), 1_600_000_000, 1_600_000_000);
+		utimesSync(join(cwd, "second.txt"), 1_700_000_000, 1_700_000_000);
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "second.txt:1:alpha\n\n[Showing results with pagination = limit: 1]" },
+		]);
+	});
+
 	it("Grep -C includes the observed context line format", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-C");

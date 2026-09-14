@@ -26,13 +26,13 @@ SEARCH_MODES = frozenset({
     "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored", "glob-fd-ignore",
     "glob-git-metadata", "grep-ignored", "grep-fd-ignore", "grep-git-metadata", "grep-hidden",
     "grep-mtime", "grep-mtime-tie", "grep-content-multiple", "grep-content-tie",
-    "grep-content-tie-reversed",
+    "grep-content-tie-reversed", "grep-content-page",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
 UNRESTRICTED_TOOLS_MODES = SEARCH_MODES | {"outside", "glob-tools", "grep-tools"}
 NO_MATCH_MODES = {"glob-no-match", "grep-no-match", "grep-count-no-match", "grep-offset-end", "grep-multiline-no-match"}
-NON_TXT_MATCH_MODES = {"grep-type-filter"}
+NON_TXT_MATCH_MODES = {"grep-type-filter", "grep-content-page"}
 INVALID_MODES = {"glob-invalid", "grep-invalid"}
 FIXTURE_MATCH_MODES = SEARCH_MODES - NO_MATCH_MODES - INVALID_MODES - NON_TXT_MATCH_MODES
 VALID_MODES = CATALOG_MODES | {"missing", "outside"}
@@ -207,6 +207,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "grep_hidden" if text == "Found 2 files\n.hidden.txt\nfixture.txt" and tool_name == "Grep" else
                              "grep_mtime" if text == "Found 2 files\nfixture.txt\n.hidden.txt" and tool_name == "Grep" else
                              "grep_content_multiple" if text == "second.txt:1:alpha\nfixture.txt:1:alpha" and tool_name == "Grep" else
+                             "grep_content_page" if text == "second.txt:1:alpha\n\n[Showing results with pagination = limit: 1]" and tool_name == "Grep" else
                              "no_matches_found" if text == "No matches found" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
@@ -304,9 +305,9 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     fixture.write_text("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT)
     if mode == "grep-count-multiple":
         (workspace / "second.txt").write_text("alpha\n")
-    if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed"}:
+    if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page"}:
         (workspace / "second.txt").write_text(FIXTURE_CONTENT)
-    if mode == "grep-content-multiple":
+    if mode in {"grep-content-multiple", "grep-content-page"}:
         os.utime(fixture, (1_600_000_000, 1_600_000_000))
         os.utime(workspace / "second.txt", (1_700_000_000, 1_700_000_000))
     if mode == "grep-content-tie":
@@ -361,14 +362,14 @@ def main(executable: str, mode: str = "normal") -> int:
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
                            tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match", "grep-multiline-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else "alpha\nbeta" if mode in {"grep-multiline", "grep-multiline-files", "grep-multiline-explicit-files", "grep-multiline-count"} else "**/*.txt" if mode in {"glob-recursive", "glob-git-metadata"} else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count"} else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files", "grep-multiline-explicit-files"} else "content" if mode in {"grep-content-mode", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-context-alias", "grep-after-context", "grep-before-context", "grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-multiline", "grep-multiline-no-match"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line", "grep-multiline-count"} else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
                            context_lines=1 if mode == "grep-context" else None,
                            context_side="-A" if mode == "grep-after-context" else "-B" if mode == "grep-before-context" else None,
                            file_glob="*.txt" if mode == "grep-glob-filter" else None,
-                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero"} else None,
+                           head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-content-page"} else None,
                            offset=1 if mode == "grep-offset" else 2 if mode == "grep-offset-end" else 0 if mode == "grep-offset-zero" else None,
                            file_type="py" if mode == "grep-type-filter" else None,
                            context_alias=1 if mode == "grep-context-alias" else None,
@@ -405,10 +406,10 @@ def main(executable: str, mode: str = "normal") -> int:
                 "stderr_empty": not process.stderr,
                 "requests": state.requests,
                 "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode in {"grep-count-multiple", "grep-head-limit", "grep-offset", "grep-offset-end", "grep-offset-zero"} else FIXTURE_CONTENT),
-                "second_unchanged": (workspace / "second.txt").read_text() == (FIXTURE_CONTENT if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed"} else "alpha\n") if mode in {"grep-count-multiple", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed"} else None,
+                "second_unchanged": (workspace / "second.txt").read_text() == (FIXTURE_CONTENT if mode in {"glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page"} else "alpha\n") if mode in {"grep-count-multiple", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page"} else None,
                 "content_mtime_unchanged": (fixture.stat().st_mtime == 1_600_000_000 and
                                             (workspace / "second.txt").stat().st_mtime == 1_700_000_000)
-                                           if mode == "grep-content-multiple" else None,
+                                           if mode in {"grep-content-multiple", "grep-content-page"} else None,
                 "content_tie_unchanged": (fixture.stat().st_mtime == 1_600_000_000 and
                                           (workspace / "second.txt").stat().st_mtime == 1_600_000_000)
                                          if mode in {"grep-content-tie", "grep-content-tie-reversed"} else None,
@@ -450,8 +451,8 @@ def main(executable: str, mode: str = "normal") -> int:
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
     if mode in SEARCH_MODES:
         requests = summary.get("requests", [])
-        matched = ((mode not in {"grep-count-multiple", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed"} or summary.get("second_unchanged") is True)
-                   and (mode != "grep-content-multiple" or summary.get("content_mtime_unchanged") is True)
+        matched = ((mode not in {"grep-count-multiple", "glob-two-files", "grep-content-multiple", "grep-content-tie", "grep-content-tie-reversed", "grep-content-page"} or summary.get("second_unchanged") is True)
+                   and (mode not in {"grep-content-multiple", "grep-content-page"} or summary.get("content_mtime_unchanged") is True)
                    and (mode not in {"grep-content-tie", "grep-content-tie-reversed"} or summary.get("content_tie_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
                    and (mode != "grep-type-filter" or summary.get("python_unchanged") is True)

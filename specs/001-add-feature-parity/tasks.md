@@ -161,6 +161,7 @@
 - [X] T208 [US1] Observe reference Grep content mode with two matching synthetic files at equal controlled modification times under localhost-only isolation; retain exact allowlisted output order and unchanged state, then compare nox's tie-break.
 - [X] T209 [US1] Recreate the root Grep fixture after the second file while keeping equal controlled modification times, observe content-mode tie order under localhost-only isolation, and identify a deterministic nox tie-break before source work.
 - [X] T210 [US1] Write a failing nox test for observed equal-mtime two-file Grep content order; apply a deterministic descending-path tie-break only to explicit content results, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T211 [US1] Observe reference Grep content `head_limit: 1` across two synthetic files with controlled modification times under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's ordering-before-pagination behavior.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
