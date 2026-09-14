@@ -56,7 +56,7 @@
 - [X] T103 [US4] Verify CLI-519 with the focused process test, `npm run check`, and an isolated comparison of exit, stdout/stderr, and temporary-home side effects; record any remaining mismatch in `reference/discrepancies.md` and `reference/validation.md`. Keep the leaf open until every applicable parity scenario passes.
 - [X] T104 [US4] Tighten the CLI-519 process assertion in `packages/coding-agent/test/command-typo-cli.test.ts` to compare the full observed stderr with only the executable name normalized; confirm it fails against the current short message. Depend on [CLI-519-TYPO](reference/scenarios.md).
 - [X] T105 [US4] Render the observed three-part typo diagnostic in `packages/coding-agent/src/cli.ts`, using `APP_NAME` for the executable and the input token for the explicit prompt fallback. Preserve exit and session behavior.
-- [ ] T106 [US4] Run the focused CLI process test, neighboring CLI regression tests, and `npm run check`; update `reference/validation.md` and DISC-002 to narrow the remaining mismatch to startup side effects, then commit locally.
+- [X] T106 [US4] Run the focused CLI process test, neighboring CLI regression tests, and `npm run check`; update `reference/validation.md` and DISC-002 to narrow the remaining mismatch to startup side effects, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
