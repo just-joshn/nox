@@ -1,0 +1,15 @@
+Usage: claude plugin eval init [options] [name]
+
+Author an eval suite under the eval dir (evals/ unless --eval-dir or the
+manifest says otherwise) via an interview that sources inputs and designs
+graders. Use --bare <name> for a blank single-case template.
+
+Options:
+  --bare             Write a blank template (prompt.md + graders/criteria.md)
+                     instead of running the interview
+  --eval-dir <dir>   Directory (below the current directory) to write cases into
+                     (default: experimental.evals from the plugin.json in the
+                     current directory, else evals/)
+  -h, --help         Display help for command
+  -i, --interactive  Run the authoring interview (already the default in a
+                     terminal); requires an interactive terminal

@@ -1,0 +1,6 @@
+Command: claude remote-control --help
+Exit code: 1
+Standard error:
+Error: You must be logged in to use Remote Control.
+
+Remote Control is only available with claude.ai subscriptions. Please use `/login` to sign in with your claude.ai account.

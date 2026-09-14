@@ -1,0 +1,9 @@
+Usage: claude self-hosted-runner doctor [args...]
+
+Interactive wizard: diagnoses a self-hosted runner deployment. Walks the
+diagnostic decision tree (auth chain, network, lifecycle, session
+execution, queue, version, observability), gathers evidence
+from /healthz, runner logs, and the admin API, fixes what it can, and
+generates a redacted diagnostic bundle for escalation.
+
+Any extra args are passed to the underlying Claude Code session.

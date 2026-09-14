@@ -108,6 +108,12 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 | CLI-093 | `stop|kill <id>` | observed-help | Pending | Pending |
 | CLI-094 | `ultrareview [options] [target]` | observed-help | Pending | Pending |
 | CLI-095 | `update|upgrade` | observed-help | Pending | Pending |
+| CLI-096 | `daemon status` | documented; observed nested help | Pending | Pending |
+| CLI-097 | `daemon stop --any` | documented; observed nested help | Pending | Pending |
+| CLI-098 | `remote-control` | documented; local help blocked by account gate | Pending | Gated-unverified |
+| CLI-099 | `self-hosted-runner setup` | documented; observed nested help | Pending | Pending |
+| CLI-100 | `self-hosted-runner doctor` | documented; observed nested help | Pending | Pending |
+| CLI-101 | `self-hosted-runner orchestrator` | documented; observed nested help | Pending | Pending |
 
 ## Command subfamilies observed through local help
 
@@ -118,6 +124,14 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 - `auto-mode`: `config`, `critique`, `defaults`, `reset`.
 - `agents`: JSON listing and dispatch options.
 - `gateway`, `import`, `ultrareview`: distinct option sets remain to be expanded.
+- `plugin marketplace`: `add`, `list`, `remove|rm`, `update`; the second-level help was captured locally.
+- `plugin eval`: `init`; its option set and the parent evaluation flags remain to be split into leaves.
+
+## Second-level help evidence
+
+On 2026-09-14, the installed CLI returned help with exit code 0 for 36 command paths: `auth login|logout|status`; `mcp add|add-json|get|list|login|logout|remove|reset-project-choices|serve`; `plugin details|disable|enable|eval|init|install|list|marketplace|prune|tag|uninstall|update|validate`; `project purge`; `auto-mode config|critique|defaults|reset`; and `install`, `respawn`, `doctor`, `update`, `setup-token`. Four third-level `plugin marketplace` paths (`add`, `list`, `remove`, `update`) and `plugin eval init` also returned help. The [dated raw files](observations/) retain the option descriptions, defaults, and usage signatures. A successful help exit is discovery evidence only; it does not establish executable behavior or availability under the current account.
+
+The [current official CLI reference](https://code.claude.com/docs/en/cli-usage) documents `daemon`, `remote-control`, and `self-hosted-runner` command families that are absent from this installation's top-level help. Direct `--help` probes exposed the daemon and runner trees. `remote-control --help` instead exited 1 with an account-login requirement before showing help; its behavior is gated-unverified. The same page states that `--help` is incomplete, so absent help is not proof of absence.
 
 ## Nested option seeds from 2026-09-14 local help
 

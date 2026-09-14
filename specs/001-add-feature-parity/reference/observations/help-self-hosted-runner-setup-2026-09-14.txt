@@ -1,0 +1,7 @@
+Usage: claude self-hosted-runner setup [args...]
+
+Interactive wizard: walks you from zero to a working self-hosted runner
+environment for Claude Code on the web. Creates an environment, spawns a local
+runner, verifies it appears in the Admin UI, and writes a CHEAT-SHEET.md.
+
+Any extra args are passed to the underlying Claude Code session.

@@ -1,0 +1,18 @@
+Usage: claude daemon [subcommand] [options]
+
+Service lifecycle:
+  run [json-path]   Run the supervisor in the foreground (default when piped)
+  status            Show daemon pid, version, uptime
+  logs              Tail the daemon log (Ctrl-C to stop)
+  uninstall         Remove the background service (launchctl/systemd)
+  stop              Shut down the supervisor and terminate background sessions
+                      --any           also stop a transient (non-service) daemon
+                      --keep-workers  leave detached sessions running
+
+  Service install is disabled in this version — the daemon runs on demand
+  and exits when the last client disconnects.
+
+Options:
+  --json-path <p>   Config file (default: ~/.claude/daemon.json)
+  --log-file <p>    Log file (default: ~/.claude/daemon.log)
+  --help, -h        Show this help
