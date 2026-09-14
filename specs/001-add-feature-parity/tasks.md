@@ -13,7 +13,7 @@
 - **[P]**: Can proceed concurrently because it owns separate files and does not depend on another incomplete task.
 - **[Story]**: Maps a task to the corresponding user story in `spec.md`.
 - Each task names its target file or directory. Proposed files are created only when the inventory confirms the need.
-- T063–T090 are family completion checkpoints. Their implementation clauses define the scope of T013-created leaf subtasks; they do not authorize a whole-family source edit. Close a checkpoint only after every reachable leaf has a failing-test, implementation, and verification task with passing scenarios, and gated leaves remain open.
+- T063–T078 and T081–T090 are family completion checkpoints; T079–T080 are cross-cutting audits. Checkpoint implementation clauses define the scope of T013-created leaf subtasks and do not authorize a whole-family source edit. Close a checkpoint only after every reachable leaf has a failing-test, implementation, and verification task with passing scenarios, and gated leaves remain open.
 
 ## Phase 1: Setup (Shared Reference and Scope)
 
@@ -42,7 +42,8 @@
 - [ ] T011 Predeclare the required Pi visual matrix in `specs/001-add-feature-parity/reference/pi-visuals.md`: every affected workflow and its relevant normal, denial, error, and recovery states across supported terminal widths and themes, including prompts, menus, tool results, and errors. Capture reference states, identify any proposed intentional departure, and require a constitution amendment before its implementation.
 - [ ] T012 Define discrepancy ownership, reproduction format, and closure evidence in `specs/001-add-feature-parity/reference/discrepancies.md`; require fresh passing reference comparison before `closed` and reopen on regression.
 - [ ] T013 Expand each observed, reachable leaf under the story checkpoints below into separate failing-test, implementation, and verification subtasks in this `tasks.md` before source work on that leaf; each names its leaf ID, observed contract, exact test and source paths, dependency, and passing scenario. Start with read/search/edit/command/denial/failure/recovery. Add discovery or access subtasks for gated leaves without inventing contracts. T046 cannot close until every inventory leaf has item-level task and scenario coverage.
-- [ ] T091 Establish a reproducible offline aggregate project coverage command and baseline in root `package.json` and `specs/001-add-feature-parity/reference/validation.md`: include every production workspace package and session backend shipped or imported by nox, measure each package's owned source files once, combine covered and total counts rather than averaging percentages, and document all excluded generated, test, example, or tooling files with reasons. Prevent provider credential and network use in routine tests, report failing or unmeasured packages explicitly, and make the constitution's project-wide 80% gate measurable before application work is called complete.
+- [ ] T091 Establish a reproducible offline aggregate project coverage command and baseline in root `package.json` and `specs/001-add-feature-parity/reference/validation.md`: include every production workspace package and session backend shipped or imported by nox, measure each package's owned source files once, combine covered and total counts rather than averaging percentages, and document all excluded generated, test, example, or tooling files with reasons. Require aggregate lines, statements, functions, and branches each to reach at least 80%; a zero-denominator metric, failed package, or unmeasured package fails the gate. Prevent provider credential and network use in routine tests and record the baseline before application work is called complete.
+- [ ] T093 Capture a functional Pi baseline in `specs/001-add-feature-parity/reference/pi-functional.md` using isolated fixtures for existing session persistence, file and command tools, prompt handling, extension loading, and non-interactive protocol flows that parity changes could affect; record inputs, state transitions, outputs, side effects, failures, and baseline test commands before source changes, then define per-slice and final regression comparisons with any intentional change linked to its observed parity leaf and required constitution amendment where applicable.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
@@ -206,12 +207,12 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 - [ ] T046 After T080, reconcile every inventory leaf ID with a nox surface, item-level implementation and verification tasks, passing normal/failure/interaction scenarios, and no open discrepancy in `specs/001-add-feature-parity/reference/reconciliation.md`; create and finish missing tasks in `specs/001-add-feature-parity/tasks.md` before closing coverage. Unobserved or gated leaves keep this task open.
 - [ ] T047 Audit developed application code, user-facing strings, command names, and configuration filenames and paths for prohibited reference-product naming; record scope and findings in `specs/001-add-feature-parity/reference/naming-audit.md`.
 - [ ] T048 Compare every required state in the predeclared Pi visual matrix and unrelated Pi workflows against `specs/001-add-feature-parity/reference/pi-visuals.md`; report tested and missing matrix cells, and require an approved constitution amendment for every intentional visual divergence.
-- [ ] T049 Re-run `npm run check`, focused modified test files, relevant unit/integration/end-to-end checks, and the T091 aggregate coverage command; require at least 80% project coverage before application work is called complete, and record commands, results, exclusions, and unresolved failures in `specs/001-add-feature-parity/reference/validation.md`.
+- [ ] T049 Re-run `npm run check`, focused modified test files, relevant unit/integration/end-to-end checks, the T091 aggregate coverage command, and the T093 functional Pi regression matrix; require at least 80% on each aggregate coverage metric and no unexplained Pi functional regression before application work is called complete, and record commands, results, exclusions, and unresolved failures in `specs/001-add-feature-parity/reference/validation.md`.
 - [ ] T050 Refresh the installed reference version, availability matrix, inventory, and changed observations in `specs/001-add-feature-parity/reference/snapshot.md` and `specs/001-add-feature-parity/reference/reconciliation.md` before a current-parity claim.
 - [ ] T051 Define and record matched-environment end-to-end acceptance results for all four user-story journeys, including stated error and recovery cases, in `specs/001-add-feature-parity/reference/journey-results.md`; do not count a gated or unverified journey as passing.
 - [ ] T052 Record workload, hardware, network state, warm-up, and 30-run p95 comparisons for every timing-sensitive leaf in `specs/001-add-feature-parity/reference/performance.md`; require nox completion time to be at most 10% above the matched reference p95 or record a discrepancy.
 - [ ] T092 Audit the final application diff for validated external inputs, authorization before side effects, credential and private-data redaction, applicable injection and request-forgery defenses, endpoint rate limits, and error-message leakage; record applicable and non-applicable findings with evidence in `specs/001-add-feature-parity/reference/security-audit.md`, resolve critical findings before T053, and invoke the security-reviewer role for any critical finding.
-- [ ] T053 Apply the release gate in `specs/001-add-feature-parity/reference/release-gate.md`: require all inventoried leaves and all four journeys passing, zero known discrepancies, zero gated-unverified leaves, and no unexplained candidate from the installed CLI, current official documentation, or restored source map for an unqualified 100% claim; otherwise state the precise remaining gaps.
+- [ ] T053 Apply the release gate in `specs/001-add-feature-parity/reference/release-gate.md`: require all inventoried leaves and all four journeys passing, all four aggregate coverage metrics at least 80%, no unexplained Pi functional regression, zero known discrepancies, zero gated-unverified leaves, and no unexplained candidate from the installed CLI, current official documentation, or restored source map for an unqualified 100% claim; otherwise state the precise remaining gaps.
 
 ---
 
@@ -219,7 +220,7 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 
 ```text
 Reference discovery (T001–T007 and T062, continuing as new leaves are found)
-    → Per-feature evidence (T008–T012, T054–T061 for core workflow leaf IDs, and T091 coverage baseline)
+    → Per-feature evidence (T008–T012, T054–T061 for core workflow leaf IDs, T091 coverage baseline, and T093 Pi functional baseline)
         → Explicit implementation and verification tasks (T013 for observed IDs)
             → US1 / US2 / US3 / US4 source and verification slices
                 → Three-source audit (T079–T080) and all leaf tasks complete (T046)
@@ -229,7 +230,7 @@ Reference discovery (T001–T007 and T062, continuing as new leaves are found)
 - US1 and US2 are P1. Each source slice depends on evidence and explicit tasks for its own leaves, not completion of every Phase 2 item; shared `agent-session.ts` edits must be serialized or isolated.
 - US3 and US4 are P2. Each source slice depends on evidence and explicit tasks for its own leaves. US4's remote connections may consume US3 connection behavior, but its protocol and worktree slices remain independently demonstrable.
 - Within each story, observed scenarios precede behavior changes, core state changes precede UI/CLI integration, and discrepancy closure follows verification. Run `npm run check` with full output after each code-change task and fix all errors, warnings, and infos before continuing; run each created or modified focused test file until it passes. Record results in `specs/001-add-feature-parity/reference/validation.md`.
-- T062 precedes T006. T079–T080 precede T046. T046 can expose missing leaf tasks; add them in the owning story phase and complete them before T051–T052. T091 precedes T049. T092 precedes T053. T053 follows all validation.
+- T062 precedes T006. T079–T080 precede T046. T046 can expose missing leaf tasks; add them in the owning story phase and complete them before T051–T052. T093 precedes every source slice that can affect a Pi workflow; T091 and T093 precede T049. T092 precedes T053. T053 follows all validation.
 
 ## Parallel Execution Examples
 
@@ -249,7 +250,7 @@ Reference discovery (T001–T007 and T062, continuing as new leaves are found)
 ## Notes
 
 - `[P]` marks different-file work without an incomplete task dependency.
-- T091 and T092 were appended after the original 90 IDs to preserve stable references; phase placement and explicit dependencies define execution order. Task IDs are stable references, not a substitute for the dependency graph.
+- T091–T093 were appended after the original 90 IDs to preserve stable references; phase placement and explicit dependencies define execution order. Task IDs are stable references, not a substitute for the dependency graph.
 - Item-level acceptance derives from the pinned reference observations, not from undocumented assumptions.
 - The custom `checklists/parity.md` is reviewer-owned requirements quality review; it is not an implementation progress checklist.
 - The user has requested logical commits on `main` without pushing. Before each application-code commit, use the planner, test-guidance, and code-review roles when available, run a failing focused test before implementation, and check the staged diff for secrets and applicable authorization, validation, injection, request-forgery, rate-limit, and leakage risks. A critical finding invokes security review and blocks that commit until fixed.
