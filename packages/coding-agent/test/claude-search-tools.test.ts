@@ -655,4 +655,18 @@ describe("explicit Claude search tools", () => {
 			expect(result.content).toEqual([{ type: "text", text: "No matches found" }]);
 		},
 	);
+
+	it("Grep content no-match offset retains the pagination notice", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", output_mode: "content", head_limit: 1, offset: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "No matches found\n\n[Showing results with pagination = offset: 1]" },
+		]);
+	});
 });
