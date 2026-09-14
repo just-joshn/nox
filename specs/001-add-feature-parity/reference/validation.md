@@ -340,3 +340,5 @@ The [negative Grep context-alias trace](observations/tool-grep-context-alias-neg
 T260 added a focused negative `context` alias test that failed because nox silently returned a zero-context match. The explicit adapter now rejects negative or non-integer alias values before searching, separately from `-C`. The focused search suite passed 81 tests and `npm run check` passed. Sided-context numeric boundaries remain unobserved.
 
 The [negative Grep after-context trace](observations/tool-grep-after-negative-loopback-2026-09-14.json) supplies `output_mode: content` and `-A: -1`. The reference returns a tool error, leaves the synthetic fixture unchanged, and completes without a provider call. Fourteen harness tests passed under localhost-only isolation. T262 will compare nox's sided-context preflight; exact error text remains redacted.
+
+T262 added a focused negative `-A` test. Nox's sided-context helper already rejects the value, matching the reference's tool-error status, so no source change was needed. The focused search suite passed 82 tests and `npm run check` passed. Exact error wording and the `-B` negative boundary remain unverified.

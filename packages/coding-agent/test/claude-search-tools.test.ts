@@ -755,6 +755,19 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow();
 	});
 
+	it("Grep rejects negative -A context", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		await expect(
+			tool.execute(
+				"call-1",
+				{ pattern: "alpha", output_mode: "content", "-A": -1 },
+				undefined,
+				undefined,
+				{} as never,
+			),
+		).rejects.toThrow();
+	});
+
 	it("Glob preserves the search path in its result", async () => {
 		mkdirSync(join(cwd, "nested"));
 		writeFileSync(join(cwd, "nested", "fixture.txt"), "alpha\nbeta\n");
