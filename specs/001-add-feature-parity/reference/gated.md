@@ -86,5 +86,20 @@
 | SUR-RC-013 | Global/subcommand argument acceptance unobserved | Eligible account for help; safe parser cases for allowed and rejected flag order |
 | SUR-RC-014 | Endpoint, token, feature flag, and managed-policy refusals unobserved | Eligible test account or policy fixture; no live credential material recorded |
 | SUR-RC-015 | Remote end/archive/takeover lifecycle unobserved | Eligible account and second device; disposable session with local status trace |
+| SUR-CLOUD-001 | Hosted creation and remote-branch state unobserved | Eligible account and policy; disposable repository with pushed/unpushed state |
+| SUR-CLOUD-002 | Multiple hosted-session concurrency unobserved | Restored allowance and bounded parallel synthetic tasks |
+| SUR-CLOUD-003 | Environment selection and setup unobserved | Eligible account with disposable environment and invalid ID fixture |
+| SUR-CLOUD-004 | Repository bundle contents and sensitive-file exclusion unobserved | Eligible account; synthetic tracked/ignored/untracked files only, inspect upload manifest |
+| SUR-CLOUD-005 | CLI follow-up queue, JSON result, and refusal unobserved | Eligible account; disposable hosted session and missing/archived ID fixtures |
+| SUR-CLOUD-006 | Provisioning-time message queue unobserved | Eligible account; submit synthetic prompt during bounded startup |
+| SUR-CLOUD-007 | Browser/mobile continuation and expiry unobserved | Eligible account and second client; synthetic task and controlled expiry |
+| SUR-CLOUD-008 | Teleport fetch, repository verification, and local copy unobserved | Eligible account; disposable remote, dirty/wrong-repo/missing-branch fixtures |
+| SUR-CLOUD-009 | In-session teleport picker and unavailable state unobserved | Eligible account; disposable cloud session and empty-list case |
+| SUR-CLOUD-010 | Post-teleport divergence unobserved | Eligible account; edit local copy and hosted session independently |
+| SUR-CLOUD-011 | Cloud mode persistence and denial unobserved | Eligible account; synthetic protected action before/after environment restart |
+| SUR-CLOUD-012 | Cloud command availability and adapted picker behavior unobserved | Eligible account; disposable session with valid/invalid commands |
+| SUR-CLOUD-013 | Hosted diff and inline feedback unobserved | Eligible account; synthetic repository edit and review comment |
+| SUR-CLOUD-014 | Sharing, archive, delete, and recipient access unobserved | Eligible accounts with suitable policy; synthetic session and recipient fixture |
+| SUR-CLOUD-015 | Unsupported provider/account/policy refusal unobserved | Controlled account or policy fixtures; no real credential value recorded |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.

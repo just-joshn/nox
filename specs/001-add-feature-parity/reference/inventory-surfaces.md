@@ -135,3 +135,27 @@ Source: [current remote-control guide](https://code.claude.com/docs/en/remote-co
 | SUR-RC-015 | End, archive, or take over session from another device | Local indicator and link update while local process continues or reopens | Missing server record, conflicting takeover | Service/client gate; nox remote status |
 
 Trusted-device enrollment, mobile push notifications, web-cloud session creation, teleport, and remote troubleshooting need separate leaves. T005 and T010 remain open.
+
+## Cloud-session and teleport leaves (SUR-006)
+
+Source: [current web-session guide](https://code.claude.com/docs/en/claude-code-on-the-web), read 2026-09-14, and installed `--cloud`, `--environment`, and `--teleport` help. Cloud tasks run in hosted or organization-managed environments; they are distinct from the local execution in SUR-RC. All result contracts below remain service-gated and unobserved.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-CLOUD-001 | Launch `--cloud <task>` in a GitHub-backed repository | Hosted session clones current remote branch and runs independently | Unpushed local changes absent; wrong repository or missing access | Eligible account and policy; `nox --cloud` |
+| SUR-CLOUD-002 | Launch multiple `--cloud` tasks | Separate concurrent hosted sessions and IDs | Quota, capacity, partial startup failure | Eligible account; nox cloud task list |
+| SUR-CLOUD-003 | Launch with `--environment <id>` | Chosen cloud environment supplies network, variables, and setup | Unknown environment or setup failure | Environment access; nox environment selector |
+| SUR-CLOUD-004 | Launch without usable GitHub remote or app access | Local tracked history and tracked edits bundle and upload | Sensitive-file exclusion, untracked omission, size fallback or failure | Eligible account; nox bundle upload |
+| SUR-CLOUD-005 | Send `-p <message> --cloud <id-or-url>` | Follow-up queues in existing cloud session and command exits; JSON result optional | Missing/archived session, policy refusal, unsupported stream JSON | Eligible account; nox cloud message |
+| SUR-CLOUD-006 | Enter prompt during cloud provisioning | Message queues until environment is ready | Provisioning failure, duplicate send, cancellation | Eligible account; nox cloud composer |
+| SUR-CLOUD-007 | Open task from browser/mobile | Review progress, answer questions, steer after local terminal closes | Environment expiry, permission denial, disconnected client | Service/client gate; nox cloud session view |
+| SUR-CLOUD-008 | Use `--teleport <id>` or picker | Verify repository, fetch branch, restore conversation in local terminal copy | Dirty checkout offers stash; wrong repo, unpushed branch, account mismatch | Eligible account and git; `nox --teleport` |
+| SUR-CLOUD-009 | Use `/teleport` or `/tp` inside terminal | Picker opens and selected cloud session becomes local copy | No eligible sessions, unavailable subscription | Eligible account; Pi command |
+| SUR-CLOUD-010 | Continue work after teleport | Local copy evolves independently of hosted conversation | Later cloud change does not merge automatically | Eligible account; nox local session |
+| SUR-CLOUD-011 | Select cloud permission mode at creation or while running | Mode governs tools and persists across environment restart | Denial, expired environment, released runner | Service gate; nox cloud mode control |
+| SUR-CLOUD-012 | Use cloud session context commands | `/compact` and `/context` work; terminal-only pickers adapt or are absent | Invalid command, unavailable model/effort setting | Service gate; nox cloud commands |
+| SUR-CLOUD-013 | Review hosted diff and leave inline feedback | Diff and comments are shown; next prompt can send feedback | Non-checkout file and custom diff-driver cases | Service/client gate; nox cloud diff view |
+| SUR-CLOUD-014 | Share, archive, or delete a hosted session | Visibility, retention, and access state change | Recipient access denial, archived follow-up refusal | Plan/policy gate; nox cloud session controls |
+| SUR-CLOUD-015 | Attempt cloud use with unsupported provider, account, or policy | Creation or send refuses with explicit reason before task executes | Policy lookup failure, third-party provider, missing login | Account/policy gate; nox eligibility check |
+
+Cloud environment configuration, repository authorization, hosted review, auto-fix, CI, mobile and desktop UI details, and each sharing variant still need distinct leaves under their owning surface seeds. No cloud session was created during this inventory.
