@@ -32,7 +32,9 @@ describe("frozen Pi read-tool visuals", () => {
 				component.setExpanded(false);
 				component.updateResult({ content: [{ type: "text", text: "No such file" }], isError: true });
 				const error = component.render(width);
-				expect({ width, theme: themeName, request, success, expandedSuccess, error }).toMatchSnapshot();
+				component.updateResult({ content: [{ type: "text", text: "Permission denied" }], isError: true });
+				const denial = component.render(width);
+				expect({ width, theme: themeName, request, success, expandedSuccess, error, denial }).toMatchSnapshot();
 			});
 		}
 	}
