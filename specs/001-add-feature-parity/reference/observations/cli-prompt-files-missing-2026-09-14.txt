@@ -1,0 +1,16 @@
+Installed CLI 2.1.270 on macOS; separate disposable empty homes and cwd; no credentials or model request.
+Both calls used --bare -p and positional prompt `noop`.
+
+Input flag: --system-prompt-file <home>/missing.txt
+Exit: 1
+Stdout: empty
+Stderr: Error: System prompt file not found: <home>/missing.txt
+Home entries after exit: .claude, .claude.json
+
+Input flag: --append-system-prompt-file <home>/missing.txt
+Exit: 1
+Stdout: empty
+Stderr: Error: Append system prompt file not found: <home>/missing.txt
+Home entries after exit: .claude, .claude.json
+
+The absolute temporary path is normalized to <home>.

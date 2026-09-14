@@ -76,14 +76,14 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 | CLI-066 | `--advisor` | documented | Pending | Pending |
 | CLI-067 | `--append-subagent-system-prompt` | documented | Pending | Pending |
 | CLI-068 | `--append-subagent-system-prompt-file` | documented | Pending | Pending |
-| CLI-069 | `--append-system-prompt-file` | documented | Pending | Pending |
+| CLI-069 | `--append-system-prompt-file` | documented | Pending | [Missing file](observations/cli-prompt-files-missing-2026-09-14.txt) rejected before auth; successful composition observed as CLI-558 |
 | CLI-070 | `--channels` | documented | Pending | Pending |
 | CLI-071 | `--dangerously-load-development-channels` | documented | Pending | Pending |
 | CLI-072 | `--exec` | documented | Pending | Pending |
 | CLI-073 | `--init` | documented | Pending | Pending |
 | CLI-074 | `--init-only` | documented | Pending | Pending |
 | CLI-075 | `--maintenance` | documented | Pending | Pending |
-| CLI-076 | `--system-prompt-file` | documented | Pending | Pending |
+| CLI-076 | `--system-prompt-file` | documented | Pending | [Missing file](observations/cli-prompt-files-missing-2026-09-14.txt) rejected before auth; successful composition observed as CLI-558 |
 | CLI-077 | `--teammate-mode` | documented | Pending | Pending |
 | CLI-241 | `--max-turns` | documented; absent from installed help | Pending | Pending |
 | CLI-242 | `--permission-prompt-tool` | documented; absent from installed help | Pending | Pending |
