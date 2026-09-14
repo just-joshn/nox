@@ -50,6 +50,22 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep head_limit paginates content matches", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("head_limit");
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:1:alpha\n\n[Showing results with pagination = limit: 1]" },
+		]);
+	});
+
 	it.each([
 		[undefined, "nested/fixture.txt:1:alpha"],
 		["files_with_matches", "Found 1 file\nnested/fixture.txt"],
