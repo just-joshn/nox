@@ -114,6 +114,8 @@
 - [X] T161 [US1] Write failing nox nested-path Grep tests for implicit and explicit output modes, match the observed repository-relative results in the explicit adapter, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T162 [US1] Consolidate the offline search harness's repeated mode sets into named constants so new modes cannot silently miss sandboxing, catalog capture, or match validation; run harness tests and representative loopback traces, then commit locally.
 - [X] T163 [US1] Observe reference Grep `glob: *.txt` with matching synthetic `.txt` and `.md` files under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
+- [X] T164 [US1] Observe reference Grep `head_limit: 1` in content mode with two synthetic matching lines under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit adapter.
+- [ ] T165 [US1] Write a failing nox test for observed Grep content `head_limit: 1`, implement the explicit schema and pagination result for that observed branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

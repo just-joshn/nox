@@ -1,0 +1,106 @@
+{
+  "exit_code": 0,
+  "result": "synthetic completion",
+  "is_error": false,
+  "stderr_empty": true,
+  "requests": [
+    {
+      "model": "claude-haiku-4-5-20251001",
+      "response": "text",
+      "tool_results": [],
+      "catalog": {
+        "Read": false,
+        "Bash": false,
+        "Edit": false,
+        "Glob": false,
+        "Grep": false
+      },
+      "search_schema": {
+        "pattern": false,
+        "path": false,
+        "glob": false,
+        "type": false,
+        "output_mode": false,
+        "head_limit": false,
+        "offset": false,
+        "-i": false,
+        "-n": false,
+        "-o": false,
+        "-A": false,
+        "-B": false,
+        "-C": false,
+        "context": false,
+        "multiline": false
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "response": "tool",
+      "tool_results": [],
+      "catalog": {
+        "Read": false,
+        "Bash": false,
+        "Edit": false,
+        "Glob": false,
+        "Grep": true
+      },
+      "search_schema": {
+        "pattern": true,
+        "path": true,
+        "glob": true,
+        "type": true,
+        "output_mode": true,
+        "head_limit": true,
+        "offset": true,
+        "-i": true,
+        "-n": true,
+        "-o": true,
+        "-A": true,
+        "-B": true,
+        "-C": true,
+        "context": true,
+        "multiline": true
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "response": "text",
+      "tool_results": [
+        {
+          "is_error": false,
+          "fixture_name_present": true,
+          "result_format": "head_limited_content"
+        }
+      ],
+      "catalog": {
+        "Read": false,
+        "Bash": false,
+        "Edit": false,
+        "Glob": false,
+        "Grep": true
+      },
+      "search_schema": {
+        "pattern": true,
+        "path": true,
+        "glob": true,
+        "type": true,
+        "output_mode": true,
+        "head_limit": true,
+        "offset": true,
+        "-i": true,
+        "-n": true,
+        "-o": true,
+        "-A": true,
+        "-B": true,
+        "-C": true,
+        "context": true,
+        "multiline": true
+      }
+    }
+  ],
+  "fixture_unchanged": true,
+  "second_unchanged": null,
+  "markdown_unchanged": null,
+  "nested_unchanged": null,
+  "outside_unchanged": null
+}

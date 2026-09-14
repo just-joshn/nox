@@ -19,7 +19,7 @@ SEARCH_MODES = frozenset({
     "glob-path", "grep-files-mode", "grep-content-mode", "grep-ignore-case", "grep-count-mode",
     "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line",
     "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context",
-    "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter",
+    "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -45,6 +45,7 @@ class ProbeState:
     context_lines: int | None = None
     context_side: str | None = None
     file_glob: str | None = None
+    head_limit: int | None = None
 
 
 def sse(event: str, payload: dict) -> str:
@@ -55,7 +56,7 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
                      tool_path: str | None = None, output_mode: str | None = None, ignore_case: bool = False,
                      line_numbers: bool | None = None, only_matching: bool = False,
                      context_lines: int | None = None, context_side: str | None = None,
-                     file_glob: str | None = None) -> bytes:
+                     file_glob: str | None = None, head_limit: int | None = None) -> bytes:
     message = {
         "id": "msg_synthetic",
         "type": "message",
@@ -79,6 +80,7 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
         if context_lines is not None: tool_input = {**tool_input, "-C": context_lines}
         if context_side in {"-A", "-B"}: tool_input = {**tool_input, context_side: 1}
         if file_glob: tool_input = {**tool_input, "glob": file_glob}
+        if head_limit is not None: tool_input = {**tool_input, "head_limit": head_limit}
         delta = {"type": "input_json_delta", "partial_json": json.dumps(tool_input)}
         stop_reason = "tool_use"
     else:
@@ -173,6 +175,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "content_before" if text == "fixture.txt-1-before\nfixture.txt:2:alpha" and tool_name == "Grep" else
                              "nested_content" if text == "nested/fixture.txt:1:alpha" and tool_name == "Grep" else
                              "nested_files" if text == "Found 1 file\nnested/fixture.txt" and tool_name == "Grep" else
+                             "head_limited_content" if text == "fixture.txt:1:alpha\n\n[Showing results with pagination = limit: 1]" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
                              "count_no_match" if text == "No matches found\n\nFound 0 total occurrences across 0 files." and tool_name == "Grep" else
@@ -246,7 +249,8 @@ def make_handler(state: ProbeState):
             )
             body = message_response(request["model"], kind, state.read_path, state.tool_name, state.tool_pattern,
                                     state.tool_path, state.output_mode, state.ignore_case, state.line_numbers,
-                                    state.only_matching, state.context_lines, state.context_side, state.file_glob)
+                                    state.only_matching, state.context_lines, state.context_side, state.file_glob,
+                                    state.head_limit)
             self.send_response(200)
             self.send_header("Content-Type", "text/event-stream")
             self.send_header("Content-Length", str(len(body)))
@@ -269,6 +273,8 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
         (workspace / "second.txt").write_text("alpha\n")
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
+    if mode == "grep-head-limit":
+        fixture.write_text("alpha\nalpha\n")
     if mode in {"glob-path", "grep-path", "grep-path-files"}:
         (workspace / "nested").mkdir()
         (workspace / "nested" / "fixture.txt").write_text(FIXTURE_CONTENT)
@@ -288,13 +294,14 @@ def main(executable: str, mode: str = "normal") -> int:
                            tool_name=selected_tool if mode in SEARCH_MODES else "Read",
                            tool_pattern="absent-*.zzz" if mode == "glob-no-match" else "absent-sentinel" if mode in {"grep-no-match", "grep-count-no-match"} else "[" if mode in {"glob-invalid", "grep-invalid"} else "ALPHA" if mode == "grep-ignore-case" else None,
                            tool_path="nested" if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
-                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
+                           output_mode="files_with_matches" if mode in {"grep-files-mode", "grep-path-files"} else "content" if mode in {"grep-content-mode", "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context", "grep-before-context", "grep-head-limit"} else "count" if mode in {"grep-count-mode", "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line"} else None,
                            ignore_case=mode == "grep-ignore-case",
                            line_numbers=False if mode == "grep-no-line-number" else None,
                            only_matching=mode == "grep-only-matching",
                            context_lines=1 if mode == "grep-context" else None,
                            context_side="-A" if mode == "grep-after-context" else "-B" if mode == "grep-before-context" else None,
-                           file_glob="*.txt" if mode == "grep-glob-filter" else None)
+                           file_glob="*.txt" if mode == "grep-glob-filter" else None,
+                           head_limit=1 if mode == "grep-head-limit" else None)
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
@@ -326,7 +333,7 @@ def main(executable: str, mode: str = "normal") -> int:
                 "is_error": output.get("is_error") if isinstance(output.get("is_error"), bool) else None,
                 "stderr_empty": not process.stderr,
                 "requests": state.requests,
-                "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode == "grep-count-multiple" else FIXTURE_CONTENT),
+                "fixture_unchanged": fixture.read_text() == ("before\nalpha\nafter\n" if mode in {"grep-after-context", "grep-before-context"} else "alpha beta\n" if mode == "grep-only-matching" else "alpha alpha\n" if mode == "grep-count-same-line" else "alpha\n" * 101 if mode == "grep-count-limit" else "alpha\nalpha\n" if mode in {"grep-count-multiple", "grep-head-limit"} else FIXTURE_CONTENT),
                 "second_unchanged": (workspace / "second.txt").read_text() == "alpha\n" if mode == "grep-count-multiple" else None,
                 "markdown_unchanged": (workspace / "fixture.md").read_text() == FIXTURE_CONTENT
                                       if mode == "grep-glob-filter" else None,
