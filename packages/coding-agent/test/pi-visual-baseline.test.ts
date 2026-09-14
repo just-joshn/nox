@@ -27,9 +27,12 @@ describe("frozen Pi read-tool visuals", () => {
 				const request = component.render(width);
 				component.updateResult({ content: [{ type: "text", text: "one\ntwo" }], isError: false });
 				const success = component.render(width);
+				component.setExpanded(true);
+				const expandedSuccess = component.render(width);
+				component.setExpanded(false);
 				component.updateResult({ content: [{ type: "text", text: "No such file" }], isError: true });
 				const error = component.render(width);
-				expect({ width, theme: themeName, request, success, error }).toMatchSnapshot();
+				expect({ width, theme: themeName, request, success, expandedSuccess, error }).toMatchSnapshot();
 			});
 		}
 	}
