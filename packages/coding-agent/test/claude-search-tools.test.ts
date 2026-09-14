@@ -66,6 +66,21 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep count mode includes matches beyond the default grep result cap", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\n".repeat(101));
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:101\n\nFound 101 total occurrences across 1 file." },
+		]);
+	});
+
 	it("Grep count mode reports per-file and total occurrences", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
 		writeFileSync(join(cwd, "second.txt"), "alpha\n");

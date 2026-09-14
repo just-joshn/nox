@@ -1,5 +1,6 @@
 import path from "node:path";
 import { Type } from "typebox";
+import { executeClaudeGrepCount } from "./claude-grep-count.ts";
 import { createFindToolDefinition } from "./find.ts";
 import { createGrepToolDefinition } from "./grep.ts";
 
@@ -72,43 +73,13 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-i"?: boolean;
 			};
 			const outputMode = selected.output_mode;
+			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
 			const result = await grep.execute(id, { ...input, ignoreCase: selected["-i"] }, signal, onUpdate, ctx);
 			const text = resultText(result);
 			if (text === "No matches found")
-				return {
-					...result,
-					content: [
-						{
-							type: "text" as const,
-							text:
-								outputMode === "count"
-									? "No matches found\n\nFound 0 total occurrences across 0 files."
-									: "No files found",
-						},
-					],
-				};
+				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
 			if (outputMode === "content") {
 				return { ...result, content: [{ type: "text" as const, text: text.replaceAll(/:(\d+): /g, ":$1:") }] };
-			}
-			if (outputMode === "count") {
-				const files = text
-					.split("\n")
-					.map((line) => /^(.*):\d+: /.exec(line)?.[1])
-					.filter((file): file is string => !!file);
-				const counts = [...new Set(files)].map(
-					(file) => [file, files.filter((candidate) => candidate === file).length] as const,
-				);
-				const fileCount = counts.length;
-				const summary = `Found ${files.length} total occurrence${files.length === 1 ? "" : "s"} across ${fileCount} file${fileCount === 1 ? "" : "s"}.`;
-				return {
-					...result,
-					content: [
-						{
-							type: "text" as const,
-							text: `${counts.map(([file, count]) => `${file}:${count}`).join("\n")}\n\n${summary}`,
-						},
-					],
-				};
 			}
 			const files = [
 				...new Set(
