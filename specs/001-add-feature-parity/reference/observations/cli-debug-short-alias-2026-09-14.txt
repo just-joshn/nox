@@ -1,0 +1,11 @@
+Installed CLI 2.1.270 on macOS; separate disposable empty HOME and cwd for each invocation; sandbox-exec denied all network access. No credentials or model request.
+
+Input: claude -d --version
+Input: claude --debug --version
+Both: exit 0; stdout `2.1.270 (Claude Code)\n`; empty stderr; no home/cwd entries.
+
+Input: claude -d --bad-flag
+Input: claude --debug --bad-flag
+Both: exit 1; empty stdout; stderr `error: unknown option '--bad-flag'\n`; no home/cwd entries.
+
+The paired parser exits show that `-d` is accepted as a flag before an unknown option. They do not establish debug filtering, log output, or startup behavior.
