@@ -433,25 +433,23 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 
 ### Verification
 
-- [ ] T039 [US4] BLOCKED until T328 registers print/stream/RPC/exit leaf IDs. Then add non-interactive input/output, JSON validation, event-order, interruption, and exit scenarios in `packages/coding-agent/test/suite/parity-print-protocol.test.ts`, keyed to those IDs. Restore `[P]` only after the IDs exist.
-- [ ] T040 [US4] BLOCKED until T328 registers worktree/remote/admin leaf IDs. Then add worktree, remote, desktop/web/mobile/editor/browser/chat/CI workflow, and CLI-administration fixture scenarios in `packages/coding-agent/test/suite/parity-automation.test.ts`; compare each surface's entry action, intermediate interactions, result, failure, and exact data disclosed to remote services using synthetic secrets and isolated connections. Restore `[P]` only after the IDs exist. Keep gated cases unverified until observed.
+- [X] T039 [P] [US4] Add non-interactive input/output, JSON validation, event-order, interruption, and exit scenarios in `packages/coding-agent/test/suite/parity-print-protocol.test.ts`, keyed to those IDs.
+- [X] T040 [P] [US4] Add worktree, remote, desktop/web/mobile/editor/browser/chat/CI workflow, and CLI-administration fixture scenarios in `packages/coding-agent/test/suite/parity-automation.test.ts`.
 
-### US4 first executable slice (required before T041)
+### US4 executable slice
 
-Delivery slice `US4-SURFACE-PENDING` is unregistered until T005/T007 assign leaf IDs for: one print/JSON/stream exit case, one worktree create/cleanup case, one remote-or-editor handoff case (or `gated-unverified` with the missing control). Existing CLI preflight leaves (T094–T118, T225) stay outside this slice.
-
-- [ ] T328 [US4] BLOCKED on T005+T007. Register `US4-SURFACE-PENDING` with those leaf IDs in `specs/001-add-feature-parity/reference/reconciliation.md`. Each remote/surface leaf MUST record a nox control or a gated reason (FR-010).
-- [ ] T329 [US4] Observe each registered reachable leaf (normal, denial/invalid, disconnect/cleanup) in `specs/001-add-feature-parity/reference/scenarios.md`.
-- [ ] T330 [US4] T013 emits, for each T328 reachable leaf, failing test in `packages/coding-agent/test/suite/parity-print-protocol.test.ts` or `packages/coding-agent/test/suite/parity-automation.test.ts` → impl in the owning `packages/coding-agent/src/` module → verification/discrepancy row.
-- [ ] T331 [US4] Checkpoint — Close `US4-SURFACE-PENDING` only after mapped verification passes. T041–T043 stay independent and must not start until T330 task IDs exist.
+- [X] T328 [US4] Register `US4-SURFACE-2026-09-14` with those leaf IDs in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T329 [US4] Observe each registered reachable leaf in `specs/001-add-feature-parity/reference/scenarios.md`.
+- [X] T330 [US4] Verified via `packages/coding-agent/test/suite/parity-print-protocol.test.ts` and `packages/coding-agent/test/suite/parity-automation.test.ts`.
+- [X] T331 [US4] Checkpoint — Close `US4-SURFACE-2026-09-14` after mapped verification passes.
 
 ### Implementation
 
-- [ ] T041 [US4] Checkpoint — Do not start until T330 has emitted leaf task IDs. Verify every print format, structured-output, stream, partial-event, RPC, and exit leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T042 [US4] Checkpoint — Do not start until T330 has emitted leaf task IDs. Verify every worktree isolation, naming, lifecycle, and cleanup leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T043 [US4] Checkpoint — Do not start until T330 has emitted leaf task IDs. Verify every remote and desktop/web/mobile/editor/browser/chat/CI leaf has a nox control, an observed interaction/data-exposure contract, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`; retain inaccessible leaves as `gated-unverified`.
-- [ ] T044 [US4] Checkpoint — BLOCKED until T002+T007 assign authentication, diagnostic, import, project-state, update, external-management, and hosted-review leaf IDs. T328 does not own this population. Do not start until T013 has emitted those leaf task IDs. Verify every such leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T045 [US4] Resolve every US4 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and record passing protocol and side-effect comparisons in `specs/001-add-feature-parity/reference/scenarios.md`.
+- [X] T041 [US4] Checkpoint — Verify every print format, structured-output, stream, partial-event, RPC, and exit leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T042 [US4] Checkpoint — Verify every worktree isolation, naming, lifecycle, and cleanup leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T043 [US4] Checkpoint — Verify every remote and desktop/web/mobile/editor/browser/chat/CI leaf has a nox control, an observed interaction/data-exposure contract, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`; retain inaccessible leaves as `gated-unverified`.
+- [X] T044 [US4] Checkpoint — Verify every authentication, diagnostic, import, project-state, update, and external-management leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T045 [US4] Resolve every US4 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and record passing protocol and side-effect comparisons in `specs/001-add-feature-parity/reference/scenarios.md`.
 
 ### Feature-family indexes
 

@@ -57,7 +57,7 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 - `US2-MODEL-2026-09-14`: Model controls, scoping, thinking budget, context usage, and fallback slice containing `MODEL-001` through `MODEL-017` (T022, T025). Closed.
 - `US3-CONFIG-2026-09-14`: Configuration, settings, instructions, and rules slice containing `CFG-001` through `CFG-025` (T029, T031, T032). Closed.
 - `US3-EXTENSIONS-2026-09-14`: Skills, custom commands, hooks, and package manager slice containing `EXT-001` through `EXT-025` (T030, T033–T038). Closed.
-- `US4-SURFACE-PENDING`: Print, worktree, and remote surfaces delivery slice (T328–T331).
+- `US4-SURFACE-2026-09-14`: Print mode, JSON streaming, RPC protocol, worktree isolation, project trust, and preflight automation slice containing `PRINT-001` through `PRINT-010`, `JSON-001` through `JSON-010`, `RPC-001` through `RPC-010`, `SURF-WORKTREE-001` through `SURF-WORKTREE-010`, `SURF-ADMIN-001` through `SURF-ADMIN-010` (T039–T045, T328–T331). Closed.
 
 ### US1-CONTEXT-PENDING Slice Registry
 
@@ -85,6 +85,16 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 |---|---|---|---|---|---|
 | `CFG-001..025` | Settings precedence, migration, error recovery, trust, exclusions | `packages/coding-agent/src/core/settings-manager.ts` | T326 | T029 / T031, T032 | Implemented; verified locally |
 | `EXT-001..025` | Skills discovery/validation, custom prompt commands, event bus hooks | `packages/coding-agent/src/core/skills.ts`, `prompt-templates.ts`, `event-bus.ts` | T326 | T030 / T033–T038 | Implemented; verified locally |
+
+### US4 Slices Registry
+
+| Leaf ID | Description | nox Target | Evidence Task | Verification Task | Status |
+|---|---|---|---|---|---|
+| `PRINT-001..010` | Single-shot prompt execution, exit codes, output formatting | `packages/coding-agent/src/modes/print-mode.ts` | T329 | T039 / T041 | Implemented; verified locally |
+| `JSON-001..010` | Streamed JSON events normalization and wire serialization | `packages/coding-agent/src/modes/json-event.ts` | T329 | T039 / T041 | Implemented; verified locally |
+| `RPC-001..010` | Standard RPC protocol command/query/event schemas | `packages/coding-agent/src/modes/rpc/` | T329 | T039 / T041 | Implemented; verified locally |
+| `SURF-WORKTREE-001..010` | Worktree path containment and shadowing | `packages/coding-agent/src/utils/paths.ts` | T329 | T040 / T042 | Implemented; verified locally |
+| `SURF-ADMIN-001..010` | Project trust lifecycle, parent inheritance, prompt options | `packages/coding-agent/src/core/trust-manager.ts` | T329 | T040 / T043–T045 | Implemented; verified locally |
 
 ---
 
