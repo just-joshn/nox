@@ -28,6 +28,31 @@ Extend the Pi-based nox application until every observable feature of the pinned
 
 **Scale/Scope**: All user-visible features of locally installed reference 2.1.270 plus documented gated surfaces, subject to version refresh before a current-release claim. The count is unknown until the inventory is completed.
 
+## Complete Feature-Family Coverage Plan
+
+This is the umbrella plan for **all** feature families, including those outside the [agent engine slice](../002-agent-engine-parity/spec.md). No row is a deferral, exemption, or claim that its leaves have been implemented. Expand every row into independently testable leaves from the pinned installed release, current official documentation, and observable service surfaces. Reconcile the older [restored source map](https://github.com/ChinaSiro/claude-code-sourcemap/tree/main/restored-src) as a discovery aid only; it is not current behavior evidence and must not be cloned or copied into nox. Add newly discovered families to this table and leaf inventory before claiming completeness.
+
+| Feature family | Required coverage |
+|---|---|
+| Agent execution | Prompt and context assembly, instruction precedence, turn planning and action selection, streaming, tool cycles, errors, retries, interruption, completion, and usage accounting |
+| Models and providers | Selection, aliases, effort, fallbacks, thinking and budgets, capability limits, transport, credentials, and provider-specific errors |
+| Built-in coding tools | File reading/writing/editing, path discovery and search, shell and other command execution, notebook and language-server actions, web retrieval/search, user questions, and tool discovery |
+| Permissions and security | Trust, prompts, allow/deny rules and scopes, sandboxing, protected operations, secret handling, policy enforcement, and audit or diagnostic outcomes |
+| Sessions and context | Creation, persistence, history, resume, fork, rewind, compaction, memory, background state, and cross-surface continuation |
+| Terminal interaction | Commands, input/editor behavior, keybindings, vim mode, output styles, themes, accessibility, help, status, notifications, voice, and every recovery state; preserve Pi presentation |
+| Configuration and instructions | Global/project/local settings, precedence, migration, managed policy, rules, instruction files, environment variables, and diagnostics under nox-native names |
+| Skills and workflows | Built-in and custom skills, command workflows, prompts, invocation, argument handling, discovery, and lifecycle |
+| Hooks | All event phases, inputs and outputs, blocking and asynchronous behavior, failure policy, scope, and configuration |
+| Agents, teams, and tasks | Custom and built-in agents, subagents, coordination, task creation/updates, messages, delegation, and lifecycle |
+| Extensions and connections | Plugins, marketplaces, external tools and resources, MCP servers, prompts, authentication, discovery, permissions, and lifecycle |
+| Automation and scheduling | Background agents, scheduled jobs, routines, triggers, remote tasks, hosted review, and notifications |
+| Workspaces and source control | Worktrees, isolation, repository operations, review, pull requests, and cleanup |
+| CLI and administration | All commands, flags, startup modes, setup, authentication, diagnostics, update, import, project state, and exit behavior |
+| Noninteractive and programmatic use | Print modes, structured and streaming input/output, schemas, budgets, RPC/SDK-like control, events, and automation integration |
+| Remote and platform surfaces | Remote control, cloud/web sessions, desktop/mobile/editor/browser/chat/CI connections, handoff, enterprise gateway, self-hosted runners, artifacts, and deep links |
+
+For each leaf, the plan requires: surface and availability conditions; normal, denial/error, persistence, and interaction traces where applicable; a nox-native control; implementation tasks; focused regression coverage; Pi visual states; and a matched parity result. Gated leaves stay in the plan and block an unqualified 100% claim until observed and verified. The family list is a coverage framework, not a false assertion that the current release's complete leaf inventory has already been captured.
+
 ## Constitution Check
 
 *GATE: Passes for the design approach. Re-check each implementation slice and the complete inventory before a parity claim.*
