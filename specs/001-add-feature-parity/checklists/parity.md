@@ -10,55 +10,55 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are leaf-level inventory requirements defined for every command, flag, shortcut, setting, tool, protocol, and integration rather than only broad feature families? [Completeness, Spec §FR-001]
-- [ ] CHK002 Are discovery sources and reconciliation rules sufficient to expose features absent from CLI help or gated by platform, account, or policy? [Completeness, Spec §FR-001]
-- [ ] CHK003 Does every inventory item require a reference snapshot, availability condition, evidence, nox surface, and status? [Completeness, Spec §FR-001; Contract inventory]
-- [ ] CHK004 Are feature interaction requirements documented wherever two capabilities can change each other's behavior? [Coverage, Spec §FR-002]
-- [ ] CHK005 Are all session lifecycle states and transitions, including crash and interrupted recovery, specified at item level? [Completeness, Spec §FR-004]
-- [ ] CHK006 Are all permission modes, rule scopes, precedence cases, and unattended decisions defined with distinct acceptance criteria? [Completeness, Spec §FR-006]
-- [ ] CHK007 Are configuration, instruction, skill, agent, hook, plugin, and external-connection discovery and precedence requirements specified separately? [Completeness, Spec §FR-008]
-- [ ] CHK008 Are non-interactive input, output, streaming, structured validation, and exit contracts each specified for normal and failure paths? [Completeness, Spec §FR-009]
-- [ ] CHK009 Are background, worktree, remote, editor, browser, and hosted features each assigned explicit availability and lifecycle requirements? [Completeness, Spec §FR-010]
+- [x] CHK001 Are leaf-level inventory requirements defined for every command, flag, shortcut, setting, tool, protocol, and integration rather than only broad feature families? [Completeness, Spec §FR-001]
+- [x] CHK002 Are discovery sources and reconciliation rules sufficient to expose features absent from CLI help or gated by platform, account, or policy? [Completeness, Spec §FR-001]
+- [x] CHK003 Does every inventory item require a reference snapshot, availability condition, evidence, nox surface, and status? [Completeness, Spec §FR-001; Contract inventory]
+- [x] CHK004 Are feature interaction requirements documented wherever two capabilities can change each other's behavior? [Coverage, Spec §FR-002]
+- [x] CHK005 Are all session lifecycle states and transitions, including crash and interrupted recovery, specified at item level? [Completeness, Spec §FR-004]
+- [x] CHK006 Are all permission modes, rule scopes, precedence cases, and unattended decisions defined with distinct acceptance criteria? [Completeness, Spec §FR-006]
+- [x] CHK007 Are configuration, instruction, skill, agent, hook, plugin, and external-connection discovery and precedence requirements specified separately? [Completeness, Spec §FR-008]
+- [x] CHK008 Are non-interactive input, output, streaming, structured validation, and exit contracts each specified for normal and failure paths? [Completeness, Spec §FR-009]
+- [x] CHK009 Are background, worktree, remote, editor, browser, and hosted features each assigned explicit availability and lifecycle requirements? [Completeness, Spec §FR-010]
 
 ## Requirement Clarity
 
-- [ ] CHK010 Is “externally observable behavior” defined precisely enough to distinguish required parity from nondeterministic model wording? [Clarity, Spec §FR-002; Assumptions]
-- [ ] CHK011 Are the conditions for splitting a broad feature into independently testable inventory items explicit? [Clarity, Contract inventory]
-- [ ] CHK012 Is the boundary between required Pi visual fidelity and permitted new controls defined for each affected terminal state? [Clarity, Spec §FR-003]
-- [ ] CHK013 Is “current reference release” tied to a version and observation date for every acceptance claim? [Clarity, Spec §FR-014]
-- [ ] CHK014 Are the exact nox-native command and configuration equivalents required wherever the reference spelling is prohibited? [Clarity, Spec §FR-011; Spec §FR-013]
-- [ ] CHK015 Are availability categories defined so “gated-unverified” cannot be mistaken for a completed or excluded feature? [Clarity, Contract inventory]
+- [x] CHK010 Is “externally observable behavior” defined precisely enough to distinguish required parity from nondeterministic model wording? [Clarity, Spec §FR-002; Assumptions]
+- [x] CHK011 Are the conditions for splitting a broad feature into independently testable inventory items explicit? [Clarity, Contract inventory]
+- [x] CHK012 Is the boundary between required Pi visual fidelity and permitted new controls defined for each affected terminal state? [Clarity, Spec §FR-003]
+- [x] CHK013 Is “current reference release” tied to a version and observation date for every acceptance claim? [Clarity, Spec §FR-014]
+- [x] CHK014 Are the exact nox-native command and configuration equivalents required wherever the reference spelling is prohibited? [Clarity, Spec §FR-011; Spec §FR-013]
+- [x] CHK015 Are availability categories defined so “gated-unverified” cannot be mistaken for a completed or excluded feature? [Clarity, Contract inventory]
 
 ## Requirement Consistency
 
-- [ ] CHK016 Do the naming prohibition and 1:1 functional-parity requirements distinguish semantic compatibility from literal path and command compatibility without contradiction? [Consistency, Spec §FR-011; Spec §FR-013]
-- [ ] CHK017 Do the spec's universal coverage obligation and account/platform-scoped success criteria use a consistent release-claim boundary? [Conflict, Spec §FR-001; Spec §SC-001]
-- [ ] CHK018 Do the Pi preservation rule and reference behavior rule identify which requirement governs when the same interaction differs? [Consistency, Spec §FR-003; Spec §FR-012]
-- [ ] CHK019 Are feature statuses and discrepancy transitions consistent between the plan, inventory contract, and data model? [Consistency, Plan §Delivery Sequence and Gates; Data Model §Capability Item]
+- [x] CHK016 Do the naming prohibition and 1:1 functional-parity requirements distinguish semantic compatibility from literal path and command compatibility without contradiction? [Consistency, Spec §FR-011; Spec §FR-013]
+- [x] CHK017 Do the spec's universal coverage obligation and account/platform-scoped success criteria use a consistent release-claim boundary? [Conflict, Spec §FR-001; Spec §SC-001]
+- [x] CHK018 Do the Pi preservation rule and reference behavior rule identify which requirement governs when the same interaction differs? [Consistency, Spec §FR-003; Spec §FR-012]
+- [x] CHK019 Are feature statuses and discrepancy transitions consistent between the plan, inventory contract, and data model? [Consistency, Plan §Delivery Sequence and Gates; Data Model §Capability Item]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK020 Does each leaf item require normal, denial or failure, persistence, and relevant interaction criteria with explicit expected outcomes? [Acceptance Criteria, Spec §FR-001; Contract observable-behavior]
-- [ ] CHK021 Are comparison rules specific about which fields may be normalized and which decisions, errors, side effects, and ordering must remain exact? [Measurability, Contract observable-behavior]
-- [ ] CHK022 Can visual fidelity be judged from stated reference states and documented exceptions rather than the phrase “Pi's visual language” alone? [Measurability, Spec §FR-003; Spec §SC-003]
-- [ ] CHK023 Are the denominator, applicability rules, and treatment of gated-unverified items explicit for every 100% success criterion? [Measurability, Spec §SC-001; Spec §SC-004]
-- [ ] CHK024 Is the representative task set and participant selection defined for the user completion criterion? [Gap, Spec §SC-005]
-- [ ] CHK025 Is the naming audit's scope defined across code, generated artifacts, runtime strings, commands, and configuration paths? [Measurability, Spec §SC-006]
+- [x] CHK020 Does each leaf item require normal, denial or failure, persistence, and relevant interaction criteria with explicit expected outcomes? [Acceptance Criteria, Spec §FR-001; Contract observable-behavior]
+- [x] CHK021 Are comparison rules specific about which fields may be normalized and which decisions, errors, side effects, and ordering must remain exact? [Measurability, Contract observable-behavior]
+- [x] CHK022 Can visual fidelity be judged from stated reference states and documented exceptions rather than the phrase “Pi's visual language” alone? [Measurability, Spec §FR-003; Spec §SC-003]
+- [x] CHK023 Are the denominator, applicability rules, and treatment of gated-unverified items explicit for every 100% success criterion? [Measurability, Spec §SC-001; Spec §SC-004]
+- [x] CHK024 Is the representative task set and participant selection defined for the user completion criterion? [Gap, Spec §SC-005]
+- [x] CHK025 Is the naming audit's scope defined across code, generated artifacts, runtime strings, commands, and configuration paths? [Measurability, Spec §SC-006]
 
 ## Scenario and Edge Case Coverage
 
-- [ ] CHK026 Are primary, alternate, error, and recovery requirements specified for tool denial, interruption, timeout, and partial file changes? [Coverage, Spec §Edge Cases]
-- [ ] CHK027 Are settings conflicts, malformed values, missing session history, and version changes assigned deterministic expected outcomes? [Coverage, Spec §Edge Cases]
-- [ ] CHK028 Are concurrency and disconnection requirements defined for overlapping workers and remote or external integrations? [Coverage, Spec §Edge Cases]
-- [ ] CHK029 Are limits and fallback requirements defined for large or binary inputs, malformed streams, and unavailable external services? [Coverage, Spec §Edge Cases]
+- [x] CHK026 Are primary, alternate, error, and recovery requirements specified for tool denial, interruption, timeout, and partial file changes? [Coverage, Spec §Edge Cases]
+- [x] CHK027 Are settings conflicts, malformed values, missing session history, and version changes assigned deterministic expected outcomes? [Coverage, Spec §Edge Cases]
+- [x] CHK028 Are concurrency and disconnection requirements defined for overlapping workers and remote or external integrations? [Coverage, Spec §Edge Cases]
+- [x] CHK029 Are limits and fallback requirements defined for large or binary inputs, malformed streams, and unavailable external services? [Coverage, Spec §Edge Cases]
 
 ## Non-Functional Requirements and Assumptions
 
-- [ ] CHK030 Are accessibility requirements for added terminal controls specified, including keyboard and screen-reader behavior where applicable? [Gap, Spec §FR-003]
-- [ ] CHK031 Are performance comparison conditions and acceptable variance defined for user-visible latency and throughput? [Gap, Plan §Technical Context]
-- [ ] CHK032 Are privacy and credential-handling requirements specified for persisted sessions, external connections, and remote features? [Gap, Spec §FR-008; Spec §FR-010]
-- [ ] CHK033 Are external-service, subscription, platform, and policy dependencies documented with evidence requirements for inaccessible features? [Assumption, Spec §Assumptions; Plan §Delivery Sequence and Gates]
-- [ ] CHK034 Is the clean-room boundary documented consistently for reference observation, specification evidence, and developed nox code? [Consistency, Spec §Assumptions; Spec §FR-013]
+- [x] CHK030 Are accessibility requirements for added terminal controls specified, including keyboard and screen-reader behavior where applicable? [Gap, Spec §FR-003]
+- [x] CHK031 Are performance comparison conditions and acceptable variance defined for user-visible latency and throughput? [Gap, Plan §Technical Context]
+- [x] CHK032 Are privacy and credential-handling requirements specified for persisted sessions, external connections, and remote features? [Gap, Spec §FR-008; Spec §FR-010]
+- [x] CHK033 Are external-service, subscription, platform, and policy dependencies documented with evidence requirements for inaccessible features? [Assumption, Spec §Assumptions; Plan §Delivery Sequence and Gates]
+- [x] CHK034 Is the clean-room boundary documented consistently for reference observation, specification evidence, and developed nox code? [Consistency, Spec §Assumptions; Spec §FR-013]
 
 ## Notes
 
@@ -70,27 +70,27 @@
 
 ## Three-Source Discovery and Complete Scope
 
-- [ ] CHK035 Is a disposition required for every candidate found in the installed release, each current official documentation page, and the restored source map, including source-only candidates? [Completeness, Spec §FR-016]
-- [ ] CHK036 Are the meanings of mapped, duplicate, obsolete, version-gated, service-gated, and open candidates distinct enough to prevent a missing feature from being marked resolved? [Clarity, Spec §FR-016; Spec §SC-008]
-- [ ] CHK037 Does the spec state which evidence may establish current behavior and which source may only suggest a candidate or edge case? [Consistency, Spec §FR-016; Spec §Assumptions]
-- [ ] CHK038 Is the no-clone, no-copy clean-room boundary consistent across discovery, design, implementation, and verification requirements? [Consistency, Spec §FR-016; Spec §Assumptions]
-- [ ] CHK039 Are newly documented capabilities required to enter the one spec, plan, and task document without creating a second feature scope? [Completeness, Spec §FR-017]
-- [ ] CHK040 Is the release-version boundary clear when current documentation describes behavior absent from installed 2.1.270? [Ambiguity, Spec §FR-014; Spec §FR-016]
+- [x] CHK035 Is a disposition required for every candidate found in the installed release, each current official documentation page, and the restored source map, including source-only candidates? [Completeness, Spec §FR-016]
+- [x] CHK036 Are the meanings of mapped, duplicate, obsolete, version-gated, service-gated, and open candidates distinct enough to prevent a missing feature from being marked resolved? [Clarity, Spec §FR-016; Spec §SC-008]
+- [x] CHK037 Does the spec state which evidence may establish current behavior and which source may only suggest a candidate or edge case? [Consistency, Spec §FR-016; Spec §Assumptions]
+- [x] CHK038 Is the no-clone, no-copy clean-room boundary consistent across discovery, design, implementation, and verification requirements? [Consistency, Spec §FR-016; Spec §Assumptions]
+- [x] CHK039 Are newly documented capabilities required to enter the one spec, plan, and task document without creating a second feature scope? [Completeness, Spec §FR-017]
+- [x] CHK040 Is the release-version boundary clear when current documentation describes behavior absent from installed 2.1.270? [Ambiguity, Spec §FR-014; Spec §FR-016]
 
 ## Expanded Functional and Surface Coverage
 
-- [ ] CHK041 Are requirements for computer use and browser interaction specific about platform gates, consent, observable effects, and recovery states? [Gap, Spec §FR-005; Spec §FR-010]
-- [ ] CHK042 Are goals, agent view, cross-session messaging, and dynamic workflows covered as separate lifecycle requirements with cancellation and restart cases? [Gap, Spec §FR-004; Spec §FR-010]
-- [ ] CHK043 Are deep review, security scanning, findings, patch review, and CI/provider variants included in the surface inventory and acceptance boundary? [Gap, Spec §FR-010; Spec §FR-011]
-- [ ] CHK044 Are plugin evaluation, grading, and baseline-comparison requirements distinct from plugin installation and invocation? [Gap, Spec §FR-008]
-- [ ] CHK045 Are artifact sharing and deep-link entry requirements explicit about access, ownership, revocation, and failure states? [Gap, Spec §FR-010]
-- [ ] CHK046 Are voice, accessibility, and terminal controls specified sufficiently to retain Pi visuals while exposing any newly required interactions? [Coverage, Spec §FR-003; Spec §SC-003]
+- [x] CHK041 Are requirements for computer use and browser interaction specific about platform gates, consent, observable effects, and recovery states? [Gap, Spec §FR-005; Spec §FR-010]
+- [x] CHK042 Are goals, agent view, cross-session messaging, and dynamic workflows covered as separate lifecycle requirements with cancellation and restart cases? [Gap, Spec §FR-004; Spec §FR-010]
+- [x] CHK043 Are deep review, security scanning, findings, patch review, and CI/provider variants included in the surface inventory and acceptance boundary? [Gap, Spec §FR-010; Spec §FR-011]
+- [x] CHK044 Are plugin evaluation, grading, and baseline-comparison requirements distinct from plugin installation and invocation? [Gap, Spec §FR-008]
+- [x] CHK045 Are artifact sharing and deep-link entry requirements explicit about access, ownership, revocation, and failure states? [Gap, Spec §FR-010]
+- [x] CHK046 Are voice, accessibility, and terminal controls specified sufficiently to retain Pi visuals while exposing any newly required interactions? [Coverage, Spec §FR-003; Spec §SC-003]
 
 ## Release-Claim Quality
 
-- [ ] CHK047 Does the 100% discovery criterion define its denominator so unexplained official pages, installed options, and restored-source modules prevent completion? [Measurability, Spec §SC-008]
-- [ ] CHK048 Are unavailable account, policy, platform, and service cases distinguished from passing behavior in every success criterion? [Consistency, Spec §SC-001; Spec §SC-004; Spec §SC-008]
-- [ ] CHK049 Is the distinction between a complete planning register and a demonstrated 1:1 implementation explicit enough to prevent checklist approval from being reported as feature parity? [Clarity, Spec §SC-001; Spec §FR-017]
+- [x] CHK047 Does the 100% discovery criterion define its denominator so unexplained official pages, installed options, and restored-source modules prevent completion? [Measurability, Spec §SC-008]
+- [x] CHK048 Are unavailable account, policy, platform, and service cases distinguished from passing behavior in every success criterion? [Consistency, Spec §SC-001; Spec §SC-004; Spec §SC-008]
+- [x] CHK049 Is the distinction between a complete planning register and a demonstrated 1:1 implementation explicit enough to prevent checklist approval from being reported as feature parity? [Clarity, Spec §SC-001; Spec §FR-017]
 
 ## Additional Notes
 

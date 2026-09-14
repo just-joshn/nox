@@ -10,37 +10,37 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are validation requirements stated for commands, paths, settings, streamed input, and integration payloads before protected side effects? [Completeness, Spec §FR-018]
-- [ ] CHK002 Are the protected actions and required authorization decisions identified for local tools, extensions, remote sessions, and connected-service bridges? [Completeness, Spec §FR-006; Spec §FR-018]
-- [ ] CHK003 Are credential storage, reuse after restart, and revocation requirements defined for each applicable account or external connection? [Completeness, Spec §FR-015]
-- [ ] CHK004 Are data-disclosure requirements defined for extension inputs, remote services, diagnostic output, logs, and error messages? [Completeness, Spec §FR-015; Spec §FR-018]
-- [ ] CHK005 Does the spec identify which exposed integration surfaces require rate limiting, injection protection, or request-forgery protection, or explicitly rule those threats out? [Gap, Spec §FR-010; Spec §FR-018]
+- [x] CHK001 Are validation requirements stated for commands, paths, settings, streamed input, and integration payloads before protected side effects? [Completeness, Spec §FR-018]
+- [x] CHK002 Are the protected actions and required authorization decisions identified for local tools, extensions, remote sessions, and connected-service bridges? [Completeness, Spec §FR-006; Spec §FR-018]
+- [x] CHK003 Are credential storage, reuse after restart, and revocation requirements defined for each applicable account or external connection? [Completeness, Spec §FR-015]
+- [x] CHK004 Are data-disclosure requirements defined for extension inputs, remote services, diagnostic output, logs, and error messages? [Completeness, Spec §FR-015; Spec §FR-018]
+- [x] CHK005 Does the spec identify which exposed integration surfaces require rate limiting, injection protection, or request-forgery protection, or explicitly rule those threats out? [Gap, Spec §FR-010; Spec §FR-018]
 
 ## Requirement Clarity and Consistency
 
-- [ ] CHK006 Is “protected side effect” defined precisely enough to decide whether validation and authorization occurred before it? [Clarity, Spec §FR-018; Spec §SC-009]
-- [ ] CHK007 Are “private session data” and “credential” defined consistently for redaction and disclosure requirements? [Clarity, Spec §FR-015; Spec §FR-018]
-- [ ] CHK008 Do security requirements and 1:1 parity requirements state the same outcome when an observed reference behavior violates a security guarantee? [Consistency, Spec §FR-002; Spec §FR-018]
-- [ ] CHK009 Are permission scope and persistence requirements consistent across interactive, unattended, background, and remote execution? [Consistency, Spec §FR-006; Spec §FR-010; Spec §FR-015]
+- [x] CHK006 Is “protected side effect” defined precisely enough to decide whether validation and authorization occurred before it? [Clarity, Spec §FR-018; Spec §SC-009]
+- [x] CHK007 Are “private session data” and “credential” defined consistently for redaction and disclosure requirements? [Clarity, Spec §FR-015; Spec §FR-018]
+- [x] CHK008 Do security requirements and 1:1 parity requirements state the same outcome when an observed reference behavior violates a security guarantee? [Consistency, Spec §FR-002; Spec §FR-018]
+- [x] CHK009 Are permission scope and persistence requirements consistent across interactive, unattended, background, and remote execution? [Consistency, Spec §FR-006; Spec §FR-010; Spec §FR-015]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK010 Does each security leaf define observable acceptance criteria for validation, authorization, side effects, and prohibited disclosures? [Acceptance Criteria, Spec §FR-001; Spec §FR-018]
-- [ ] CHK011 Does SC-009 define a reproducible denominator for its 100% refusal requirement, including gated and unrun scenarios? [Measurability, Spec §SC-009]
-- [ ] CHK012 Are synthetic sensitive values and every output channel that must remain free of them specified for the zero-disclosure criterion? [Measurability, Spec §SC-009]
-- [ ] CHK013 Are denial, error, and restart outcomes specified separately where security behavior can differ by lifecycle state? [Coverage, Spec §FR-015; Spec §SC-009]
+- [x] CHK010 Does each security leaf define observable acceptance criteria for validation, authorization, side effects, and prohibited disclosures? [Acceptance Criteria, Spec §FR-001; Spec §FR-018]
+- [x] CHK011 Does SC-009 define a reproducible denominator for its 100% refusal requirement, including gated and unrun scenarios? [Measurability, Spec §SC-009]
+- [x] CHK012 Are synthetic sensitive values and every output channel that must remain free of them specified for the zero-disclosure criterion? [Measurability, Spec §SC-009]
+- [x] CHK013 Are denial, error, and restart outcomes specified separately where security behavior can differ by lifecycle state? [Coverage, Spec §FR-015; Spec §SC-009]
 
 ## Scenario and Edge Case Coverage
 
-- [ ] CHK014 Are malformed command, path, setting, stream, and plugin payload cases represented as distinct requirements when their failure boundaries differ? [Coverage, Spec §Edge Cases; Spec §FR-018]
-- [ ] CHK015 Are partial action, interruption, timeout, and retry cases specified so a rejected operation cannot leave an unauthorized side effect? [Coverage, Spec §Edge Cases; Spec §FR-018]
-- [ ] CHK016 Are cross-session, overlapping-worker, and disconnected-service cases covered where authorization or private data could cross boundaries? [Coverage, Spec §Edge Cases; Spec §FR-010]
-- [ ] CHK017 Are account-, policy-, platform-, and service-gated security observations identified as unverified rather than silently excluded from the parity claim? [Consistency, Spec §SC-001; Spec §FR-015]
+- [x] CHK014 Are malformed command, path, setting, stream, and plugin payload cases represented as distinct requirements when their failure boundaries differ? [Coverage, Spec §Edge Cases; Spec §FR-018]
+- [x] CHK015 Are partial action, interruption, timeout, and retry cases specified so a rejected operation cannot leave an unauthorized side effect? [Coverage, Spec §Edge Cases; Spec §FR-018]
+- [x] CHK016 Are cross-session, overlapping-worker, and disconnected-service cases covered where authorization or private data could cross boundaries? [Coverage, Spec §Edge Cases; Spec §FR-010]
+- [x] CHK017 Are account-, policy-, platform-, and service-gated security observations identified as unverified rather than silently excluded from the parity claim? [Consistency, Spec §SC-001; Spec §FR-015]
 
 ## Dependencies and Assumptions
 
-- [ ] CHK018 Are security requirements tied to an isolated, synthetic-data observation strategy without treating inaccessible reference behavior as known? [Assumption, Spec §FR-015; Spec §Assumptions]
-- [ ] CHK019 Does the spec distinguish product security outcomes from development-process rules such as test-first execution and coverage thresholds? [Consistency, Spec §FR-018; Constitution §Test-First Completion]
+- [x] CHK018 Are security requirements tied to an isolated, synthetic-data observation strategy without treating inaccessible reference behavior as known? [Assumption, Spec §FR-015; Spec §Assumptions]
+- [x] CHK019 Does the spec distinguish product security outcomes from development-process rules such as test-first execution and coverage thresholds? [Consistency, Spec §FR-018; Constitution §Test-First Completion]
 
 ## Notes
 
