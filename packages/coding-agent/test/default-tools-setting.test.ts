@@ -138,6 +138,19 @@ describe("defaultTools setting", () => {
 		toolLessSession.dispose();
 	});
 
+	it.each(["Glob", "Grep"])("exposes only explicitly selected %s to the agent", async (name) => {
+		const session = await createSession(["read", "bash", "edit", "write"], { tools: [name] });
+		expect(session.getActiveToolNames()).toEqual([name]);
+		expect(session.agent.state.tools.map((tool) => tool.name)).toEqual([name]);
+		session.dispose();
+	});
+
+	it("keeps explicit search tools absent from the default agent catalog", async () => {
+		const session = await createSession(["read", "bash", "edit", "write"]);
+		expect(session.agent.state.tools.map((tool) => tool.name)).toEqual(["read", "bash", "edit", "write"]);
+		session.dispose();
+	});
+
 	it("applies through service-based session creation", async () => {
 		const settingsManager = SettingsManager.inMemory({ defaultTools: ["ls"] });
 		const services = await createAgentSessionServices({ cwd: tempDir, agentDir, settingsManager });
