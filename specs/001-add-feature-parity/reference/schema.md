@@ -1,0 +1,18 @@
+# Parity Evidence Schema
+
+This schema governs the reference records in this feature directory. A domain heading or command family is a discovery seed, not a verifiable leaf. Keep stable IDs when a later release changes behavior; attach a new snapshot and observation instead of rewriting past evidence.
+
+| Record | Identity | Required fields | Validation |
+|--------|----------|-----------------|------------|
+| Reference Snapshot | Version, environment profile, and observation date | Product, installed version, platform, account and policy conditions, source links, raw local output paths | A current-release claim needs a fresh installed-version check and affected observation refresh |
+| Discovery Candidate | Source kind, source identifier, and candidate behavior | Installed command, official page, or restored-source module; observation date; version relevance; mapped leaf IDs or disposition and rationale | Every candidate maps to at least one leaf, a named duplicate, or dated obsolete evidence; an open candidate blocks inventory completeness |
+| Capability Item | Stable leaf ID | Domain, parent ID if any, reference surface, nox-native surface, availability and timing-sensitivity classification with reasons, expected behavior, evidence links, implementation location, status | Create separate leaves for independently failing inputs, options, state transitions, and gated variants; a source-only candidate needs current corroboration before specification |
+| Scenario | Stable scenario ID linked to a leaf | Environment fixture, initial state, ordered actions and permission responses, expected decisions, outputs, errors, state and side effects, predeclared normalization | Include normal, denial/error, persistence, and relevant interaction cases; security cases name synthetic sensitive values, authorization, validation, protected side effect, and prohibited disclosures |
+| Observation | Scenario ID, run date, and environment | Reference snapshot, raw trace path, normalized reference result, nox result, comparison status, discrepancy ID if failed, security result if applicable | Retain raw traces; normalization cannot erase decisions, event order, errors, protocol fields, side effects, or sensitive-data disclosure |
+| Discrepancy | Stable `DISC-###` ID | Leaf and scenario IDs, owner, reproduction steps, expected and actual results, impact, status, resolution evidence | Close only after a fresh matched passing reference/nox comparison; reopen on regression or invalidating reference change |
+
+Capability status follows `discovered` → `specified` → `implemented` → `verified`. A failed comparison makes the leaf `discrepant`; inaccessible required behavior is `gated-unverified`. A reference change returns affected leaves to `specified` or `discrepant` until reverified. `verified` requires passing normal, failure, and relevant interaction scenarios against an accessible reference snapshot, plus applicable security and Pi visual checks. No parent domain may be marked verified solely because some children pass.
+
+Discrepancy status follows `open` → `fixing` → `reverified` → `closed`. The [discrepancy register](discrepancies.md) owns reproduction and closure evidence. A security conflict remains open under FR-018 even if the reference behavior was observed. An inaccessible leaf is tracked as gated, not treated as a passing observation.
+
+For every external input, compare validation and authorization before protected side effects and scan output, logs, and errors for synthetic credentials or private session values. Keep provider credentials, paid calls, and destructive external actions out of routine fixtures. A missing observation, unrun scenario, or unclassified timing sensitivity cannot be inferred as passing.
