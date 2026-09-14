@@ -20,14 +20,15 @@ SEARCH_MODES = frozenset({
     "grep-count-multiple", "grep-count-no-match", "grep-count-limit", "grep-count-same-line",
     "grep-no-line-number", "grep-only-matching", "grep-context", "grep-after-context",
     "grep-before-context", "grep-path", "grep-path-files", "grep-glob-filter", "grep-head-limit",
-    "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero",
+    "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
 UNRESTRICTED_TOOLS_MODES = SEARCH_MODES | {"outside", "glob-tools", "grep-tools"}
 NO_MATCH_MODES = {"glob-no-match", "grep-no-match", "grep-count-no-match", "grep-offset-end"}
+NON_TXT_MATCH_MODES = {"grep-type-filter"}
 INVALID_MODES = {"glob-invalid", "grep-invalid"}
-FIXTURE_MATCH_MODES = SEARCH_MODES - NO_MATCH_MODES - INVALID_MODES
+FIXTURE_MATCH_MODES = SEARCH_MODES - NO_MATCH_MODES - INVALID_MODES - NON_TXT_MATCH_MODES
 VALID_MODES = CATALOG_MODES | {"missing", "outside"}
 
 
@@ -48,6 +49,7 @@ class ProbeState:
     file_glob: str | None = None
     head_limit: int | None = None
     offset: int | None = None
+    file_type: str | None = None
 
 
 def sse(event: str, payload: dict) -> str:
@@ -59,7 +61,7 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
                      line_numbers: bool | None = None, only_matching: bool = False,
                      context_lines: int | None = None, context_side: str | None = None,
                      file_glob: str | None = None, head_limit: int | None = None,
-                     offset: int | None = None) -> bytes:
+                     offset: int | None = None, file_type: str | None = None) -> bytes:
     message = {
         "id": "msg_synthetic",
         "type": "message",
@@ -85,6 +87,7 @@ def message_response(model: str, kind: str, read_path: str, tool_name: str = "Re
         if file_glob: tool_input = {**tool_input, "glob": file_glob}
         if head_limit is not None: tool_input = {**tool_input, "head_limit": head_limit}
         if offset is not None: tool_input = {**tool_input, "offset": offset}
+        if file_type: tool_input = {**tool_input, "type": file_type}
         delta = {"type": "input_json_delta", "partial_json": json.dumps(tool_input)}
         stop_reason = "tool_use"
     else:
@@ -182,6 +185,7 @@ def summarize_search_result(result: dict, tool_name: str = "") -> dict:
                              "head_limited_content" if text == "fixture.txt:1:alpha\n\n[Showing results with pagination = limit: 1]" and tool_name == "Grep" else
                              "offset_content" if text == "fixture.txt:2:alpha\n\n[Showing results with pagination = offset: 1]" and tool_name == "Grep" else
                              "offset_end" if text == "No entries at this offset\n\n[Showing results with pagination = offset: 2]" and tool_name == "Grep" else
+                             "python_match" if text == "Found 1 file\nfixture.py" and tool_name == "Grep" else
                              "count_match" if text == "fixture.txt:1\n\nFound 1 total occurrence across 1 file." and tool_name == "Grep" else
                              "count_multiple" if text == "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files." and tool_name == "Grep" else
                              "count_no_match" if text == "No matches found\n\nFound 0 total occurrences across 0 files." and tool_name == "Grep" else
@@ -256,7 +260,7 @@ def make_handler(state: ProbeState):
             body = message_response(request["model"], kind, state.read_path, state.tool_name, state.tool_pattern,
                                     state.tool_path, state.output_mode, state.ignore_case, state.line_numbers,
                                     state.only_matching, state.context_lines, state.context_side, state.file_glob,
-                                    state.head_limit, state.offset)
+                                    state.head_limit, state.offset, state.file_type)
             self.send_response(200)
             self.send_header("Content-Type", "text/event-stream")
             self.send_header("Content-Length", str(len(body)))
@@ -279,6 +283,8 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
         (workspace / "second.txt").write_text("alpha\n")
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
+    if mode == "grep-type-filter":
+        (workspace / "fixture.py").write_text(FIXTURE_CONTENT)
     if mode in {"grep-head-limit", "grep-offset", "grep-offset-end", "grep-offset-zero"}:
         fixture.write_text("alpha\nalpha\n")
     if mode in {"glob-path", "grep-path", "grep-path-files"}:
@@ -308,7 +314,8 @@ def main(executable: str, mode: str = "normal") -> int:
                            context_side="-A" if mode == "grep-after-context" else "-B" if mode == "grep-before-context" else None,
                            file_glob="*.txt" if mode == "grep-glob-filter" else None,
                            head_limit=1 if mode in {"grep-head-limit", "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero"} else None,
-                           offset=1 if mode == "grep-offset" else 2 if mode == "grep-offset-end" else 0 if mode == "grep-offset-zero" else None)
+                           offset=1 if mode == "grep-offset" else 2 if mode == "grep-offset-end" else 0 if mode == "grep-offset-zero" else None,
+                           file_type="py" if mode == "grep-type-filter" else None)
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
@@ -344,6 +351,8 @@ def main(executable: str, mode: str = "normal") -> int:
                 "second_unchanged": (workspace / "second.txt").read_text() == "alpha\n" if mode == "grep-count-multiple" else None,
                 "markdown_unchanged": (workspace / "fixture.md").read_text() == FIXTURE_CONTENT
                                       if mode == "grep-glob-filter" else None,
+                "python_unchanged": (workspace / "fixture.py").read_text() == FIXTURE_CONTENT
+                                    if mode == "grep-type-filter" else None,
                 "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
                                     if mode in {"glob-path", "grep-path", "grep-path-files"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
@@ -364,6 +373,7 @@ def main(executable: str, mode: str = "normal") -> int:
         requests = summary.get("requests", [])
         matched = ((mode != "grep-count-multiple" or summary.get("second_unchanged") is True)
                    and (mode != "grep-glob-filter" or summary.get("markdown_unchanged") is True)
+                   and (mode != "grep-type-filter" or summary.get("python_unchanged") is True)
                    and (mode not in {"glob-path", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
