@@ -1,0 +1,21 @@
+Installed CLI 2.1.270 on macOS; one disposable empty HOME and cwd per case; no credentials or model request.
+
+Input: claude auth help status
+Exit: 0; stdout begins `Usage: claude auth status [options]`; stderr empty.
+
+Input: claude auto-mode help config
+Exit: 0; stdout begins `Usage: claude auto-mode config [options]`; stderr empty.
+
+Input: claude mcp help list
+Exit: 0; stdout begins `Usage: claude mcp list [options]`; stderr empty.
+
+Input: claude plugin help list
+Exit: 0; stdout begins `Usage: claude plugin list [options]`; stderr empty.
+
+Input: claude plugin marketplace help list
+Exit: 0; stdout begins `Usage: claude plugin marketplace list [options]`; stderr empty.
+
+Input: claude project help purge
+Exit: 0; stdout begins `Usage: claude project purge [options] [path]`; stderr empty.
+
+The complete help pages were already captured separately in dated help files. Unknown targets and help-only startup side effects remain unobserved.
