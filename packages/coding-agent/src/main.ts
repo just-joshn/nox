@@ -601,6 +601,16 @@ export async function main(args: string[], options?: MainOptions) {
 	}
 
 	const parsed = parseArgs(args);
+	if (parsed.background) {
+		if (parsed.print) {
+			console.error(
+				"--bg and --print conflict: --print cannot start an attachable background session. Background sessions are not available yet.",
+			);
+		} else {
+			console.error("Error: Background sessions are not available yet");
+		}
+		process.exit(1);
+	}
 	if (parsed.diagnostics.length > 0) {
 		for (const d of parsed.diagnostics) {
 			const color = d.type === "error" ? chalk.red : chalk.yellow;

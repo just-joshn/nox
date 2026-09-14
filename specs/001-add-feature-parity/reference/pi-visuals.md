@@ -28,3 +28,5 @@ The width sample is 1 column (rendering boundary), 40 columns (narrow), 80 colum
 Each added feature leaf must link its inventory ID to the applicable row and add any missing prompt, menu, result, denial, error, or recovery frame before implementation. Record the capture fixture and comparison result in `validation.md`; missing captures leave SC-003 open. This matrix is a declaration of required checks, not evidence that the current interface has passed them.
 
 SUR-LIMIT-002 malformed JSON is a print-mode parser rejection before TUI startup. Its relevant presentation is empty stdout, one stderr diagnostic, and exit status from [SUR-LIMIT-002-MALFORMED](scenarios.md); it has no Pi terminal frame. Valid structured output and any interactive variant remain subject to the matrix above.
+
+CLI-246 `--bg --print` is also rejected before TUI startup. Compare its empty stdout, conflict stderr, nonzero exit, and absence of a session in [CLI-246-BG-PRINT](scenarios.md). Nox cannot advise an unavailable background launch, so its stderr wording differs and stays open as DISC-001. Successful background sessions still require their own Pi frames.

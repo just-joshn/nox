@@ -1,11 +1,12 @@
 # Parity Discrepancy Register
 
-**Snapshot**: Installed reference release 2.1.270. The register defines how to record mismatches; no matched nox/reference comparison has been run, so an empty table is not evidence of parity.
+**Snapshot**: Installed reference release 2.1.270. The register defines how to record mismatches. Narrow parser comparisons for SUR-LIMIT-002 malformed JSON and CLI-246 conflict are recorded in [validation.md](validation.md). The CLI-246 decision matches, but its advice cannot match until background sessions are available.
 
 Create one row per independently reproducible mismatch. The owner is the task or person responsible for the affected leaf; use `unassigned` only until triage, then name the owning task before work begins. Keep a stable `DISC-###` ID even if the reference release changes. Link the leaf and scenario IDs in the inventory and scenario register, and link raw traces stored under `observations/` without copying credentials or private session values.
 
 | ID | Leaf ID | Scenario ID | Owner | Impact | Status | Reference snapshot | Reproduction and evidence | Resolution evidence |
 |----|---------|-------------|-------|--------|--------|--------------------|---------------------------|---------------------|
+| DISC-001 | CLI-246; parent SUR-BG-003 | CLI-246-BG-PRINT | T098 / SUR-BG-003 implementation | Conflict stderr differs: reference advises an attachable background launch; nox cannot give that advice until background sessions exist | open | 2.1.270 on 2026-09-14 | Run `--bg -p noop` in the isolated CLI process; compare [reference trace](observations/background-print-conflict-2026-09-14.txt) with [nox validation](validation.md); both exit 1, emit no stdout or session ID, but nox explains the unavailable launch | Pending successful SUR-BG-003 implementation and fresh matched comparison |
 
 For each discrepancy, the reproduction record must state the matched repository fixture, configuration and account conditions, initial session state, ordered input and permission responses, and exact commands or interactions. Record expected reference decisions, outputs, errors, event order, exit status, persisted state, and side effects beside the actual nox results. Declare any normalization before comparison; it cannot erase decisions, protocol fields, event order, errors, side effects, or sensitive-data disclosure. Describe user impact and whether the mismatch is a security-gate failure.
 

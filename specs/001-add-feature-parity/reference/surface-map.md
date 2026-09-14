@@ -16,5 +16,6 @@ This map records the naming rule without asserting an implementation. Every inve
 | Editor and browser workflows | Terminal or CLI controls with observed handoff and state synchronization | Pending leaf inventory and observations |
 | Chat and CI workflows | Terminal or CLI controls and connected-service bridges with matched triggers, decisions, and side effects | Pending leaf inventory and observations |
 | CLI-034 / SUR-LIMIT-002 malformed schema | `nox -p --json-schema <value>` parser preflight | Observed malformed JSON rejection matched in isolated CLI test; valid structured output unavailable and remaining variants unverified |
+| CLI-246 / SUR-BG-003 print conflict | `nox --bg -p <task>` preflight | Conflict decision matched; advice differs as DISC-001 because background launch and lifecycle are unavailable |
 
 The spec's name prohibition excludes literal compatibility paths and commands. A proposed name or delivery route does not prove the underlying feature exists or behaves the same way. Surface-specific workflows remain open until their observed contracts and nox outcomes are compared.

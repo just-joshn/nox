@@ -97,6 +97,23 @@ describe("parseArgs", () => {
 		});
 	});
 
+	describe("--bg flag", () => {
+		test.each(["--bg", "--background"])("keeps a print-mode prompt with %s", (flag) => {
+			const result = parseArgs([flag, "-p", "noop"]);
+			expect(result.background).toBe(true);
+			expect(result.print).toBe(true);
+			expect(result.messages).toEqual(["noop"]);
+			expect(result.unknownFlags.has(flag.slice(2))).toBe(false);
+		});
+
+		test("keeps the prompt when print precedes background", () => {
+			const result = parseArgs(["-p", "--bg", "noop"]);
+			expect(result.background).toBe(true);
+			expect(result.print).toBe(true);
+			expect(result.messages).toEqual(["noop"]);
+		});
+	});
+
 	describe("--continue flag", () => {
 		test("parses --continue flag", () => {
 			const result = parseArgs(["--continue"]);

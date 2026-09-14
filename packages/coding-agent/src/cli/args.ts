@@ -36,6 +36,7 @@ export interface Args {
 	extensions?: string[];
 	noExtensions?: boolean;
 	print?: boolean;
+	background?: boolean;
 	jsonSchema?: unknown;
 	export?: string;
 	noSkills?: boolean;
@@ -162,6 +163,8 @@ export function parseArgs(args: string[]): Args {
 				result.messages.push(next);
 				i++;
 			}
+		} else if (arg === "--bg" || arg === "--background") {
+			result.background = true;
 		} else if (arg === "--json-schema" || arg.startsWith("--json-schema=")) {
 			const inline = arg.startsWith("--json-schema=");
 			const value = inline ? arg.slice("--json-schema=".length) : args[i + 1];

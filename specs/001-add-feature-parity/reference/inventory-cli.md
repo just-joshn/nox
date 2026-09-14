@@ -16,7 +16,7 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 | CLI-006 | `--append-system-prompt` | observed-help | Pending | Pending |
 | CLI-007 | `--autocompact` | observed-help | Pending | Pending |
 | CLI-008 | `--ax-screen-reader` | observed-help | Pending | Pending |
-| CLI-009 | `--bg, --background` | observed-help | Pending | Pending |
+| CLI-009 | `--bg, --background` | observed-help | Conflict preflight only; launch unsupported | [Print conflict](observations/background-print-conflict-2026-09-14.txt) decision matched; advice differs as DISC-001; successful launch pending |
 | CLI-010 | `--bare` | observed-help | Pending | Pending |
 | CLI-011 | `--betas` | observed-help | Pending | Pending |
 | CLI-012 | `--brief` | observed-help | Pending | Pending |
@@ -146,7 +146,7 @@ The [CLI reference](https://code.claude.com/docs/en/cli-usage) specifies these o
 
 | ID | Input combination | Documented contract | Evidence state |
 |----|-------------------|---------------------|----------------|
-| CLI-246 | `--background` with `--print` | Rejected before session creation; exit 1, empty stdout, conflict diagnostic on stderr | [Observed locally](observations/background-print-conflict-2026-09-14.txt) |
+| CLI-246 | `--background` with `--print` | Rejected before session creation; exit 1, empty stdout, conflict diagnostic on stderr | [Observed locally](observations/background-print-conflict-2026-09-14.txt); nox preflight compared in [validation.md](validation.md) |
 | CLI-247 | `--background` with `--exec` | Launch a PTY-backed shell job | Documented only |
 | CLI-248 | `--background` with `--agent` | Launch a selected subagent | Documented only |
 | CLI-249 | `--continue` with `--print` | Search includes print, SDK, and loop sessions | Documented only |
