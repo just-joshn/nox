@@ -308,6 +308,77 @@ The [current official command reference](https://code.claude.com/docs/en/command
 | CLI-239 | `/help` | documented; local interaction unobserved | Pending |
 | CLI-240 | `/login` | documented; local interaction unobserved | Pending |
 
+## Documented keyboard shortcut seeds
+
+The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mode) supplies these distinct key tokens across general, editing, display, transcript, and Vim contexts. A token may have multiple context-dependent actions (for example, `Ctrl+T` and `Ctrl+E`). This is a discovery index, not a complete leaf enumeration; context, platform alternatives, gestures, and failure states remain to be split.
+
+| ID | Key token | Discovery | Behavior evidence |
+|----|-----------|-----------|-------------------|
+| KEY-001 | `Ctrl+C` | documented; context and variants pending | Pending |
+| KEY-002 | `Ctrl+X Ctrl+K` | documented; context and variants pending | Pending |
+| KEY-003 | `Ctrl+D` | documented; context and variants pending | Pending |
+| KEY-004 | `Ctrl+L` | documented; context and variants pending | Pending |
+| KEY-005 | `Ctrl+O` | documented; context and variants pending | Pending |
+| KEY-006 | `Ctrl+R` | documented; context and variants pending | Pending |
+| KEY-007 | `Ctrl+B` | documented; context and variants pending | Pending |
+| KEY-008 | `Ctrl+T` | documented; context and variants pending | Pending |
+| KEY-009 | `Ctrl+S` | documented; context and variants pending | Pending |
+| KEY-010 | `Ctrl+Z` | documented; context and variants pending | Pending |
+| KEY-011 | `Left/Right arrows` | documented; context and variants pending | Pending |
+| KEY-012 | `Tab` | documented; context and variants pending | Pending |
+| KEY-013 | `Ctrl+A` | documented; context and variants pending | Pending |
+| KEY-014 | `Ctrl+E` | documented; context and variants pending | Pending |
+| KEY-015 | `Ctrl+K` | documented; context and variants pending | Pending |
+| KEY-016 | `Ctrl+U` | documented; context and variants pending | Pending |
+| KEY-017 | `Ctrl+W` | documented; context and variants pending | Pending |
+| KEY-018 | `Ctrl+Y` | documented; context and variants pending | Pending |
+| KEY-019 | `Alt+B` | documented; context and variants pending | Pending |
+| KEY-020 | `Alt+F` | documented; context and variants pending | Pending |
+| KEY-021 | `Alt+D` | documented; context and variants pending | Pending |
+| KEY-022 | `@` | documented; context and variants pending | Pending |
+| KEY-023 | `:` | documented; context and variants pending | Pending |
+| KEY-024 | `?` | documented; context and variants pending | Pending |
+| KEY-025 | `i` | documented; context and variants pending | Pending |
+| KEY-026 | `I` | documented; context and variants pending | Pending |
+| KEY-027 | `a` | documented; context and variants pending | Pending |
+| KEY-028 | `A` | documented; context and variants pending | Pending |
+| KEY-029 | `o` | documented; context and variants pending | Pending |
+| KEY-030 | `O` | documented; context and variants pending | Pending |
+| KEY-031 | `v` | documented; context and variants pending | Pending |
+| KEY-032 | `V` | documented; context and variants pending | Pending |
+| KEY-033 | `Space` | documented; context and variants pending | Pending |
+| KEY-034 | `w` | documented; context and variants pending | Pending |
+| KEY-035 | `e` | documented; context and variants pending | Pending |
+| KEY-036 | `b` | documented; context and variants pending | Pending |
+| KEY-037 | `0` | documented; context and variants pending | Pending |
+| KEY-038 | `$` | documented; context and variants pending | Pending |
+| KEY-039 | `^` | documented; context and variants pending | Pending |
+| KEY-040 | `gg` | documented; context and variants pending | Pending |
+| KEY-041 | `G` | documented; context and variants pending | Pending |
+| KEY-042 | `f{char}` | documented; context and variants pending | Pending |
+| KEY-043 | `F{char}` | documented; context and variants pending | Pending |
+| KEY-044 | `t{char}` | documented; context and variants pending | Pending |
+| KEY-045 | `T{char}` | documented; context and variants pending | Pending |
+| KEY-046 | `;` | documented; context and variants pending | Pending |
+| KEY-047 | `,` | documented; context and variants pending | Pending |
+| KEY-048 | `/` | documented; context and variants pending | Pending |
+| KEY-049 | `x` | documented; context and variants pending | Pending |
+| KEY-050 | `dd` | documented; context and variants pending | Pending |
+| KEY-051 | `D` | documented; context and variants pending | Pending |
+| KEY-052 | `cc` | documented; context and variants pending | Pending |
+| KEY-053 | `C` | documented; context and variants pending | Pending |
+| KEY-054 | `s` | documented; context and variants pending | Pending |
+| KEY-055 | `S` | documented; context and variants pending | Pending |
+| KEY-056 | `p` | documented; context and variants pending | Pending |
+| KEY-057 | `P` | documented; context and variants pending | Pending |
+| KEY-058 | `>>` | documented; context and variants pending | Pending |
+| KEY-059 | `<<` | documented; context and variants pending | Pending |
+| KEY-060 | `J` | documented; context and variants pending | Pending |
+| KEY-061 | `u` | documented; context and variants pending | Pending |
+| KEY-062 | `.` | documented; context and variants pending | Pending |
+| KEY-063 | `y` | documented; context and variants pending | Pending |
+| KEY-064 | `r{char}` | documented; context and variants pending | Pending |
+
 ## Missing discovery work
 
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) says help is incomplete. This table has not been reconciled against every documented flag and command, nor every command-specific option, alias, combination, and failure. Do not mark T002 complete.
