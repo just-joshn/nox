@@ -93,6 +93,8 @@
 - [X] T140 [US1] Observe Grep `-i: true` with an uppercase query against the lowercase synthetic fixture through the localhost-only reference endpoint, retaining only fixed result classification.
 - [X] T141 [US1] Write a failing nox test for the observed case-insensitive Grep field and result, then map `-i` to the existing lower-case grep option.
 - [X] T142 [US1] Run focused and neighboring tests plus `npm run check`, update the validation ledger, and commit locally.
+- [X] T143 [US1] Observe the reference's third advertised Grep `output_mode: count` value in a localhost-only synthetic fixture; retain only an exact allowlisted result class and no raw request content.
+- [ ] T144 [US1] Write a failing nox count-mode test, implement the observed count formatting in the explicit Grep adapter, then verify neighboring tests and `npm run check` before committing locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
