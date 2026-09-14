@@ -280,5 +280,23 @@
 | SUR-CHAN-008 | Fakechat local event/reply round trip unobserved | Bun and disposable authenticated session; localhost-only fixture |
 | SUR-CHAN-009 | Multiple plugin attribution and partial failure unobserved | Two synthetic plugins with distinct source IDs |
 | SUR-CHAN-010 | External sender authority over protected approvals unobserved | Security review and synthetic sender spoof/deny fixtures |
+| CLI-525 | Streaming output conflict is parser-observed; authenticated dispatch and resulting session unobserved | Eligible self-hosted environment and isolated CLI flow; compare service rejection and state |
+| CLI-526 | Resume conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated resume/session fixtures |
+| CLI-527 | Continue conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated continuation fixtures |
+| CLI-528 | Teleport conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated hosted-session fixture |
+| CLI-529 | Session-ID conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated ID/state fixture |
+| CLI-530 | Setup-only conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated setup-hook fixture |
+| CLI-531 | Existing-cloud-session conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated cloud session |
+| CLI-532 | Cloud-description conflict is parser-observed; authenticated dispatch unobserved | Eligible self-hosted environment and isolated non-interactive launch |
+| CLI-533 | Bare cloud flag reached login gate; successful new-session behavior unobserved | Eligible authenticated self-hosted environment; isolated launch and side-effect trace |
+| MEM-015 | Cowork external-import omission is documentation-only | Disposable Cowork desktop profile with synthetic user-scope import outside workdir |
+| MEM-016 | Cowork symlink omission is documentation-only | Disposable Cowork desktop profile with synthetic symlinked user rule |
+| MODEL-016 | Role and managed effort-cap precedence is documentation-only | Eligible Enterprise custom role plus managed settings; compare each output mode |
+| MODEL-017 | Organization default-model precedence is documentation-only | Eligible organization default and isolated user/project/CLI settings precedence fixtures |
+| CFG-031 | Usage-limit setting scope exception is documented; behavior under actual limit unobserved | Eligible account and isolated limit fixtures without exhausting a shared quota |
+| CFG-032 | Managed connector policy conflict is documentation-only | Controlled managed policy fixture with synthetic connector and lower-scope restriction |
+| CFG-033 | Cloud settings propagation is documentation-only | Eligible disposable cloud project with conflicting host and committed settings |
+| CFG-034 | Runner-image managed file propagation is documentation-only | Eligible disposable self-hosted runner and synthetic policy |
+| CFG-036 | MDM/server-managed mid-session delivery and hook omission unobserved | Controlled managed source and isolated hook trace across delivery schedule |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
