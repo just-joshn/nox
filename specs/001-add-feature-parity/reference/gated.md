@@ -65,5 +65,11 @@
 | SUR-WT-015 | Ignored-file copy and exposure rules unobserved | Synthetic ignored files only; pattern, nested directory, and redaction fixtures |
 | SUR-WT-016 | Reuse reset-versus-retain decision unobserved | Disposable clean/dirty/committed worktrees with same name |
 | SUR-WT-017 | Periodic sweep and lock protection unobserved | Isolated supervisor and aged synthetic worktrees; do not affect user-owned worktrees |
+| SUR-LIMIT-001 | Valid schema response and failure payload unobserved | Restored allowance; synthetic schema with deterministic harmless prompt |
+| SUR-LIMIT-002 | Invalid schema rejection not locally probed | Isolated bare-mode invocation with malformed schema; verify no request starts |
+| SUR-LIMIT-003 | Cost metadata and failed-run accounting unobserved | Restored allowance; redacted JSON result and synthetic child activity |
+| SUR-LIMIT-004 | Main-run budget threshold and error unobserved | Controlled faux provider or restored allowance with explicit low-cost fixture |
+| SUR-LIMIT-005 | Child budget sharing and concurrent cancellation unobserved | Controlled faux provider with multiple children; confirm installed availability |
+| SUR-LIMIT-006 | Installed parser availability and turn-limit behavior unobserved | Safe parser check, then restored allowance with queued stream input |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.

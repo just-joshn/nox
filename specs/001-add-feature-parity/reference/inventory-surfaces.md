@@ -96,3 +96,18 @@ Source: [current worktree guide](https://code.claude.com/docs/en/worktrees), rea
 | SUR-WT-017 | Run periodic cleanup for agent/background worktrees | Old safe worktrees removed; active locks and user-owned or dirty work preserved | Stale lock, filter-driver uncertainty, unpushed commits | Git and background service; nox cleanup |
 
 Custom creation hooks, non-git VCS adapters, environment setup, and the detailed worktree troubleshooting states still need separate leaves. T005 remains open.
+
+## Structured result and limit leaves (SUR-003)
+
+Source: [current CLI reference](https://code.claude.com/docs/en/cli-usage) and [programmatic-use guide](https://code.claude.com/docs/en/headless), read 2026-09-14. The installed help advertises schema and budget flags, but their run outcomes need a model-capable trace.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-LIMIT-001 | `-p --json-schema` with valid schema | Final JSON includes schema-matched structured output and metadata | Model cannot satisfy schema or run fails | Usage-gated; nox structured result |
+| SUR-LIMIT-002 | `-p --json-schema` with invalid schema | Reject before model run with validator diagnostic and nonzero exit | Empty schema, unsupported keyword, format annotation | Local parser probe pending; nox schema validation |
+| SUR-LIMIT-003 | Inspect `total_cost_usd` and per-model usage in JSON result | Client estimates reflect run and child activity | Missing/partial usage after failure; billing mismatch is documented | Usage-gated; nox usage result |
+| SUR-LIMIT-004 | `-p --max-budget-usd` with bounded main run | Stop further API work when estimated spend reaches cap | Zero/invalid value, threshold crossing, error and exit shape | Usage-gated; nox budget flag |
+| SUR-LIMIT-005 | Spawn child work under print-mode budget | Child spend counts; further child spawn fails at cap and running background children stop | Multiple children crossing cap concurrently | Version 2.1.217+ documented; nox shared budget |
+| SUR-LIMIT-006 | `-p --max-turns` with bounded run | Error when turn limit reached; queued stream message starts another turn with its own limit | Zero/invalid value and queued message at boundary | Documented flag absent from installed help; nox turn limit pending parser confirmation |
+
+Budget and usage records must use synthetic provider responses in nox tests and redacted reference traces; no ad hoc paid threshold probe is authorized while the reported weekly cap is active.
