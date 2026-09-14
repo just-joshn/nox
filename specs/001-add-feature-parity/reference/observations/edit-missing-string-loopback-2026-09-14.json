@@ -1,0 +1,43 @@
+{
+  "exit_code": 0,
+  "tool_input": {
+    "file_path": "fixture.txt",
+    "old_string": "missing",
+    "new_string": "gamma"
+  },
+  "tool_result": {
+    "type": "tool_result",
+    "content": "<tool_use_error>String to replace not found in file.\nString: missing</tool_use_error>",
+    "is_error": true,
+    "tool_use_id": "tool_1"
+  },
+  "requests": [
+    {
+      "model": "claude-sonnet-5",
+      "kind": "tool"
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "type": "tool_result",
+        "content": "<tool_use_error>String to replace not found in file.\nString: missing</tool_use_error>",
+        "is_error": true,
+        "tool_use_id": "tool_1",
+        "cache_control": {
+          "type": "ephemeral"
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "type": "tool_result",
+        "content": "<tool_use_error>String to replace not found in file.\nString: missing</tool_use_error>",
+        "is_error": true,
+        "tool_use_id": "tool_1"
+      }
+    }
+  ]
+}

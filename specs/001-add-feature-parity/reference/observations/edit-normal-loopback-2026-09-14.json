@@ -1,0 +1,40 @@
+{
+  "exit_code": 0,
+  "tool_input": {
+    "file_path": "fixture.txt",
+    "old_string": "alpha",
+    "new_string": "gamma"
+  },
+  "tool_result": {
+    "tool_use_id": "tool_1",
+    "type": "tool_result",
+    "content": "The file fixture.txt has been updated successfully. (file state is current in your context \u2014 no need to Read it back)"
+  },
+  "requests": [
+    {
+      "model": "claude-sonnet-5",
+      "kind": "tool"
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "tool_use_id": "tool_1",
+        "type": "tool_result",
+        "content": "The file fixture.txt has been updated successfully. (file state is current in your context \u2014 no need to Read it back)",
+        "cache_control": {
+          "type": "ephemeral"
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "tool_use_id": "tool_1",
+        "type": "tool_result",
+        "content": "The file fixture.txt has been updated successfully. (file state is current in your context \u2014 no need to Read it back)"
+      }
+    }
+  ]
+}

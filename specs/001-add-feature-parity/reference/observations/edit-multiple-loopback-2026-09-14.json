@@ -1,0 +1,43 @@
+{
+  "exit_code": 0,
+  "tool_input": {
+    "file_path": "fixture.txt",
+    "old_string": "alpha",
+    "new_string": "gamma"
+  },
+  "tool_result": {
+    "type": "tool_result",
+    "content": "<tool_use_error>Found 2 matches of the string to replace, but replace_all is false. To replace all occurrences, set replace_all to true. To replace only one occurrence, please provide more context to uniquely identify the instance.\nString: alpha</tool_use_error>",
+    "is_error": true,
+    "tool_use_id": "tool_1"
+  },
+  "requests": [
+    {
+      "model": "claude-sonnet-5",
+      "kind": "tool"
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "type": "tool_result",
+        "content": "<tool_use_error>Found 2 matches of the string to replace, but replace_all is false. To replace all occurrences, set replace_all to true. To replace only one occurrence, please provide more context to uniquely identify the instance.\nString: alpha</tool_use_error>",
+        "is_error": true,
+        "tool_use_id": "tool_1",
+        "cache_control": {
+          "type": "ephemeral"
+        }
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "kind": "text",
+      "tool_result": {
+        "type": "tool_result",
+        "content": "<tool_use_error>Found 2 matches of the string to replace, but replace_all is false. To replace all occurrences, set replace_all to true. To replace only one occurrence, please provide more context to uniquely identify the instance.\nString: alpha</tool_use_error>",
+        "is_error": true,
+        "tool_use_id": "tool_1"
+      }
+    }
+  ]
+}
