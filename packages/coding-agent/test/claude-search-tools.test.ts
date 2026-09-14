@@ -101,6 +101,19 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
+	it("Grep rejects a missing search path", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		await expect(
+			tool.execute(
+				"call-1",
+				{ pattern: "alpha", path: "absent-dir", output_mode: "content" },
+				undefined,
+				undefined,
+				{} as never,
+			),
+		).rejects.toThrow("Path not found");
+	});
+
 	it("Grep -i matches an uppercase query against lowercase content", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-i");
