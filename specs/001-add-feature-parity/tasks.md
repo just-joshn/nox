@@ -133,7 +133,7 @@
 - [X] T180 [US1] Observe reference Grep `multiline: true` with no output mode and a two-line synthetic match under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's default branch.
 - [X] T181 [US1] Write a failing nox test for observed default-mode multiline file-list output, extend only the explicit multiline helper and branch, verify focused/neighboring tests and `npm run check`, then commit locally.
 - [X] T182 [US1] Observe reference Grep `multiline: true, output_mode: files_with_matches` with a two-line synthetic match under localhost-only isolation; retain exact allowlisted result and unchanged-file state, then compare nox's explicit branch.
-- [ ] T183 [US1] Write a failing nox test for explicit multiline files-with-matches output, route it through the existing bounded helper, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T183 [US1] Write a failing nox test for explicit multiline files-with-matches output, route it through the existing bounded helper, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

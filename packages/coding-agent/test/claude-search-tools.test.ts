@@ -227,6 +227,18 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
 	});
 
+	it("Grep multiline explicit files mode returns a matching-file list", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha\nbeta", multiline: true, output_mode: "files_with_matches" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
 	it("Grep multiline content reports no matches", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		const result = await tool.execute(
