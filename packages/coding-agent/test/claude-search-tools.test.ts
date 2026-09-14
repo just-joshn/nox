@@ -114,6 +114,11 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow("Path not found");
 	});
 
+	it("Grep advertises the observed zero head limit boundary", () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties.head_limit).toMatchObject({ minimum: 0 });
+	});
+
 	it("Grep -i matches an uppercase query against lowercase content", async () => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		expect(tool.parameters.properties).toHaveProperty("-i");

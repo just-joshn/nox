@@ -223,7 +223,7 @@
 - [X] T270 [US1] Write a failing nox test for T269 direct-file default Grep mode, select the observed file-list branch without changing directory-path defaults, verify focused tests and `npm run check`, then commit locally.
 - [X] T271 [US1] Observe direct-file Grep with a nonmatching pattern and omitted `output_mode` under localhost-only isolation; verify nox's empty result, harness/focused tests and `npm run check`, then commit locally.
 - [X] T272 [US1] Observe Grep content with a nonexistent path under localhost-only isolation; verify nox raises a path error, harness/focused tests and `npm run check`, then commit locally.
-- [ ] T273 [US1] Align the explicit Grep `head_limit` schema with the observed accepted zero boundary from T254; write a failing schema test, change the minimum, verify focused tests and `npm run check`, then commit locally.
+- [X] T273 [US1] Align the explicit Grep `head_limit` schema with the observed accepted zero boundary from T254; write a failing schema test, change the minimum, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

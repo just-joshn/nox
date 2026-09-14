@@ -19,7 +19,7 @@ const grepSchema = Type.Object({
 	path: Type.Optional(Type.String()),
 	glob: Type.Optional(Type.String()),
 	type: Type.Optional(Type.String({ minLength: 1 })),
-	head_limit: Type.Optional(Type.Integer({ minimum: 1 })),
+	head_limit: Type.Optional(Type.Integer({ minimum: 0 })),
 	offset: Type.Optional(Type.Integer({ minimum: 0 })),
 	output_mode: Type.Optional(
 		Type.Union([Type.Literal("files_with_matches"), Type.Literal("content"), Type.Literal("count")]),
