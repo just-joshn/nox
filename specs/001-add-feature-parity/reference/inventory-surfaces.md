@@ -70,3 +70,29 @@ Source: [current programmatic-use guide](https://code.claude.com/docs/en/headles
 | SUR-PRINT-015 | Complete print run with background subagent/workflow/monitor | Process waits for work, then includes result or times out | Idle ceiling, watch timeout, partial result dropped | Usage-gated; nox print lifecycle |
 
 The same guide calls out CI configuration, bare-mode loading, MCP startup diagnostics, and cloud-session print interactions. They need separate leaves under SUR-003, SUR-006, and SUR-010 where they own state or availability; no broad row above closes those families.
+
+## Worktree leaves (SUR-005)
+
+Source: [current worktree guide](https://code.claude.com/docs/en/worktrees), read 2026-09-14, and installed `--worktree`/`--tmux` help. The guide includes version-dependent changes; each candidate below needs a disposable git repository and installed-version trace. No worktree was created in the user's checkout.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-WT-001 | Launch `--worktree <name>` or `-w <name>` | New isolated directory and branch; session starts there | No git repository, untrusted workspace, invalid name | Git required; `nox --worktree` |
+| SUR-WT-002 | Launch unnamed `--worktree` | Generated name and isolated checkout | Name collision and creation failure | Git required; `nox --worktree` |
+| SUR-WT-003 | Combine `--worktree` with `--tmux` | Terminal pane/session opens in worktree | tmux unavailable or unsupported terminal | Platform-gated; Pi terminal pane option |
+| SUR-WT-004 | Request `EnterWorktree` during a session | Working directory, file access, and project settings move to target | Outside managed directory requires approval; denial leaves original location | Git or custom hook; nox worktree tool |
+| SUR-WT-005 | Request `ExitWorktree` | Session returns to original checkout; transcript follows location | Missing original directory or inactive worktree | Worktree session; nox worktree tool |
+| SUR-WT-006 | Exit a clean interactive worktree session | Unnamed worktree and branch removed; named worktree asks first | Cleanup failure and keep choice | Git required; Pi exit prompt |
+| SUR-WT-007 | Exit a worktree with changes or commits | Prompt to keep or remove files and branch | Decline removal, untracked/committed work | Git required; Pi exit prompt |
+| SUR-WT-008 | Finish `-p --worktree` | Worktree stays on disk without interactive cleanup prompt | Stale lock and later manual removal | Git required; `nox -p --worktree` |
+| SUR-WT-009 | Resume or continue a saved worktree session | Re-enter verified separate checkout and restore transcript location | Deleted/unverifiable worktree falls back or refuses with explanation | Git required; nox resume |
+| SUR-WT-010 | Run file-edit tool from isolated session against main checkout | Tool call refused; no main-checkout write | Symlink/path traversal and subagent attempt | Worktree active; nox tool authorization |
+| SUR-WT-011 | Run command or git redirect targeting main checkout | Unsafe command refused with recoverable guidance | Indirect `git -C`, environment redirects, unparsable command | Worktree active; nox command authorization |
+| SUR-WT-012 | Start a subagent with worktree isolation | Separate temporary worktree; clean result removed, changed result retained | Child failure, concurrent cleanup | Git and agent support; nox agent isolation |
+| SUR-WT-013 | Configure `worktree.baseRef` as fresh or head | New branch starts from default remote or current HEAD | Fetch timeout, missing remote, invalid value | Git required; nox worktree setting |
+| SUR-WT-014 | Launch `--worktree` with PR/MR number or URL | Fetch matching head from origin and create reference-named worktree | Unknown ref, unsupported host, fetch denial | Remote Git service; nox worktree reference |
+| SUR-WT-015 | Add `.worktreeinclude` patterns | Only matching ignored files copied into new worktree | Invalid pattern, ignored directory edge, sensitive-file exposure | Git required; nox worktree include rules |
+| SUR-WT-016 | Reuse an existing worktree name | Safe clean worktree may reset to fresh base; otherwise old tip retained | Unverifiable state, own commits, branch mismatch | Git required; nox worktree reuse |
+| SUR-WT-017 | Run periodic cleanup for agent/background worktrees | Old safe worktrees removed; active locks and user-owned or dirty work preserved | Stale lock, filter-driver uncertainty, unpushed commits | Git and background service; nox cleanup |
+
+Custom creation hooks, non-git VCS adapters, environment setup, and the detailed worktree troubleshooting states still need separate leaves. T005 remains open.

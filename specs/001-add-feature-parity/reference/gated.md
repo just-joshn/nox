@@ -48,5 +48,22 @@
 | SUR-PRINT-013 | SIGTERM exit and unfinished-turn resumption unobserved | Restored allowance; disposable run and controlled signal fixture |
 | SUR-PRINT-014 | Background shell grace and cleanup unobserved | Restored allowance; harmless short-lived shell child and process inspection |
 | SUR-PRINT-015 | Background child/workflow/monitor wait and idle ceiling unobserved | Restored allowance; bounded synthetic worker and timeout fixture |
+| SUR-WT-001 | Named launch and trust/invalid-name behavior unobserved | Disposable git repository, isolated home, restored allowance for session start |
+| SUR-WT-002 | Generated-name launch and collision behavior unobserved | Disposable git repository with repeated unnamed starts after allowance returns |
+| SUR-WT-003 | tmux pane behavior unobserved | tmux-capable terminal and disposable repository after allowance returns |
+| SUR-WT-004 | Enter-worktree approval and state transfer unobserved | Disposable repository with managed/outside paths and denied approval fixture |
+| SUR-WT-005 | Exit-worktree transcript and directory transfer unobserved | Saved disposable worktree session and return-path failure fixture |
+| SUR-WT-006 | Clean interactive cleanup choices unobserved | Disposable named/unnamed worktrees and interactive exit |
+| SUR-WT-007 | Dirty/committed exit choices unobserved | Disposable untracked, modified, and committed worktree fixtures |
+| SUR-WT-008 | Print-mode worktree retention and lock unobserved | Restored allowance; disposable `-p --worktree` and lock inspection |
+| SUR-WT-009 | Resume validation and missing-worktree recovery unobserved | Saved disposable session, removed or invalidated worktree, then resume |
+| SUR-WT-010 | Main-checkout file-write refusal unobserved | Disposable worktree session with direct and symlinked edit attempts |
+| SUR-WT-011 | Command-directory and git-redirect refusal unobserved | Disposable worktree session with harmless redirected commands |
+| SUR-WT-012 | Child worktree isolation and cleanup unobserved | Restored allowance; disposable child agent with clean and dirty results |
+| SUR-WT-013 | Fresh/head base and fallback behavior unobserved | Disposable local/remote refs with failed-fetch and invalid-value variants |
+| SUR-WT-014 | PR/MR reference fetch behavior unobserved | Authorized remote fixture or local mock origin with valid and invalid refs |
+| SUR-WT-015 | Ignored-file copy and exposure rules unobserved | Synthetic ignored files only; pattern, nested directory, and redaction fixtures |
+| SUR-WT-016 | Reuse reset-versus-retain decision unobserved | Disposable clean/dirty/committed worktrees with same name |
+| SUR-WT-017 | Periodic sweep and lock protection unobserved | Isolated supervisor and aged synthetic worktrees; do not affect user-owned worktrees |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
