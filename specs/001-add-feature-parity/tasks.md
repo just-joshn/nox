@@ -184,6 +184,8 @@
 - [X] T231 [US1] Observe explicit Grep content with `head_limit: 1`, `offset: 1`, and no match under localhost-only isolation; retain exact allowlisted pagination text, verify harness tests, then commit locally.
 - [X] T232 [US1] Compare nox's explicit Grep content no-match offset output with T231; write a failing test if needed, implement only the observed boundary, verify focused tests and `npm run check`, then commit locally.
 - [X] T233 [US1] Observe explicit Grep file-list with `head_limit: 1`, `offset: 1`, and no match under localhost-only isolation; add the nox boundary test, verify harness/focused tests and `npm run check`, then commit locally.
+- [X] T234 [US1] Observe explicit Grep count with two matching synthetic files, `head_limit: 1`, and `offset: 1` under localhost-only isolation; retain exact allowlisted file/summary text, verify harness tests, then commit locally.
+- [ ] T235 [US1] Write a failing nox test for T234 count pagination, implement the observed file-row selection and whole-result summary without changing other count modes, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
