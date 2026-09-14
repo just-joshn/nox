@@ -351,6 +351,8 @@ The [current official command reference](https://code.claude.com/docs/en/command
 | CLI-498 | `/reset` (alias of `/clear`) | documented; local interaction unobserved | Pending |
 | CLI-499 | `/new` (alias of `/clear`) | documented; local interaction unobserved | Pending |
 | CLI-500 | `/tp` (alias of `/teleport`) | documented; local interaction unobserved | Pending |
+| CLI-513 | `/rename <name>` | documented; local interaction unobserved | Pending |
+| CLI-514 | `/share [report]` (alias of `/bug`) | documented; local interaction unobserved | Pending |
 
 ## Documented keyboard shortcut seeds
 
@@ -674,6 +676,20 @@ The same reference documents menu matching separately from command execution. Th
 | CLI-504 | Hidden available command queried by partial name | Omit it until its full name is typed | Documented only |
 | CLI-505 | Hidden available command queried by full name | Show it and allow execution | Documented only |
 
-## Missing discovery work
+## Documented CLI launch forms
+
+The [official CLI reference](https://code.claude.com/docs/en/cli-usage) also documents these startup forms. They are separate input and session-lifecycle candidates; no model-backed outcome has been observed locally.
+
+| ID | Input form | Documented outcome | Evidence state |
+|----|------------|--------------------|----------------|
+| CLI-506 | No prompt or mode flag | Start an interactive session | Documented only |
+| CLI-507 | Positional prompt | Start an interactive session with that initial prompt | Documented only |
+| CLI-508 | `-p` with a positional prompt | Run the query non-interactively, then exit | Documented only |
+| CLI-509 | Piped stdin with `-p` and a prompt | Process the piped content with the query | Documented only |
+| CLI-510 | `-c` without a new prompt | Continue the most recent conversation in the current directory | Documented only |
+| CLI-511 | `-c -p` with a prompt | Continue that conversation non-interactively | Documented only |
+| CLI-512 | `-r` with a session ID or name and a prompt | Resume that session and submit the prompt | Documented only |
+
+## Remaining discovery work
 
 The [official CLI reference](https://code.claude.com/docs/en/cli-usage) says help is incomplete. This table has not been reconciled against every documented flag and command, nor every command-specific option, alias, combination, and failure. Do not mark T002 complete.
