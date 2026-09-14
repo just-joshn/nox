@@ -67,3 +67,31 @@
 - `$speckit-implement` reads checklist state but must not modify markers.
 - `checklists/requirements.md` has a separate built-in lifecycle.
 - Add findings inline and link to the relevant requirements or evidence.
+
+## Three-Source Discovery and Complete Scope
+
+- [ ] CHK035 Is a disposition required for every candidate found in the installed release, each current official documentation page, and the restored source map, including source-only candidates? [Completeness, Spec §FR-016]
+- [ ] CHK036 Are the meanings of mapped, duplicate, obsolete, version-gated, service-gated, and open candidates distinct enough to prevent a missing feature from being marked resolved? [Clarity, Spec §FR-016; Spec §SC-008]
+- [ ] CHK037 Does the spec state which evidence may establish current behavior and which source may only suggest a candidate or edge case? [Consistency, Spec §FR-016; Spec §Assumptions]
+- [ ] CHK038 Is the no-clone, no-copy clean-room boundary consistent across discovery, design, implementation, and verification requirements? [Consistency, Spec §FR-016; Spec §Assumptions]
+- [ ] CHK039 Are newly documented capabilities required to enter the one spec, plan, and task document without creating a second feature scope? [Completeness, Spec §FR-017]
+- [ ] CHK040 Is the release-version boundary clear when current documentation describes behavior absent from installed 2.1.270? [Ambiguity, Spec §FR-014; Spec §FR-016]
+
+## Expanded Functional and Surface Coverage
+
+- [ ] CHK041 Are requirements for computer use and browser interaction specific about platform gates, consent, observable effects, and recovery states? [Gap, Spec §FR-005; Spec §FR-010]
+- [ ] CHK042 Are goals, agent view, cross-session messaging, and dynamic workflows covered as separate lifecycle requirements with cancellation and restart cases? [Gap, Spec §FR-004; Spec §FR-010]
+- [ ] CHK043 Are deep review, security scanning, findings, patch review, and CI/provider variants included in the surface inventory and acceptance boundary? [Gap, Spec §FR-010; Spec §FR-011]
+- [ ] CHK044 Are plugin evaluation, grading, and baseline-comparison requirements distinct from plugin installation and invocation? [Gap, Spec §FR-008]
+- [ ] CHK045 Are artifact sharing and deep-link entry requirements explicit about access, ownership, revocation, and failure states? [Gap, Spec §FR-010]
+- [ ] CHK046 Are voice, accessibility, and terminal controls specified sufficiently to retain Pi visuals while exposing any newly required interactions? [Coverage, Spec §FR-003; Spec §SC-003]
+
+## Release-Claim Quality
+
+- [ ] CHK047 Does the 100% discovery criterion define its denominator so unexplained official pages, installed options, and restored-source modules prevent completion? [Measurability, Spec §SC-008]
+- [ ] CHK048 Are unavailable account, policy, platform, and service cases distinguished from passing behavior in every success criterion? [Consistency, Spec §SC-001; Spec §SC-004; Spec §SC-008]
+- [ ] CHK049 Is the distinction between a complete planning register and a demonstrated 1:1 implementation explicit enough to prevent checklist approval from being reported as feature parity? [Clarity, Spec §SC-001; Spec §FR-017]
+
+## Additional Notes
+
+- These appended items review requirements quality only. Keep them unchecked until reviewer assessment; implementation status belongs in `tasks.md` and the evidence records.
