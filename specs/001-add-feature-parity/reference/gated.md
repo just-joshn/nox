@@ -9,6 +9,11 @@
 | CLI-535 | Default/local Desktop MCP import side effects unobserved; synthetic one-server process timed out with stdin closed | Synthetic Desktop configuration and disposable pseudo-terminal; compare local-scope selection, persistence, and conflicts |
 | CLI-536 | User-scope Desktop MCP import side effects unobserved | Synthetic Desktop configuration in a disposable home; compare user-scope persistence and conflicts |
 | CLI-537 | Project-scope Desktop MCP import side effects unobserved | Synthetic Desktop configuration and disposable project; compare project-scope persistence and conflicts |
+| CLI-539 | Dynamic-scope Desktop MCP import parser accepts input, but populated import behavior unobserved | Disposable pseudo-terminal and synthetic server; compare selection and destination or refusal |
+| CLI-540 | Enterprise-scope Desktop MCP import parser accepts input, but populated import behavior unobserved | Eligible managed configuration, disposable pseudo-terminal, and synthetic server; compare destination or refusal |
+| CLI-541 | Claude.ai-scope Desktop MCP import parser accepts input, but populated import behavior unobserved | Eligible account, disposable pseudo-terminal, and synthetic server; compare destination or refusal without model use |
+| CLI-542 | Managed-scope Desktop MCP import parser accepts input, but populated import behavior unobserved | Eligible managed configuration, disposable pseudo-terminal, and synthetic server; compare destination or refusal |
+| CLI-543 | Agent-scope Desktop MCP import parser accepts input, but populated import behavior unobserved | Disposable agent configuration, pseudo-terminal, and synthetic server; compare destination or refusal |
 | EXT-034 | Bundled skill is documented as gated; invocation unobserved | Eligible account and isolated invocation fixture after availability is confirmed |
 | EXT-007 | Discover account-synced skill: documentation-only; installed transition and failure behavior unobserved | Eligible managed or account-synced configuration; isolated precedence and policy allow/deny fixtures |
 | EXT-040 | Discover managed agent and precedence: documentation-only; installed transition and failure behavior unobserved | Eligible managed or account-synced configuration; isolated precedence and policy allow/deny fixtures |

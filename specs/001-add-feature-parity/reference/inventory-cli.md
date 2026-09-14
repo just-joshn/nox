@@ -241,6 +241,12 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-536 | `mcp add-from-claude-desktop --scope user` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | [Empty config](observations/mcp-desktop-empty-2026-09-14.txt): same no-server result; successful import target and persistence unobserved |
 | CLI-537 | `mcp add-from-claude-desktop --scope project` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | [Empty config](observations/mcp-desktop-empty-2026-09-14.txt): same no-server result; successful import target and persistence unobserved |
 | CLI-538 | `mcp add-from-claude-desktop -h, --help` | [isolated local help](observations/help-mcp-add-from-claude-desktop-2026-09-14.txt) | Exit 0, usage on stdout, empty stderr; no import attempted |
+| CLI-539 | `mcp add-from-claude-desktop --scope dynamic` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
+| CLI-540 | `mcp add-from-claude-desktop --scope enterprise` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
+| CLI-541 | `mcp add-from-claude-desktop --scope claudeai` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
+| CLI-542 | `mcp add-from-claude-desktop --scope managed` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
+| CLI-543 | `mcp add-from-claude-desktop --scope agent` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Parser accepts; empty Desktop config exits 0 with no-server message; populated import unobserved |
+| CLI-544 | `mcp add-from-claude-desktop --scope invalid` | [isolated parser trace](observations/mcp-desktop-scopes-2026-09-14.txt) | Exit 1, empty stdout, accepted-scope list on stderr; no import attempted |
 
 ## Documented interactive command invocations
 

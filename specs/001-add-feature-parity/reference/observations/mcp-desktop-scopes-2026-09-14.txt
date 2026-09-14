@@ -1,0 +1,13 @@
+Installed CLI 2.1.270 on macOS; one disposable empty HOME and cwd per case; stdin closed.
+No Claude Desktop configuration, credentials, or model request.
+
+Input scopes: dynamic, enterprise, claudeai, managed, agent
+For each: exit 0; stdout `No MCP servers found in Claude Desktop configuration or configuration file does not exist.`; empty stderr; temporary-home entries `.claude`, `.claude.json`.
+
+Input scope: invalid
+Exit: 1
+Stdout: empty
+Stderr: Invalid scope: invalid. Must be one of: local, user, project, dynamic, enterprise, claudeai, managed, agent
+Temporary-home entries: .claude, .claude.json
+
+The extra scope names are parser-accepted despite the command help listing only local, user, and project. Empty configuration does not establish that a populated import can persist to each scope.
