@@ -159,3 +159,26 @@ Source: [current web-session guide](https://code.claude.com/docs/en/claude-code-
 | SUR-CLOUD-015 | Attempt cloud use with unsupported provider, account, or policy | Creation or send refuses with explicit reason before task executes | Policy lookup failure, third-party provider, missing login | Account/policy gate; nox eligibility check |
 
 Cloud environment configuration, repository authorization, hosted review, auto-fix, CI, mobile and desktop UI details, and each sharing variant still need distinct leaves under their owning surface seeds. No cloud session was created during this inventory.
+
+## Hosted review and routine leaves (SUR-007)
+
+Sources: [current hosted-review guide](https://code.claude.com/docs/en/ultrareview) and [current routines guide](https://code.claude.com/docs/en/routines), read 2026-09-14; installed `ultrareview` help. Hosted review may consume usage credits separately from included model usage. No review or routine was launched.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-AUTO-001 | Request hosted review of current branch | Confirmation shows scope, free runs, cost; after consent remote reviewers inspect bundled diff | Empty/oversize diff, no merge base, cancelled consent | Account/credits gate; Pi review command |
+| SUR-AUTO-002 | Review explicit base branch | Compare current branch to named base, fetching if needed | Misspelled branch and fetch failure | Account/credits gate; Pi review command |
+| SUR-AUTO-003 | Review PR number or URL | Remote sandbox clones PR; local working tree not uploaded | Missing access, wrong repository, unsupported host | Git service/account gate; Pi review command |
+| SUR-AUTO-004 | Run `ultrareview` subcommand in a script | Block until findings; formatted or JSON output; progress on stderr | Timeout exit 1, interrupt exit 130 while remote review continues | Account/credits gate; `nox ultrareview` |
+| SUR-AUTO-005 | Choose post/no-post for a PR review | Finished findings post only with explicit per-run choice | Session closes, review fails, unsupported target, post fails | Git service/account gate; nox review posting choice |
+| SUR-AUTO-006 | Track or stop a running review | Background task status and verified findings notification | Stop archives remote run without partial findings | Account/credits gate; Pi tasks view |
+| SUR-AUTO-007 | Encounter unavailable hosted review | Local review fallback or billing/auth refusal, per availability | No credits, unsupported provider, zero-data-retention policy | Plan/policy gate; Pi review fallback |
+| SUR-AUTO-008 | Create routine in web or via `/schedule` | Saved prompt, repositories, environment, connectors, and trigger | Missing repo access, invalid configuration | Web entitlement; nox routine setup |
+| SUR-AUTO-009 | Add recurring or one-off schedule trigger | Cloud run starts near local wall-clock time; one-off disables after firing | Invalid cron below one-hour minimum, timezone boundary | Web entitlement; nox schedule control |
+| SUR-AUTO-010 | Add API trigger and invoke endpoint | Authenticated POST creates a run session | Missing/invalid token, duplicate request, rate limit | Web entitlement; nox routine API |
+| SUR-AUTO-011 | Add GitHub event trigger with filters | Matching repository event creates a run session | Nonmatching event, inaccessible repo, duplicate delivery | Git integration; nox event trigger |
+| SUR-AUTO-012 | Run routine immediately, list, pause, update, or resume | Saved configuration retained; each run has its own session | Invalid update, disabled trigger, missing routine | Web entitlement; nox routine controls |
+| SUR-AUTO-013 | Review and continue a routine run | Session history, changes, and PR action available | Run failure, archived or deleted session | Web entitlement; nox run view |
+| SUR-AUTO-014 | Configure routine connectors and branch permissions | Run receives selected tools and permitted push scope | Unauthorized connector write or protected branch | Organization/policy gate; nox routine permissions |
+
+Automatic PR repair, inline code-review integration, routine API payloads and status codes, event filter variants, and billing boundaries need separate leaves before SUR-007 is complete.

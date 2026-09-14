@@ -101,5 +101,19 @@
 | SUR-CLOUD-013 | Hosted diff and inline feedback unobserved | Eligible account; synthetic repository edit and review comment |
 | SUR-CLOUD-014 | Sharing, archive, delete, and recipient access unobserved | Eligible accounts with suitable policy; synthetic session and recipient fixture |
 | SUR-CLOUD-015 | Unsupported provider/account/policy refusal unobserved | Controlled account or policy fixtures; no real credential value recorded |
+| SUR-AUTO-001 | Hosted branch-review consent, cost, and findings unobserved | Eligible account and explicit spending authorization; disposable diff, never start a paid review implicitly |
+| SUR-AUTO-002 | Explicit-base review and fetch failure unobserved | Eligible account and authorization; disposable branches and misspelled base |
+| SUR-AUTO-003 | PR-mode clone and repository access unobserved | Eligible account and authorization; disposable PR with connected Git identity |
+| SUR-AUTO-004 | Scripted review output, timeout, and interrupt unobserved | Eligible account and authorization; bounded review with captured redacted streams |
+| SUR-AUTO-005 | Explicit posting and failure behavior unobserved | Eligible account, disposable PR, and separate authorization to post findings |
+| SUR-AUTO-006 | Running review status, stop, and notification unobserved | Eligible account and authorization; bounded disposable review |
+| SUR-AUTO-007 | Installed hosted-review fallback and billing refusal unobserved | Safe availability/eligibility probe without launching or billing a review |
+| SUR-AUTO-008 | Routine creation and invalid configuration unobserved | Eligible web account and authorized disposable repository/environment |
+| SUR-AUTO-009 | Schedule timing, timezone, and one-off behavior unobserved | Eligible account; disposable one-off and invalid interval fixtures |
+| SUR-AUTO-010 | API trigger auth, duplicate, and limit behavior unobserved | Eligible account; synthetic endpoint/token, with token redacted from evidence |
+| SUR-AUTO-011 | GitHub event filter and duplicate handling unobserved | Eligible account; disposable repository and synthetic events |
+| SUR-AUTO-012 | Routine management and run-now behavior unobserved | Eligible account; disposable routine with list, pause, edit, resume, run |
+| SUR-AUTO-013 | Routine run continuation and failure unobserved | Eligible account; bounded synthetic run and archived-session case |
+| SUR-AUTO-014 | Connector/tool and branch permission scope unobserved | Eligible organization; synthetic connector and protected branch fixture |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
