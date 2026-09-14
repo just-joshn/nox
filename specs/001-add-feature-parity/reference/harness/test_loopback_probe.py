@@ -5,7 +5,7 @@ from http.server import ThreadingHTTPServer
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from loopback_probe import ProbeState, catalog_summary, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, search_schema_summary, summarize_result, summarize_search_result
+from loopback_probe import ProbeState, catalog_summary, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, message_response, search_schema_summary, summarize_result, summarize_search_result
 
 
 class LoopbackProbeTests(unittest.TestCase):
@@ -149,6 +149,11 @@ class LoopbackProbeTests(unittest.TestCase):
         self.assertFalse(result["path"])
         self.assertNotIn("private-field", json.dumps(result))
 
+    def test_search_option_call_contains_only_selected_synthetic_fields(self):
+        body = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", output_mode="content")
+        self.assertIn('\\"output_mode\\": \\"content\\"', body.decode())
+        self.assertNotIn('\\"path\\"', body.decode())
+
     def test_search_result_summary_retains_fixture_match_without_raw_text(self):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})
         self.assertEqual(result, {"is_error": False, "fixture_name_present": True, "result_format": "<redacted>"})
@@ -160,6 +165,8 @@ class LoopbackProbeTests(unittest.TestCase):
         for tool, value in (("Glob", "fixture.txt"), ("Grep", "Found 1 file\nfixture.txt")):
             self.assertEqual(summarize_search_result({"content": value}, tool)["result_format"], "fixture_match")
             self.assertEqual(summarize_search_result({"content": value + " private"}, tool)["result_format"], "<redacted>")
+        self.assertEqual(summarize_search_result({"content": "nested/fixture.txt"}, "Glob")["result_format"], "nested_match")
+        self.assertEqual(summarize_search_result({"content": "fixture.txt:1:alpha"}, "Grep")["result_format"], "content_match")
 
 
 if __name__ == "__main__":
