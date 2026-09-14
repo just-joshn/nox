@@ -1,0 +1,36 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { createAllToolDefinitions, createCodingToolDefinitions } from "../src/core/tools/index.ts";
+
+describe("explicit Claude search tools", () => {
+	let cwd: string;
+	beforeEach(() => {
+		cwd = mkdtempSync(join(tmpdir(), "nox-claude-search-"));
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\nbeta\n");
+	});
+	afterEach(() => rmSync(cwd, { recursive: true, force: true }));
+
+	it("keeps Glob and Grep out of the default catalog", () => {
+		expect(createCodingToolDefinitions(cwd).map((tool) => tool.name)).not.toContain("Glob");
+		expect(createCodingToolDefinitions(cwd).map((tool) => tool.name)).not.toContain("Grep");
+	});
+
+	it.each([
+		["Glob", "*.txt", "fixture.txt"],
+		["Grep", "alpha", "Found 1 file\nfixture.txt"],
+		["Glob", "absent-*.zzz", "No files found"],
+		["Grep", "absent-sentinel", "No files found"],
+	])("%s returns the observed result for %s", async (name, pattern, expected) => {
+		const tool = createAllToolDefinitions(cwd)[name];
+		expect(tool?.name).toBe(name);
+		const result = await tool.execute("call-1", { pattern });
+		expect(result.content).toEqual([{ type: "text", text: expected }]);
+	});
+
+	it.each(["Glob", "Grep"])("%s rejects an invalid bracket pattern", async (name) => {
+		const tool = createAllToolDefinitions(cwd)[name];
+		await expect(tool.execute("call-1", { pattern: "[" })).rejects.toThrow();
+	});
+});
