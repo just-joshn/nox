@@ -94,6 +94,21 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep zero offset keeps the limit pagination marker", async () => {
+		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 1, offset: 0 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "fixture.txt:1:alpha\n\n[Showing results with pagination = limit: 1]" },
+		]);
+	});
+
 	it("Grep offset past all matches reports no entries", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
 		const tool = createAllToolDefinitions(cwd).Grep;
