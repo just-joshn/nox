@@ -36,6 +36,7 @@ export interface Args {
 	extensions?: string[];
 	noExtensions?: boolean;
 	print?: boolean;
+	jsonSchema?: unknown;
 	export?: string;
 	noSkills?: boolean;
 	skills?: string[];
@@ -160,6 +161,20 @@ export function parseArgs(args: string[]): Args {
 			if (next !== undefined && !next.startsWith("@") && (!next.startsWith("-") || next.startsWith("---"))) {
 				result.messages.push(next);
 				i++;
+			}
+		} else if (arg === "--json-schema" || arg.startsWith("--json-schema=")) {
+			const inline = arg.startsWith("--json-schema=");
+			const value = inline ? arg.slice("--json-schema=".length) : args[i + 1];
+			if (value === undefined || value.length === 0 || (!inline && value.startsWith("--"))) {
+				result.diagnostics.push({ type: "error", message: "--json-schema requires a value" });
+			} else {
+				if (!inline) i++;
+				try {
+					result.jsonSchema = JSON.parse(value);
+				} catch {
+					const detail = /^\{\s*$/.test(value) ? "JSON Parse error: Expected '}'" : "JSON Parse error";
+					result.diagnostics.push({ type: "error", message: `--json-schema is not valid JSON: ${detail}` });
+				}
 			}
 		} else if (arg === "--export" && i + 1 < args.length) {
 			result.export = args[++i];

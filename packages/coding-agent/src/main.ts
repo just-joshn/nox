@@ -610,6 +610,10 @@ export async function main(args: string[], options?: MainOptions) {
 			process.exit(1);
 		}
 	}
+	if (parsed.jsonSchema !== undefined) {
+		console.error(chalk.red("Error: Structured output is not available yet"));
+		process.exit(1);
+	}
 	time("parseArgs");
 
 	if (parsed.version) {

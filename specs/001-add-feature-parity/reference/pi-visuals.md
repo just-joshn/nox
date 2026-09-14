@@ -26,3 +26,5 @@ The width sample is 1 column (rendering boundary), 40 columns (narrow), 80 colum
 | Non-interactive and external surfaces that enter the TUI | Imported/attached session, shared status | Access refusal | Malformed import or transport failure | Reconnect or reopen in terminal | Capture pending |
 
 Each added feature leaf must link its inventory ID to the applicable row and add any missing prompt, menu, result, denial, error, or recovery frame before implementation. Record the capture fixture and comparison result in `validation.md`; missing captures leave SC-003 open. This matrix is a declaration of required checks, not evidence that the current interface has passed them.
+
+SUR-LIMIT-002 malformed JSON is a print-mode parser rejection before TUI startup. Its relevant presentation is empty stdout, one stderr diagnostic, and exit status from [SUR-LIMIT-002-MALFORMED](scenarios.md); it has no Pi terminal frame. Valid structured output and any interactive variant remain subject to the matrix above.

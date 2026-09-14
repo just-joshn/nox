@@ -60,6 +60,43 @@ describe("parseArgs", () => {
 		});
 	});
 
+	describe("--json-schema flag", () => {
+		test("rejects malformed JSON before treating it as an extension flag", () => {
+			const result = parseArgs(["-p", "--json-schema", "{", "noop"]);
+			expect(result.diagnostics).toEqual([
+				{ type: "error", message: "--json-schema is not valid JSON: JSON Parse error: Expected '}'" },
+			]);
+			expect(result.messages).toEqual(["noop"]);
+			expect(result.unknownFlags.has("json-schema")).toBe(false);
+		});
+
+		test("rejects a missing schema value", () => {
+			const result = parseArgs(["-p", "--json-schema"]);
+			expect(result.diagnostics).toEqual([{ type: "error", message: "--json-schema requires a value" }]);
+		});
+
+		test("does not echo malformed schema content in diagnostics", () => {
+			const result = parseArgs(["-p", "--json-schema", '{"token":"synthetic-secret",']);
+			expect(result.diagnostics).toEqual([
+				{ type: "error", message: "--json-schema is not valid JSON: JSON Parse error" },
+			]);
+		});
+
+		test("keeps valid JSON separate from extension flags", () => {
+			const result = parseArgs(["-p", "--json-schema", '{"type":"object"}', "noop"]);
+			expect(result.jsonSchema).toEqual({ type: "object" });
+			expect(result.messages).toEqual(["noop"]);
+			expect(result.unknownFlags.has("json-schema")).toBe(false);
+		});
+
+		test("does not route the equals form through extension flags", () => {
+			const result = parseArgs(["-p", '--json-schema={"type":"object"}', "noop"]);
+			expect(result.jsonSchema).toEqual({ type: "object" });
+			expect(result.messages).toEqual(["noop"]);
+			expect(result.unknownFlags.has("json-schema")).toBe(false);
+		});
+	});
+
 	describe("--continue flag", () => {
 		test("parses --continue flag", () => {
 			const result = parseArgs(["--continue"]);

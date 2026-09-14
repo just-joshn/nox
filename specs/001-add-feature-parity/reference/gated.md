@@ -160,7 +160,7 @@
 | SUR-WT-016 | Reuse reset-versus-retain decision unobserved | Disposable clean/dirty/committed worktrees with same name |
 | SUR-WT-017 | Periodic sweep and lock protection unobserved | Isolated supervisor and aged synthetic worktrees; do not affect user-owned worktrees |
 | SUR-LIMIT-001 | Valid schema response and failure payload unobserved | Restored allowance; synthetic schema with deterministic harmless prompt |
-| SUR-LIMIT-002 | Malformed JSON rejection observed; valid JSON with invalid schema and format-annotation behavior remain unobserved | Bare-mode parser fixtures for those variants, followed by model-backed structured result only after allowance returns |
+| SUR-LIMIT-002 | Malformed JSON rejection observed; equals-form parsing, valid JSON with invalid schema, and format-annotation behavior remain unobserved | Bare-mode parser fixtures for those variants, followed by model-backed structured result only after allowance returns |
 | SUR-LIMIT-003 | Cost metadata and failed-run accounting unobserved | Restored allowance; redacted JSON result and synthetic child activity |
 | SUR-LIMIT-004 | Main-run budget threshold and error unobserved | Controlled faux provider or restored allowance with explicit low-cost fixture |
 | SUR-LIMIT-005 | Child budget sharing and concurrent cancellation unobserved | Controlled faux provider with multiple children; confirm installed availability |
