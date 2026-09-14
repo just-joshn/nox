@@ -104,7 +104,7 @@
 - [X] T151 [US1] Observe reference Grep `output_mode: content` with `-n: false` in the localhost-only fixture, retaining only an exact allowlisted output class; compare the nox schema and result.
 - [X] T152 [US1] Write a failing nox test for the observed `-n` decision, implement only that field in the explicit Grep adapter, verify focused and neighboring tests plus `npm run check`, and commit locally.
 - [X] T153 [US1] Observe reference Grep content mode with `-o: true` against a synthetic `alpha beta` line through the localhost-only endpoint; retain only exact allowlisted output and unchanged-file state.
-- [ ] T154 [US1] Write a failing nox test for the observed `-o` output and schema, implement only that explicit field, verify focused and neighboring tests plus `npm run check`, and commit locally.
+- [X] T154 [US1] Write a failing nox test for the observed `-o` output and schema, implement only that explicit field, verify focused and neighboring tests plus `npm run check`, and commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

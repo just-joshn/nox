@@ -1,6 +1,7 @@
 import path from "node:path";
 import { Type } from "typebox";
 import { executeClaudeGrepCount } from "./claude-grep-count.ts";
+import { executeClaudeGrepOnly } from "./claude-grep-only.ts";
 import { createFindToolDefinition } from "./find.ts";
 import { createGrepToolDefinition } from "./grep.ts";
 
@@ -18,6 +19,7 @@ const grepSchema = Type.Object({
 	),
 	"-i": Type.Optional(Type.Boolean()),
 	"-n": Type.Optional(Type.Boolean()),
+	"-o": Type.Optional(Type.Boolean()),
 });
 
 function resultText(result: { content: Array<{ type: string; text?: string }> }): string {
@@ -73,9 +75,12 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				output_mode?: "files_with_matches" | "content" | "count";
 				"-i"?: boolean;
 				"-n"?: boolean;
+				"-o"?: boolean;
 			};
 			const outputMode = selected.output_mode;
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
+			if (outputMode === "content" && selected["-o"])
+				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);
 			const result = await grep.execute(id, { ...input, ignoreCase: selected["-i"] }, signal, onUpdate, ctx);
 			const text = resultText(result);
 			if (text === "No matches found")
