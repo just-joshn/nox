@@ -42,6 +42,7 @@ import {
 } from "./core/agent-session-services.ts";
 import { formatNoModelsAvailableMessage } from "./core/auth-guidance.ts";
 import { AuthStorage, ReadOnlyAuthStorage } from "./core/auth-storage.ts";
+import { BackgroundSessionManager, handleBackgroundCommand } from "./core/background-session.ts";
 import { exportFromFile } from "./core/export-html/index.ts";
 import type { InlineExtension } from "./core/extensions/types.ts";
 import { applyHttpProxySettings, configureHttpDispatcher } from "./core/http-dispatcher.ts";
@@ -600,16 +601,32 @@ export async function main(args: string[], options?: MainOptions) {
 		return;
 	}
 
+	if (await handleBackgroundCommand(args, { cwd, agentDir })) {
+		process.exit(process.exitCode ?? 0);
+		return;
+	}
+
 	const parsed = parseArgs(args);
 	if (parsed.background) {
 		if (parsed.print) {
 			console.error(
-				"--bg and --print conflict: --print cannot start an attachable background session. Background sessions are not available yet.",
+				`--bg and --print conflict: --print never starts the interactive session that \`${APP_NAME} agents\` attaches to, so the job would be unattachable. The prompt is the positional — drop --print: \`${APP_NAME} --bg '<task>'\`.`,
 			);
-		} else {
-			console.error("Error: Background sessions are not available yet");
+			process.exit(1);
 		}
-		process.exit(1);
+		const prompt = parsed.messages.join(" ").trim();
+		if (!prompt && !parsed.resume) {
+			console.error("Error: --bg requires a prompt");
+			process.exit(1);
+		}
+		const bgManager = new BackgroundSessionManager({ agentDir });
+		const session = await bgManager.launch({
+			cwd,
+			prompt: prompt || (parsed.resume ? "Resumed session" : ""),
+			name: parsed.name,
+		});
+		console.log(session.id);
+		process.exit(0);
 	}
 	if (parsed.diagnostics.length > 0) {
 		for (const d of parsed.diagnostics) {

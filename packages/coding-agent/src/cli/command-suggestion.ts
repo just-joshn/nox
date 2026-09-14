@@ -1,4 +1,19 @@
-const COMMANDS = ["auth", "config", "install", "list", "remove", "uninstall", "update"] as const;
+const COMMANDS = [
+	"agents",
+	"attach",
+	"auth",
+	"config",
+	"install",
+	"kill",
+	"list",
+	"logs",
+	"remove",
+	"respawn",
+	"rm",
+	"stop",
+	"uninstall",
+	"update",
+] as const;
 
 function isCloseTypo(input: string, command: string): boolean {
 	if (Math.abs(input.length - command.length) > 1) return false;

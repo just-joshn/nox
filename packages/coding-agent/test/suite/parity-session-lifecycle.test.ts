@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fauxAssistantMessage } from "@earendil-works/pi-ai";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { BackgroundSessionManager } from "../../src/core/background-session.ts";
 import { SessionManager } from "../../src/core/session-manager.ts";
 import { createHarness, getAssistantTexts, getUserTexts, type Harness } from "./harness.ts";
 
@@ -188,5 +189,155 @@ describe("US2 parity session lifecycle suite", () => {
 		expect(getUserTexts(harness)).toContain("Ephemeral prompt");
 		expect(getAssistantTexts(harness)).toContain("Ephemeral response");
 		expect(sessionManager.getSessionFile()).toBeUndefined();
+	});
+
+	describe("Background Session Lifecycle (SUR-BG-003, SUR-BG-011–016)", () => {
+		it("SUR-BG-003: launches a background session with persistent record and log file", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({
+				cwd: testDir,
+				prompt: "Run tests in background",
+				name: "test-bg-task",
+			});
+
+			expect(info.id).toBeDefined();
+			expect(info.id.length).toBeGreaterThan(0);
+			expect(info.status).toBe("running");
+			expect(info.name).toBe("test-bg-task");
+			expect(info.prompt).toBe("Run tests in background");
+			expect(existsSync(info.logFile)).toBe(true);
+			expect(existsSync(info.sessionFile)).toBe(true);
+		});
+
+		it("SUR-BG-012: lists background sessions with optional cwd filter and completion states", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const subDir = join(testDir, "subproject");
+			mkdirSync(subDir, { recursive: true });
+
+			const session1 = await bgManager.launch({ cwd: testDir, prompt: "Task 1" });
+			const session2 = await bgManager.launch({ cwd: subDir, prompt: "Task 2" });
+
+			const allSessions = await bgManager.list({ all: true });
+			expect(allSessions.length).toBe(2);
+			expect(allSessions.some((s) => s.id === session1.id)).toBe(true);
+
+			const subDirSessions = await bgManager.list({ cwd: subDir });
+			expect(subDirSessions.length).toBe(1);
+			expect(subDirSessions[0].id).toBe(session2.id);
+		});
+
+		it("SUR-BG-011: attaches to a background session restoring session file", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Attachable task" });
+
+			const attached = await bgManager.attach(info.id);
+			expect(attached.info.id).toBe(info.id);
+			expect(existsSync(attached.sessionFile)).toBe(true);
+		});
+
+		it("SUR-BG-013: reads logs from a background session", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Log task" });
+
+			const logs = await bgManager.logs(info.id);
+			expect(typeof logs).toBe("string");
+		});
+
+		it("SUR-BG-014: stops an active background session", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Stoppable task" });
+			expect(info.status).toBe("running");
+
+			const stopped = await bgManager.stop(info.id);
+			expect(stopped).toBe(true);
+
+			const updated = await bgManager.get(info.id);
+			expect(updated?.status).toBe("stopped");
+		});
+
+		it("SUR-BG-015: restarts a stopped background session", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Restartable task" });
+			await bgManager.stop(info.id);
+
+			const restarted = await bgManager.restart(info.id);
+			expect(restarted.id).toBe(info.id);
+			expect(restarted.status).toBe("running");
+		});
+
+		it("SUR-BG-016: removes a stopped background session and cleans up records", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Removable task" });
+			await bgManager.stop(info.id);
+
+			const removed = await bgManager.remove(info.id);
+			expect(removed).toBe(true);
+
+			const check = await bgManager.get(info.id);
+			expect(check).toBeUndefined();
+		});
+
+		it("SUR-BG-017: records unexpected exit with status, exitCode, and redacted error log", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Crashable task" });
+
+			const updated = await bgManager.recordExit(
+				info.id,
+				1,
+				"Process failed with token: sk-ant-api03-secretkey1234567890abcdef123456",
+			);
+			expect(updated.status).toBe("error");
+			expect(updated.exitCode).toBe(1);
+
+			const log = await bgManager.logs(info.id);
+			expect(log).toContain("Process exited with code 1");
+			expect(log).toContain("[REDACTED_API_KEY]");
+			expect(log).not.toContain("secretkey1234567890abcdef123456");
+		});
+
+		it("SUR-BG-018: recovers a failed session into running state", async () => {
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Recoverable task" });
+			await bgManager.recordExit(info.id, 1, "Crash");
+
+			const recovered = await bgManager.recover(info.id);
+			expect(recovered.status).toBe("running");
+			expect(recovered.exitCode).toBeUndefined();
+
+			const log = await bgManager.logs(info.id);
+			expect(log).toContain("Background session recovered");
+		});
+
+		it("handleBackgroundCommand: handles agents, attach, logs, stop, respawn, and rm subcommands", async () => {
+			const { handleBackgroundCommand } = await import("../../src/core/background-session.ts");
+			const bgManager = new BackgroundSessionManager({ agentDir: testDir });
+			const info = await bgManager.launch({ cwd: testDir, prompt: "Command task" });
+
+			// agents command
+			const agentsHandled = await handleBackgroundCommand(["agents", "--json"], { agentDir: testDir });
+			expect(agentsHandled).toBe(true);
+
+			// logs command
+			const logsHandled = await handleBackgroundCommand(["logs", info.id], { agentDir: testDir });
+			expect(logsHandled).toBe(true);
+
+			// stop command
+			const stopHandled = await handleBackgroundCommand(["stop", info.id], { agentDir: testDir });
+			expect(stopHandled).toBe(true);
+			const stoppedRecord = await bgManager.get(info.id);
+			expect(stoppedRecord?.status).toBe("stopped");
+
+			// respawn command
+			const respawnHandled = await handleBackgroundCommand(["respawn", info.id], { agentDir: testDir });
+			expect(respawnHandled).toBe(true);
+			const restartedRecord = await bgManager.get(info.id);
+			expect(restartedRecord?.status).toBe("running");
+
+			// rm command
+			const rmHandled = await handleBackgroundCommand(["rm", info.id], { agentDir: testDir });
+			expect(rmHandled).toBe(true);
+			const deletedRecord = await bgManager.get(info.id);
+			expect(deletedRecord).toBeUndefined();
+		});
 	});
 });

@@ -24,6 +24,15 @@ export {
 	type SessionStats,
 } from "./core/agent-session.ts";
 export { readStoredCredential } from "./core/auth-storage.ts";
+export {
+	type BackgroundSessionInfo,
+	BackgroundSessionManager,
+	type BackgroundSessionStatus,
+	handleBackgroundCommand,
+	type LaunchBackgroundOptions,
+	type ListBackgroundOptions,
+	redactSensitive,
+} from "./core/background-session.ts";
 // Compaction
 export {
 	type BranchPreparation,

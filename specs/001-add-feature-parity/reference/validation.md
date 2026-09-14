@@ -435,4 +435,20 @@ Delivery slice `US1-CONTEXT-PENDING` implementation was verified with test-first
 
 All 11 tests in `packages/coding-agent/test/suite/parity-context.test.ts` pass, all 41 existing resource loader tests pass in `packages/coding-agent/test/resource-loader.test.ts`, and `npm run check` passes with 0 errors.
 
+## Background session lifecycle implementation (T281–T319, T027, 2026-09-14)
+
+Delivery slice for background session management was implemented with test-driven development:
+1. `SUR-BG-003`: `BackgroundSessionManager.launch` generates short unique IDs (`bg-xxx-xxx`), writes atomic session records (`${id}.json`), initialized log files (`${id}.log`), and JSONL session files (`${id}.session.jsonl`). CLI launch via `--bg '<prompt>'` outputs the short session ID and exits 0. Conflict with `--print` outputs advice diagnostic matching reference behavior (resolving DISC-001).
+2. `SUR-BG-011`: `BackgroundSessionManager.attach` restores session files and metadata for interactive session resumption.
+3. `SUR-BG-012`: `BackgroundSessionManager.list` and CLI subcommand `agents [--json] [--all] [--cwd <path>]` query background sessions with workspace directory filtering and completion state handling.
+4. `SUR-BG-013`: `BackgroundSessionManager.logs` and CLI subcommand `logs <id> [--tail <n>]` display session logs without attaching.
+5. `SUR-BG-014`: `BackgroundSessionManager.stop` and CLI subcommand `stop <id>` / `kill <id>` transition active sessions to `stopped` while preserving session history.
+6. `SUR-BG-015`: `BackgroundSessionManager.restart` and CLI subcommand `respawn <id>` / `respawn --all` restart stopped sessions while retaining session IDs.
+7. `SUR-BG-016`: `BackgroundSessionManager.remove` and CLI subcommand `rm <id>` clean up background records, logs, and session files safely.
+8. `SUR-BG-017`: `BackgroundSessionManager.recordExit` logs process termination with status (`completed` or `error`), exit codes, and redaction of sensitive credentials (`redactSensitive`).
+9. `SUR-BG-018`: `BackgroundSessionManager.recover` restores failed sessions back to `running` state.
+
+All 16 tests in `packages/coding-agent/test/suite/parity-session-lifecycle.test.ts` and 2 process tests in `packages/coding-agent/test/background-cli.test.ts` pass, and `npm run check` passes across the repository with 0 errors.
+
+
 
