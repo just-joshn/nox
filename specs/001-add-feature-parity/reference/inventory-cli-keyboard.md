@@ -140,4 +140,37 @@ The following actions require Vim editor mode. Unless stated otherwise, the entr
 | KBL-127 | text object, VISUAL selection | Select named object |
 | KBL-128 | `v`/`V`, VISUAL selection | Toggle character/line selection or exit |
 
-The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mode) explicitly excludes block-wise `Ctrl+V` visual selection. These rows still contain grouped alternatives that need individual option/transition leaves under T002/T006. History-search controls, command completion, and custom keybinding actions also remain to be split. No row is a parity verification.
+The [interactive-mode reference](https://code.claude.com/docs/en/interactive-mode) explicitly excludes block-wise `Ctrl+V` visual selection. These rows still contain grouped alternatives that need individual option/transition leaves under T002/T006.
+
+## Search and completion leaves
+
+Source: [interactive-mode history and command completion](https://code.claude.com/docs/en/interactive-mode). The renderer, input position, search state, and number of matches change the action.
+
+| ID | Input and entry condition | Documented effect |
+|----|---------------------------|-------------------|
+| KBL-129 | `Ctrl+R`, classic prompt | Start inline reverse search across all projects |
+| KBL-130 | type query, classic inline search | Filter and highlight matching history |
+| KBL-131 | `Ctrl+R`, classic inline search active | Cycle to older match |
+| KBL-132 | `Tab`, classic inline search match | Accept match for editing |
+| KBL-133 | `Esc`, classic inline search match | Accept match for editing |
+| KBL-134 | `Enter`, classic inline search match | Accept and execute match |
+| KBL-135 | `Ctrl+C`, classic inline search active | Cancel and restore original input |
+| KBL-136 | Backspace, empty classic search | Cancel search |
+| KBL-137 | `Ctrl+R`, fullscreen prompt | Open history search dialog |
+| KBL-138 | type query, fullscreen history dialog | Filter matches in current scope |
+| KBL-139 | up/down, fullscreen history dialog | Move through matches |
+| KBL-140 | `Ctrl+S`, fullscreen history dialog | Cycle this-session/project/all-project scopes |
+| KBL-141 | `Enter`, fullscreen history match | Place match in prompt input |
+| KBL-142 | `Tab`, fullscreen history match | Place match in prompt input |
+| KBL-143 | `Esc`, fullscreen history dialog | Cancel search |
+| KBL-144 | `/name`, start of message | Invoke matching command or skill |
+| KBL-145 | `/prefix`, after a space mid-prompt | Suggest commands without invoking them |
+| KBL-146 | `Enter`, fullscreen mid-prompt list with no selection | Submit literal prompt |
+| KBL-147 | `Tab`, fullscreen mid-prompt list | Insert top match |
+| KBL-148 | arrows then `Enter`, fullscreen mid-prompt list | Insert selected match |
+| KBL-149 | `Tab`, classic mid-prompt single ghost match | Insert completion |
+| KBL-150 | `Tab`, classic mid-prompt multiple matches | Open selection list |
+| KBL-151 | `Tab`, bare mid-prompt `/` | List every command |
+| KBL-152 | complete plugin skill by bare name | Insert fully qualified skill name |
+
+Custom keybinding actions and the grouped Vim alternatives still require independent option/transition leaves under T002/T006. No row is a parity verification.
