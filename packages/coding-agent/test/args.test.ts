@@ -261,7 +261,9 @@ describe("parseArgs", () => {
 
 		test("reports missing value", () => {
 			const result = parseArgs(["--name"]);
-			expect(result.diagnostics).toEqual([{ type: "error", message: "--name requires a value" }]);
+			expect(result.diagnostics).toEqual([
+				{ type: "error", message: "error: option '-n, --name <name>' argument missing", verbatim: true },
+			]);
 		});
 
 		test("works alongside other flags", () => {

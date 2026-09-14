@@ -175,7 +175,7 @@
 - [X] T222 [Setup] Compare installed `-v` and `--version` under disposable-home network isolation; record exact process/side-effect evidence and nox parser status, then commit locally.
 - [X] T223 [Setup] Compare installed `-d` and `--debug` on offline parser exits; record exact process/side-effect evidence and nox gap without inferring debug behavior, then commit locally.
 - [X] T224 [Setup] Observe installed `-n` and `--name` missing-value parser exits offline; compare nox and record the exact diagnostic/side-effect contract, then commit locally.
-- [ ] T225 [US4] Write a failing nox process test for the observed `-n`/`--name` missing-value diagnostic, implement the explicit preflight message, verify focused tests and `npm run check`, then commit locally.
+- [X] T225 [US4] Write a failing nox process test for the observed `-n`/`--name` missing-value diagnostic, implement the explicit preflight message, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

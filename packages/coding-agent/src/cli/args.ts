@@ -156,7 +156,11 @@ export function parseArgs(args: string[]): Args {
 			if (i + 1 < args.length) {
 				result.name = args[++i];
 			} else {
-				result.diagnostics.push({ type: "error", message: "--name requires a value" });
+				result.diagnostics.push({
+					type: "error",
+					message: "error: option '-n, --name <name>' argument missing",
+					verbatim: true,
+				});
 			}
 		} else if (arg === "--no-session") {
 			result.noSession = true;
