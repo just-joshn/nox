@@ -270,3 +270,5 @@ T223 compared installed `-d` and `--debug` with a version exit and an unknown-op
 T224 ran installed `-n` and `--name` with no value under separate disposable homes with all network denied. Both returned exit 1, empty stdout, `error: option '-n, --name <name>' argument missing\n` on stderr, and no home/cwd entries. Nox accepts both spellings but its current error text differs; T225 will implement the observed diagnostic.
 
 T225 added offline nox process tests for both missing-value spellings. Both failed on the old diagnostic before the parser change and passed afterward; the neighboring three-file suite passed 101 tests, and `npm run check` passed. Only the missing-name preflight text changed; successful session naming remains unverified against the reference.
+
+T226 compared installed `-w` and `--worktree` with version and unknown-option exits in separate disposable homes under a network-denying sandbox. Each pair matched exactly and left no files. The trace confirms parser acceptance only; worktree creation and optional-name semantics are still open. Nox does not yet parse either spelling.
