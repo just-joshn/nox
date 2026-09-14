@@ -326,7 +326,7 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 
 ### Background lifecycle leaf tasks
 
-- [ ] T281 [US2] Inventory separate background launch, list, attach, log-read, stop, restart, remove, unexpected-exit, and recovery leaves with nox controls and availability conditions in `specs/001-add-feature-parity/reference/inventory-surfaces.md`.
+- [X] T281 [US2] Inventory separate background launch, list, attach, log-read, stop, restart, remove, unexpected-exit, and recovery leaves with nox controls and availability conditions in `specs/001-add-feature-parity/reference/inventory-surfaces.md`.
 - [ ] T282 [US2] Observe the T281-assigned background-launch leaf in an isolated fixture; record process output, exit status, persisted identifier, redacted side effects, and availability in `specs/001-add-feature-parity/reference/scenarios.md` and `specs/001-add-feature-parity/reference/observations/`.
 - [ ] T283 [US2] Observe the T281-assigned background-list leaf in an isolated fixture; record ordering, status fields, empty state, errors, and redacted output in `specs/001-add-feature-parity/reference/scenarios.md` and `specs/001-add-feature-parity/reference/observations/`.
 - [ ] T284 [US2] Observe the T281-assigned background-attach leaf in an isolated fixture; record intermediate interactions, disconnect behavior, resulting state, and errors in `specs/001-add-feature-parity/reference/scenarios.md` and `specs/001-add-feature-parity/reference/observations/`.
