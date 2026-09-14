@@ -1,0 +1,51 @@
+{
+  "exit_code": 0,
+  "result": "synthetic completion",
+  "is_error": false,
+  "stderr_empty": true,
+  "requests": [
+    {
+      "model": "claude-haiku-4-5-20251001",
+      "response": "text",
+      "tool_results": [],
+      "catalog": {
+        "Read": false,
+        "Bash": false,
+        "Edit": false,
+        "Glob": false,
+        "Grep": false
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "response": "tool",
+      "tool_results": [],
+      "catalog": {
+        "Read": false,
+        "Bash": false,
+        "Edit": false,
+        "Glob": true,
+        "Grep": false
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "response": "text",
+      "tool_results": [
+        {
+          "is_error": false,
+          "fixture_name_present": true
+        }
+      ],
+      "catalog": {
+        "Read": false,
+        "Bash": false,
+        "Edit": false,
+        "Glob": true,
+        "Grep": false
+      }
+    }
+  ],
+  "fixture_unchanged": true,
+  "outside_unchanged": null
+}
