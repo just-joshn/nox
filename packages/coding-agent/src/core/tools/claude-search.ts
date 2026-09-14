@@ -97,8 +97,8 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				"-B"?: number;
 			};
 			const outputMode = selected.output_mode;
-			if (outputMode === "content" && selected.multiline)
-				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal);
+			if (selected.multiline && (outputMode === "content" || outputMode === undefined))
+				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal, outputMode === undefined);
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && selected["-o"])
 				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);

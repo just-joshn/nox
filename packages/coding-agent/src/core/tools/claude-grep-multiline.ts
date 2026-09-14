@@ -13,7 +13,12 @@ interface MultilineInput {
 
 const MAX_OUTPUT_BYTES = 8 * 1024 * 1024;
 
-export async function executeClaudeGrepMultiline(cwd: string, input: MultilineInput, signal?: AbortSignal) {
+export async function executeClaudeGrepMultiline(
+	cwd: string,
+	input: MultilineInput,
+	signal?: AbortSignal,
+	filesMode = false,
+) {
 	const rgPath = await ensureTool("rg");
 	if (!rgPath) throw new Error("ripgrep (rg) is not available and could not be downloaded");
 	const searchPath = resolveToCwd(input.path || ".", cwd);
@@ -29,17 +34,25 @@ export async function executeClaudeGrepMultiline(cwd: string, input: MultilineIn
 			else reject(new Error(stderr.trim() || error.message));
 		});
 	});
-	const lines = output
+	const matches = output
 		.replace(/\n$/, "")
 		.split("\n")
 		.filter(Boolean)
 		.map((line) => {
 			const match = /^(.*?):(\d+):(.*)$/.exec(line);
 			if (!match) throw new Error("Unexpected ripgrep multiline output");
-			return `${path.relative(cwd, match[1]).replaceAll("\\", "/")}:${match[2]}:${match[3]}`;
+			return { file: path.relative(cwd, match[1]).replaceAll("\\", "/"), line: match[2], text: match[3] };
 		});
+	const files = [...new Set(matches.map((match) => match.file))];
+	const content = filesMode
+		? files.length
+			? `Found ${files.length} file${files.length === 1 ? "" : "s"}\n${files.join("\n")}`
+			: "No files found"
+		: matches.length
+			? matches.map(({ file, line, text }) => `${file}:${line}:${text}`).join("\n")
+			: "No matches found";
 	return {
-		content: [{ type: "text" as const, text: lines.length ? lines.join("\n") : "No matches found" }],
+		content: [{ type: "text" as const, text: content }],
 		details: undefined,
 	};
 }
