@@ -224,7 +224,10 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				content: [
 					{
 						type: "text" as const,
-						text: `Found ${page.length} file${page.length === 1 ? "" : "s"}${pagination}\n${page.join("\n")}${notice}`,
+						text:
+							page.length === 0 && offset > 0
+								? `No entries at this offset. [Showing results with pagination = offset: ${offset}]`
+								: `Found ${page.length} file${page.length === 1 ? "" : "s"}${pagination}\n${page.join("\n")}${notice}`,
 					},
 				],
 			};
