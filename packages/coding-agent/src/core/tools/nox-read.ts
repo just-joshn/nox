@@ -2,7 +2,7 @@ import { type Static, Type } from "typebox";
 import type { ExtensionContext } from "../extensions/types.ts";
 import { createReadToolDefinition, type ReadToolOptions } from "./read.ts";
 
-export const claudeReadSchema = Type.Object({
+export const noxReadSchema = Type.Object({
 	file_path: Type.String({ description: "The absolute path to the file to read" }),
 	offset: Type.Optional(
 		Type.Integer({
@@ -24,14 +24,14 @@ export const claudeReadSchema = Type.Object({
 	),
 });
 
-export function createClaudeReadToolDefinition(cwd: string, options?: ReadToolOptions) {
+export function createNoxReadToolDefinition(cwd: string, options?: ReadToolOptions) {
 	const read = createReadToolDefinition(cwd, options);
 	return {
 		...read,
 		name: "Read",
 		label: "Read",
 		description: "read files, images, PDFs, notebooks",
-		parameters: claudeReadSchema,
+		parameters: noxReadSchema,
 		promptSnippet: undefined,
 		promptGuidelines: undefined,
 		renderCall: undefined,
@@ -39,7 +39,7 @@ export function createClaudeReadToolDefinition(cwd: string, options?: ReadToolOp
 		prepareArguments: undefined,
 		async execute(
 			id: string,
-			input: Static<typeof claudeReadSchema>,
+			input: Static<typeof noxReadSchema>,
 			signal?: AbortSignal,
 			onUpdate?: (result: any) => void,
 			ctx?: ExtensionContext,

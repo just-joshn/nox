@@ -1,12 +1,12 @@
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import { Type } from "typebox";
-import { executeClaudeGrepCount } from "./claude-grep-count.ts";
-import { executeClaudeGrepMultiline } from "./claude-grep-multiline.ts";
-import { executeClaudeGrepOnly } from "./claude-grep-only.ts";
-import { executeClaudeGrepSidedContext } from "./claude-grep-sided-context.ts";
 import { createFindToolDefinition } from "./find.ts";
 import { createGrepToolDefinition } from "./grep.ts";
+import { executeNoxGrepCount } from "./nox-grep-count.ts";
+import { executeNoxGrepMultiline } from "./nox-grep-multiline.ts";
+import { executeNoxGrepOnly } from "./nox-grep-only.ts";
+import { executeNoxGrepSidedContext } from "./nox-grep-sided-context.ts";
 import { resolveToCwd } from "./path-utils.ts";
 
 const globSchema = Type.Object({
@@ -41,7 +41,7 @@ function resultText(result: { content: Array<{ type: string; text?: string }> })
 		.join("\n");
 }
 
-export function createClaudeGlobToolDefinition(cwd: string) {
+export function createNoxGlobToolDefinition(cwd: string) {
 	const find = createFindToolDefinition(cwd, { includeIgnored: true });
 	return {
 		...find,
@@ -84,7 +84,7 @@ export function createClaudeGlobToolDefinition(cwd: string) {
 	};
 }
 
-export function createClaudeGrepToolDefinition(cwd: string) {
+export function createNoxGrepToolDefinition(cwd: string) {
 	const grep = createGrepToolDefinition(cwd, { excludeGitMetadata: true });
 	return {
 		...grep,
@@ -121,12 +121,11 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			if (selected.context !== undefined && (!Number.isInteger(selected.context) || selected.context < 0))
 				throw new Error("Invalid Grep context");
 			if (selected.multiline && outputMode !== "count")
-				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal, outputMode !== "content");
-			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
-			if (outputMode === "content" && selected["-o"])
-				return executeClaudeGrepOnly(ctx?.cwd || cwd, selected, signal);
+				return executeNoxGrepMultiline(ctx?.cwd || cwd, selected, signal, outputMode !== "content");
+			if (outputMode === "count") return executeNoxGrepCount(ctx?.cwd || cwd, selected, signal);
+			if (outputMode === "content" && selected["-o"]) return executeNoxGrepOnly(ctx?.cwd || cwd, selected, signal);
 			if (outputMode === "content" && (selected["-A"] !== undefined || selected["-B"] !== undefined))
-				return executeClaudeGrepSidedContext(ctx?.cwd || cwd, selected, signal);
+				return executeNoxGrepSidedContext(ctx?.cwd || cwd, selected, signal);
 			const typedGrep = selected.type
 				? createGrepToolDefinition(cwd, { fileType: selected.type, excludeGitMetadata: true })
 				: grep;

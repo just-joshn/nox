@@ -13,7 +13,7 @@ interface MultilineInput {
 
 const MAX_OUTPUT_BYTES = 8 * 1024 * 1024;
 
-export async function executeClaudeGrepMultiline(
+export async function executeNoxGrepMultiline(
 	cwd: string,
 	input: MultilineInput,
 	signal?: AbortSignal,

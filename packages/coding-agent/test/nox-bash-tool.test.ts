@@ -4,10 +4,10 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createAllToolDefinitions, createCodingToolDefinitions } from "../src/core/tools/index.ts";
 
-describe("explicit Claude Bash tool", () => {
+describe("explicit nox Bash parity tool", () => {
 	let cwd: string;
 	beforeEach(() => {
-		cwd = mkdtempSync(join(tmpdir(), "nox-claude-bash-"));
+		cwd = mkdtempSync(join(tmpdir(), "nox-nox-bash-"));
 	});
 	afterEach(() => rmSync(cwd, { recursive: true, force: true }));
 

@@ -3,7 +3,7 @@ import { type Static, Type } from "typebox";
 import type { ExtensionContext, ToolDefinition } from "../extensions/types.ts";
 import { resolveToCwd } from "./path-utils.ts";
 
-export const claudeEditSchema = Type.Object({
+export const noxEditSchema = Type.Object({
 	file_path: Type.String({ description: "The absolute path to the file to modify" }),
 	old_string: Type.String({ description: "The text to replace" }),
 	new_string: Type.String({ description: "The text to replace it with (must be different from old_string)" }),
@@ -15,12 +15,12 @@ export const claudeEditSchema = Type.Object({
 	),
 });
 
-export function createClaudeEditToolDefinition(cwd: string): ToolDefinition<typeof claudeEditSchema, undefined> {
+export function createNoxEditToolDefinition(cwd: string): ToolDefinition<typeof noxEditSchema, undefined> {
 	return {
 		name: "Edit",
 		label: "Edit",
 		description: "modify file contents in place",
-		parameters: claudeEditSchema,
+		parameters: noxEditSchema,
 		promptSnippet: undefined,
 		promptGuidelines: undefined,
 		renderCall: undefined,
@@ -28,7 +28,7 @@ export function createClaudeEditToolDefinition(cwd: string): ToolDefinition<type
 		prepareArguments: undefined,
 		async execute(
 			_id: string,
-			input: Static<typeof claudeEditSchema>,
+			input: Static<typeof noxEditSchema>,
 			signal?: AbortSignal,
 			_onUpdate?: (result: any) => void,
 			ctx?: ExtensionContext,

@@ -16,7 +16,7 @@ interface CountInput {
 
 const MAX_COUNT_OUTPUT_BYTES = 8 * 1024 * 1024;
 
-export async function executeClaudeGrepCount(cwd: string, input: CountInput, signal?: AbortSignal) {
+export async function executeNoxGrepCount(cwd: string, input: CountInput, signal?: AbortSignal) {
 	const rgPath = await ensureTool("rg");
 	if (!rgPath) throw new Error("ripgrep (rg) is not available and could not be downloaded");
 	const searchPath = resolveToCwd(input.path || ".", cwd);

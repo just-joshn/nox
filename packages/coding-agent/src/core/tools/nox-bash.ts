@@ -2,7 +2,7 @@ import { type Static, Type } from "typebox";
 import type { ExtensionContext, ToolDefinition } from "../extensions/types.ts";
 import { type BashRenderState, type BashToolDetails, type BashToolOptions, createBashToolDefinition } from "./bash.ts";
 
-export const claudeBashSchema = Type.Object({
+export const noxBashSchema = Type.Object({
 	command: Type.String({ description: "The command to execute" }),
 	timeout: Type.Optional(Type.Number({ description: "Optional timeout in milliseconds (max 600000)" })),
 	description: Type.Optional(
@@ -20,17 +20,17 @@ export const claudeBashSchema = Type.Object({
 	),
 });
 
-export function createClaudeBashToolDefinition(
+export function createNoxBashToolDefinition(
 	cwd: string,
 	options?: BashToolOptions,
-): ToolDefinition<typeof claudeBashSchema, BashToolDetails | undefined, BashRenderState> {
+): ToolDefinition<typeof noxBashSchema, BashToolDetails | undefined, BashRenderState> {
 	const bash = createBashToolDefinition(cwd, options);
 	return {
 		...bash,
 		name: "Bash",
 		label: "Bash",
 		description: "execute shell commands",
-		parameters: claudeBashSchema,
+		parameters: noxBashSchema,
 		promptSnippet: undefined,
 		promptGuidelines: undefined,
 		renderCall: undefined,
@@ -38,7 +38,7 @@ export function createClaudeBashToolDefinition(
 		prepareArguments: undefined,
 		async execute(
 			id: string,
-			input: Static<typeof claudeBashSchema>,
+			input: Static<typeof noxBashSchema>,
 			signal?: AbortSignal,
 			onUpdate?: (result: any) => void,
 			ctx?: ExtensionContext,

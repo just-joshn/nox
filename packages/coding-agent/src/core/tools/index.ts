@@ -82,14 +82,14 @@ export {
 import type { AgentTool } from "@earendil-works/pi-agent-core";
 import type { ToolDefinition } from "../extensions/types.ts";
 import { type BashToolOptions, createBashTool, createBashToolDefinition } from "./bash.ts";
-import { createClaudeBashToolDefinition } from "./claude-bash.ts";
-import { createClaudeEditToolDefinition } from "./claude-edit.ts";
-import { createClaudeReadToolDefinition } from "./claude-read.ts";
-import { createClaudeGlobToolDefinition, createClaudeGrepToolDefinition } from "./claude-search.ts";
 import { createEditTool, createEditToolDefinition, type EditToolOptions } from "./edit.ts";
 import { createFindTool, createFindToolDefinition, type FindToolOptions } from "./find.ts";
 import { createGrepTool, createGrepToolDefinition, type GrepToolOptions } from "./grep.ts";
 import { createLsTool, createLsToolDefinition, type LsToolOptions } from "./ls.ts";
+import { createNoxBashToolDefinition } from "./nox-bash.ts";
+import { createNoxEditToolDefinition } from "./nox-edit.ts";
+import { createNoxReadToolDefinition } from "./nox-read.ts";
+import { createNoxGlobToolDefinition, createNoxGrepToolDefinition } from "./nox-search.ts";
 import { createPowerShellTool, createPowerShellToolDefinition, type PowerShellToolOptions } from "./powershell.ts";
 import { createReadTool, createReadToolDefinition, type ReadToolOptions } from "./read.ts";
 import { wrapToolDefinition } from "./tool-definition-wrapper.ts";
@@ -157,15 +157,15 @@ export function createToolDefinition(toolName: ToolName, cwd: string, options?: 
 		case "ls":
 			return createLsToolDefinition(cwd, options?.ls);
 		case "Glob":
-			return createClaudeGlobToolDefinition(cwd);
+			return createNoxGlobToolDefinition(cwd);
 		case "Grep":
-			return createClaudeGrepToolDefinition(cwd);
+			return createNoxGrepToolDefinition(cwd);
 		case "Read":
-			return createClaudeReadToolDefinition(cwd, options?.read);
+			return createNoxReadToolDefinition(cwd, options?.read);
 		case "Edit":
-			return createClaudeEditToolDefinition(cwd);
+			return createNoxEditToolDefinition(cwd);
 		case "Bash":
-			return createClaudeBashToolDefinition(cwd, options?.bash);
+			return createNoxBashToolDefinition(cwd, options?.bash);
 		default:
 			throw new Error(`Unknown tool name: ${toolName}`);
 	}
@@ -190,15 +190,15 @@ export function createTool(toolName: ToolName, cwd: string, options?: ToolsOptio
 		case "ls":
 			return createLsTool(cwd, options?.ls);
 		case "Glob":
-			return wrapToolDefinition(createClaudeGlobToolDefinition(cwd));
+			return wrapToolDefinition(createNoxGlobToolDefinition(cwd));
 		case "Grep":
-			return wrapToolDefinition(createClaudeGrepToolDefinition(cwd));
+			return wrapToolDefinition(createNoxGrepToolDefinition(cwd));
 		case "Read":
-			return wrapToolDefinition(createClaudeReadToolDefinition(cwd, options?.read));
+			return wrapToolDefinition(createNoxReadToolDefinition(cwd, options?.read));
 		case "Edit":
-			return wrapToolDefinition(createClaudeEditToolDefinition(cwd));
+			return wrapToolDefinition(createNoxEditToolDefinition(cwd));
 		case "Bash":
-			return wrapToolDefinition(createClaudeBashToolDefinition(cwd, options?.bash));
+			return wrapToolDefinition(createNoxBashToolDefinition(cwd, options?.bash));
 		default:
 			throw new Error(`Unknown tool name: ${toolName}`);
 	}
@@ -232,11 +232,11 @@ export function createAllToolDefinitions(cwd: string, options?: ToolsOptions): R
 		grep: createGrepToolDefinition(cwd, options?.grep),
 		find: createFindToolDefinition(cwd, options?.find),
 		ls: createLsToolDefinition(cwd, options?.ls),
-		Glob: createClaudeGlobToolDefinition(cwd),
-		Grep: createClaudeGrepToolDefinition(cwd),
-		Read: createClaudeReadToolDefinition(cwd, options?.read),
-		Edit: createClaudeEditToolDefinition(cwd),
-		Bash: createClaudeBashToolDefinition(cwd, options?.bash),
+		Glob: createNoxGlobToolDefinition(cwd),
+		Grep: createNoxGrepToolDefinition(cwd),
+		Read: createNoxReadToolDefinition(cwd, options?.read),
+		Edit: createNoxEditToolDefinition(cwd),
+		Bash: createNoxBashToolDefinition(cwd, options?.bash),
 	};
 }
 
@@ -268,10 +268,10 @@ export function createAllTools(cwd: string, options?: ToolsOptions): Record<Tool
 		grep: createGrepTool(cwd, options?.grep),
 		find: createFindTool(cwd, options?.find),
 		ls: createLsTool(cwd, options?.ls),
-		Glob: wrapToolDefinition(createClaudeGlobToolDefinition(cwd)),
-		Grep: wrapToolDefinition(createClaudeGrepToolDefinition(cwd)),
-		Read: wrapToolDefinition(createClaudeReadToolDefinition(cwd, options?.read)),
-		Edit: wrapToolDefinition(createClaudeEditToolDefinition(cwd)),
-		Bash: wrapToolDefinition(createClaudeBashToolDefinition(cwd, options?.bash)),
+		Glob: wrapToolDefinition(createNoxGlobToolDefinition(cwd)),
+		Grep: wrapToolDefinition(createNoxGrepToolDefinition(cwd)),
+		Read: wrapToolDefinition(createNoxReadToolDefinition(cwd, options?.read)),
+		Edit: wrapToolDefinition(createNoxEditToolDefinition(cwd)),
+		Bash: wrapToolDefinition(createNoxBashToolDefinition(cwd, options?.bash)),
 	};
 }

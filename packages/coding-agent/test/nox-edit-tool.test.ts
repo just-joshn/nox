@@ -4,10 +4,10 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createAllToolDefinitions, createCodingToolDefinitions } from "../src/core/tools/index.ts";
 
-describe("explicit Claude Edit tool", () => {
+describe("explicit nox Edit parity tool", () => {
 	let cwd: string;
 	beforeEach(() => {
-		cwd = mkdtempSync(join(tmpdir(), "nox-claude-edit-"));
+		cwd = mkdtempSync(join(tmpdir(), "nox-nox-edit-"));
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nbeta\n");
 	});
 	afterEach(() => rmSync(cwd, { recursive: true, force: true }));

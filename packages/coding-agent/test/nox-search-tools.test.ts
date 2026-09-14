@@ -6,10 +6,10 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { ToolName } from "../src/core/tools/index.ts";
 import { createAllToolDefinitions, createCodingToolDefinitions } from "../src/core/tools/index.ts";
 
-describe("explicit Claude search tools", () => {
+describe("explicit nox parity search tools", () => {
 	let cwd: string;
 	beforeEach(() => {
-		cwd = mkdtempSync(join(tmpdir(), "nox-claude-search-"));
+		cwd = mkdtempSync(join(tmpdir(), "nox-nox-search-"));
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nbeta\n");
 	});
 	afterEach(() => rmSync(cwd, { recursive: true, force: true }));
