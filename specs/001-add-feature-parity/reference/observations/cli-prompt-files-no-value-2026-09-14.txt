@@ -1,0 +1,14 @@
+Installed CLI 2.1.270 on macOS; separate disposable empty homes and cwd; no credentials or model request.
+Both calls used --bare -p noop with the file flag last.
+
+Input flag: --system-prompt-file
+Exit: 1
+Stdout: empty
+Stderr: error: option '--system-prompt-file <file>' argument missing
+Home entries after exit: none
+
+Input flag: --append-system-prompt-file
+Exit: 1
+Stdout: empty
+Stderr: error: option '--append-system-prompt-file <file>' argument missing
+Home entries after exit: none

@@ -11,13 +11,14 @@ import { buildSystemPrompt } from "../src/core/system-prompt.ts";
 const cliPath = resolve(__dirname, "../src/cli.ts");
 const sourceResolverPath = resolve(__dirname, "../src/experimental/source-resolver.ts");
 
-function runCli(flag: string, before: readonly string[] = []) {
+function runCli(flag: string, before: readonly string[] = [], withoutValue = false) {
 	const root = mkdtempSync(join(tmpdir(), "nox-prompt-file-cli-"));
 	const missing = join(root, "missing.txt");
 	try {
+		const args = withoutValue ? ["-p", "noop", flag] : ["-p", ...before, flag, missing, "noop"];
 		const result = spawnSync(
 			process.execPath,
-			["--import", sourceResolverPath, cliPath, "-p", ...before, flag, missing, "noop"],
+			["--import", sourceResolverPath, cliPath, ...args],
 			{
 				cwd: root,
 				env: {
@@ -46,6 +47,16 @@ function runCli(flag: string, before: readonly string[] = []) {
 }
 
 describe("prompt file CLI preflight", () => {
+	for (const flag of ["--system-prompt-file", "--append-system-prompt-file"]) {
+		test(`rejects ${flag} without a value before startup`, () => {
+			const result = runCli(flag, [], true);
+			expect(result.status).toBe(1);
+			expect(result.stdout).toBe("");
+			expect(result.stderr).toBe(`error: option '${flag} <file>' argument missing\n`);
+			expect(result.homeEntries).toEqual([]);
+		});
+	}
+
 	test("rejects conflicting replacement flags before checking file existence", () => {
 		const result = runCli("--system-prompt-file", ["--system-prompt", "inline"]);
 		expect(result.status).toBe(1);
