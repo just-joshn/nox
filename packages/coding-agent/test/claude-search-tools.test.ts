@@ -755,12 +755,12 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow();
 	});
 
-	it("Grep rejects negative -A context", async () => {
+	it.each(["-A", "-B"])("Grep rejects negative %s context", async (flag) => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		await expect(
 			tool.execute(
 				"call-1",
-				{ pattern: "alpha", output_mode: "content", "-A": -1 },
+				{ pattern: "alpha", output_mode: "content", [flag]: -1 },
 				undefined,
 				undefined,
 				{} as never,
