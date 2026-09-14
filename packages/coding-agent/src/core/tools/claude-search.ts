@@ -118,6 +118,8 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 				throw new Error("Invalid Grep offset");
 			if (selected["-C"] !== undefined && (!Number.isInteger(selected["-C"]) || selected["-C"] < 0))
 				throw new Error("Invalid Grep -C context");
+			if (selected.context !== undefined && (!Number.isInteger(selected.context) || selected.context < 0))
+				throw new Error("Invalid Grep context");
 			if (selected.multiline && outputMode !== "count")
 				return executeClaudeGrepMultiline(ctx?.cwd || cwd, selected, signal, outputMode !== "content");
 			if (outputMode === "count") return executeClaudeGrepCount(ctx?.cwd || cwd, selected, signal);
