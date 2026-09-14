@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -11,10 +11,11 @@ import { buildSystemPrompt } from "../src/core/system-prompt.ts";
 const cliPath = resolve(__dirname, "../src/cli.ts");
 const sourceResolverPath = resolve(__dirname, "../src/experimental/source-resolver.ts");
 
-function runCli(flag: string, before: readonly string[] = [], withoutValue = false) {
+function runCli(flag: string, before: readonly string[] = [], withoutValue = false, directoryValue = false) {
 	const root = mkdtempSync(join(tmpdir(), "nox-prompt-file-cli-"));
 	const missing = join(root, "missing.txt");
 	try {
+		if (directoryValue) mkdirSync(missing);
 		const args = withoutValue ? ["-p", "noop", flag] : ["-p", ...before, flag, missing, "noop"];
 		const result = spawnSync(process.execPath, ["--import", sourceResolverPath, cliPath, ...args], {
 			cwd: root,
@@ -43,6 +44,19 @@ function runCli(flag: string, before: readonly string[] = [], withoutValue = fal
 }
 
 describe("prompt file CLI preflight", () => {
+	for (const [flag, label] of [
+		["--system-prompt-file", "system prompt"],
+		["--append-system-prompt-file", "append system prompt"],
+	] as const) {
+		test(`rejects directory value for ${flag} with a read error`, () => {
+			const result = runCli(flag, [], false, true);
+			expect(result.status).toBe(1);
+			expect(result.stdout).toBe("");
+			expect(result.stderr).toBe(`Error reading ${label} file: EISDIR: illegal operation on a directory, read\n`);
+			expect(result.homeEntries).toEqual(["missing.txt"]);
+		});
+	}
+
 	for (const flag of ["--system-prompt-file", "--append-system-prompt-file"]) {
 		test(`rejects ${flag} without a value before startup`, () => {
 			const result = runCli(flag, [], true);

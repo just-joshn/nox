@@ -263,6 +263,8 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-552 | `daemon -h, --help` | [local help](observations/help-daemon-2026-09-14.txt) | [Isolated `--help` result](observations/cli-daemon-help-2026-09-14.txt): exit 0, usage stdout, empty stderr, `.claude.json` created; `-h` alias untested |
 | CLI-559 | `--system-prompt-file` without an argument | [Isolated parser trace](observations/cli-prompt-files-no-value-2026-09-14.txt) | Nox process comparison matches exit 1, empty stdout, exact lowercase stderr, and no home entries; other file variants open |
 | CLI-560 | `--append-system-prompt-file` without an argument | [Isolated parser trace](observations/cli-prompt-files-no-value-2026-09-14.txt) | Nox process comparison matches exit 1, empty stdout, exact lowercase stderr, and no home entries; other file variants open |
+| CLI-561 | `--system-prompt-file` points to a directory | [Isolated file trace](observations/cli-prompt-files-directory-2026-09-14.txt) | Exit 1, empty stdout, `Error reading system prompt file: EISDIR...`, config entries created; nox comparison pending |
+| CLI-562 | `--append-system-prompt-file` points to a directory | [Isolated file trace](observations/cli-prompt-files-directory-2026-09-14.txt) | Exit 1, empty stdout, `Error reading append system prompt file: EISDIR...`, config entries created; nox comparison pending |
 
 ## Documented interactive command invocations
 

@@ -1,0 +1,16 @@
+Installed CLI 2.1.270 on macOS; separate disposable homes and cwd; no credentials or model request.
+Each home contained an empty fixture-dir directory before launch. Both calls used --bare -p and positional prompt `noop`.
+
+Input flag: --system-prompt-file <home>/fixture-dir
+Exit: 1
+Stdout: empty
+Stderr: Error reading system prompt file: EISDIR: illegal operation on a directory, read
+Home entries after exit: .claude, .claude.json, fixture-dir
+
+Input flag: --append-system-prompt-file <home>/fixture-dir
+Exit: 1
+Stdout: empty
+Stderr: Error reading append system prompt file: EISDIR: illegal operation on a directory, read
+Home entries after exit: .claude, .claude.json, fixture-dir
+
+The absolute temporary path is normalized to <home>. The EISDIR diagnostic is host-OS-specific.

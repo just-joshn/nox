@@ -66,6 +66,9 @@
 - [X] T113 [US4] Write failing isolated-process tests for CLI-559 and CLI-560 in `packages/coding-agent/test/prompt-file-cli.test.ts`: missing values must exit 1 with the observed lowercase parser diagnostic, empty stdout, and no home entries. Depend on [CLI-559-SYSTEM-PROMPT-NO-VALUE](reference/scenarios.md) and [CLI-560-APPEND-PROMPT-NO-VALUE](reference/scenarios.md).
 - [X] T114 [US4] Add a narrowly scoped prompt-file missing-value preflight in `packages/coding-agent/src/cli.ts` before settings/session initialization, preserving normal prompt text and valid file-flag handling.
 - [X] T115 [US4] Re-run focused CLI cases and `npm run check`, compare both missing-value variants in disposable homes, update `reference/validation.md`, and keep unrelated prompt-file leaves open.
+- [X] T116 [US4] Write failing isolated-process tests for CLI-561 and CLI-562 directory inputs in `packages/coding-agent/test/prompt-file-cli.test.ts`; compare same-OS EISDIR read diagnostics, empty stdout, and exit 1. Depend on [CLI-561-SYSTEM-PROMPT-DIRECTORY](reference/scenarios.md) and [CLI-562-APPEND-PROMPT-DIRECTORY](reference/scenarios.md).
+- [ ] T117 [US4] Validate explicit prompt files by attempting to read them in `packages/coding-agent/src/cli/args.ts`, mapping missing files to the observed not-found diagnostic and other read errors to the observed `Error reading ... file` shape. Preserve successful file-source handling.
+- [ ] T118 [US4] Run focused CLI and resource-loader tests plus `npm run check`, record the directory comparison and remaining startup side-effect mismatch in `reference/validation.md` and DISC-003, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
