@@ -85,6 +85,8 @@
 - [X] T132 [US1] Implement the minimum nox Glob/Grep tool definitions and explicit selection wiring for the observed contracts; keep unrelated defaults and Pi visuals intact.
 - [X] T133 [US1] Run focused tests and `npm run check`, compare nox against the six offline fixtures, update the validation/discrepancy ledger, and commit locally. Leave unobserved options and real-service behavior open.
 - [X] T134 [US1] Verify the SDK's provider-facing active catalog for explicit `Glob` and `Grep` in an offline in-memory session, including default exclusion and single-tool selection; record and commit the result.
+- [X] T135 [US1] Capture fixed-field input-schema presence for reference Glob/Grep from the localhost-only synthetic endpoint, compare nox's advertised fields, and list any unsupported options as separate observed work.
+- [ ] T136 [US1] Probe reference Glob's optional `path` and Grep's `output_mode` variants in disposable synthetic repositories, retaining only fixed expected output formats and errors; then add exact schema and mapping tasks for nox.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

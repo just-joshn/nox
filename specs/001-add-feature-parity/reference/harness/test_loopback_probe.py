@@ -5,7 +5,7 @@ from http.server import ThreadingHTTPServer
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from loopback_probe import ProbeState, catalog_summary, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, summarize_result, summarize_search_result
+from loopback_probe import ProbeState, catalog_summary, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, search_schema_summary, summarize_result, summarize_search_result
 
 
 class LoopbackProbeTests(unittest.TestCase):
@@ -141,6 +141,13 @@ class LoopbackProbeTests(unittest.TestCase):
         result = catalog_summary(["Read", "Bash", "Edit", "private-tool-name"])
         self.assertEqual(result, {"Read": True, "Bash": True, "Edit": True, "Glob": False, "Grep": False})
         self.assertNotIn("private-tool-name", json.dumps(result))
+
+    def test_search_schema_summary_retains_only_fixed_property_presence(self):
+        result = search_schema_summary([{"name": "Glob", "input_schema": {"properties": {
+            "pattern": {"type": "string"}, "private-field": {"type": "string"}}}}], "Glob")
+        self.assertTrue(result["pattern"])
+        self.assertFalse(result["path"])
+        self.assertNotIn("private-field", json.dumps(result))
 
     def test_search_result_summary_retains_fixture_match_without_raw_text(self):
         result = summarize_search_result({"is_error": False, "content": "private fixture.txt private"})

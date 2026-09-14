@@ -94,6 +94,15 @@ def catalog_summary(names: list[str]) -> dict[str, bool]:
     return {name: name in names for name in ("Read", "Bash", "Edit", "Glob", "Grep")}
 
 
+def search_schema_summary(tools: list[dict], name: str) -> dict[str, bool]:
+    candidates = ("pattern", "path", "glob", "type", "output_mode", "head_limit", "offset",
+                  "-i", "-n", "-o", "-A", "-B", "-C", "context", "multiline")
+    selected = next((tool for tool in tools if isinstance(tool, dict) and tool.get("name") == name), {})
+    schema = selected.get("input_schema", {})
+    properties = schema.get("properties", {}) if isinstance(schema, dict) else {}
+    return {key: key in properties for key in candidates}
+
+
 def summarize_result(result: dict) -> dict:
     content = result.get("content", [])
     if isinstance(content, str):
@@ -185,7 +194,9 @@ def make_handler(state: ProbeState):
                  "tool_names": [name if name in {"Read", "Edit", "Bash"} else "<redacted>" for name in names],
                  "response": kind, "tool_results": [summarize_search_result(item, state.tool_name) if state.tool_name in {"Glob", "Grep"}
                                                      else summarize_result(item) for item in results],
-                 **({"catalog": catalog_summary(names)} if state.catalog else {})}
+                 **({"catalog": catalog_summary(names)} if state.catalog else {}),
+                 **({"search_schema": search_schema_summary(request["tools"], state.tool_name)}
+                    if state.catalog and state.tool_name in {"Glob", "Grep"} else {})}
             )
             body = message_response(request["model"], kind, state.read_path, state.tool_name, state.tool_pattern)
             self.send_response(200)
