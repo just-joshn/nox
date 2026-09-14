@@ -145,6 +145,8 @@
 - [X] T192 [US1] Observe reference Glob order when hidden and visible synthetic matches have equal controlled modification times under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's tie break.
 - [X] T193 [US1] Observe reference Glob `*.txt` with a synthetic ignored matching file in a disposable repository under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's explicit adapter.
 - [X] T194 [US1] Write a failing nox test for Glob including a synthetic `.gitignore` match; add an explicit adapter search path that includes ignored files while preserving lower-case Pi find behavior, verify focused/neighboring tests and `npm run check`, then commit locally.
+- [X] T195 [US1] Observe reference Glob `*.txt` with a synthetic `.ignore`-excluded matching file under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's explicit adapter.
+- [ ] T196 [US1] Write a failing nox test for Glob including a `.ignore`-excluded file; extend the explicit adapter's fd option without changing lower-case Pi find, verify focused/neighboring tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

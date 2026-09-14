@@ -23,7 +23,7 @@ SEARCH_MODES = frozenset({
     "grep-offset", "grep-head-exact", "grep-offset-end", "grep-offset-zero", "grep-type-filter",
     "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
     "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files", "glob-recursive",
-    "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored",
+    "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored", "glob-fd-ignore",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -310,6 +310,9 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     if mode == "glob-ignored":
         (workspace / ".gitignore").write_text("ignored.txt\n")
         (workspace / "ignored.txt").write_text(FIXTURE_CONTENT)
+    if mode == "glob-fd-ignore":
+        (workspace / ".ignore").write_text("ignored.txt\n")
+        (workspace / "ignored.txt").write_text(FIXTURE_CONTENT)
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
     if mode == "grep-type-filter":
@@ -395,6 +398,9 @@ def main(executable: str, mode: str = "normal") -> int:
                 "ignored_unchanged": ((workspace / ".gitignore").read_text() == "ignored.txt\n" and
                                       (workspace / "ignored.txt").read_text() == FIXTURE_CONTENT)
                                      if mode == "glob-ignored" else None,
+                "fd_ignore_unchanged": ((workspace / ".ignore").read_text() == "ignored.txt\n" and
+                                         (workspace / "ignored.txt").read_text() == FIXTURE_CONTENT)
+                                        if mode == "glob-fd-ignore" else None,
                 "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
                                     if mode in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
@@ -420,6 +426,7 @@ def main(executable: str, mode: str = "normal") -> int:
                    and (mode != "glob-mtime" or summary.get("mtime_unchanged") is True)
                    and (mode != "glob-mtime-tie" or summary.get("mtime_tie_unchanged") is True)
                    and (mode != "glob-ignored" or summary.get("ignored_unchanged") is True)
+                   and (mode != "glob-fd-ignore" or summary.get("fd_ignore_unchanged") is True)
                    and (mode not in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
