@@ -51,13 +51,16 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 
 ### Registered Delivery Slices
 - `US1-CORE-2026-09-14`: Immutable delivery slice containing exactly `US1-READ-001`, `US1-SEARCH-PATH-001`, `US1-SEARCH-CONTENT-001`, `US1-EDIT-001`, `US1-COMMAND-001`, `US1-DENY-001`, `US1-FAIL-001`, and `US1-RECOVER-001`. Closed via T016–T019.
-- `US1-CONTEXT-PENDING`: Context-discovery and prompt-handling delivery slice containing `US1-CTX-NOXMD-001`, `US1-CTX-RULES-001`, `US1-CTX-LOCAL-001`, `US1-CTX-IMPORT-001`, `US1-CTX-PROMPT-ORDER-001`, and `US1-CTX-EXCLUDES-001` (T321–T324).
+- `US1-CONTEXT-PENDING`: Context-discovery and prompt-handling delivery slice containing `US1-CTX-NOXMD-001`, `US1-CTX-RULES-001`, `US1-CTX-LOCAL-001`, `US1-CTX-IMPORT-001`, `US1-CTX-PROMPT-ORDER-001`, and `US1-CTX-EXCLUDES-001` (T321–T324). Closed.
+- `US2-SESSION-2026-09-14`: Session lifecycle, background sessions, and fork/resume/compaction slice containing `US2-SESSION-001` through `US2-SESSION-006` and `SUR-BG-001` through `SUR-BG-009` (T020, T023, T027, T281–T319). Closed.
+- `US2-PERMISSIONS-2026-09-14`: Permission manager, modes, rule precedence, path scoping, and credential redaction slice containing `PERM-001` through `PERM-026` and `SEC-SECRET-001` (T021, T024). Closed.
+- `US2-MODEL-2026-09-14`: Model controls, scoping, thinking budget, context usage, and fallback slice containing `MODEL-001` through `MODEL-017` (T022, T025). Closed.
 - `US3-CONFIG-PENDING`: Configuration, settings, and instructions delivery slice (T325–T327).
 - `US4-SURFACE-PENDING`: Print, worktree, and remote surfaces delivery slice (T328–T331).
 
 ### US1-CONTEXT-PENDING Slice Registry
 
-| Leaf ID | Description | nox Control / Target | Evidence Task | Verification Task | Status |
+| Leaf ID | Description | nox Target | Evidence Task | Verification Task | Status |
 |---|---|---|---|---|---|
 | `US1-CTX-NOXMD-001` | Load `NOX.md` project instructions | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
 | `US1-CTX-RULES-001` | Load path-scoped `.nox/rules/*.md` | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
@@ -65,6 +68,15 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 | `US1-CTX-IMPORT-001` | Recursive `@path` markdown imports | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
 | `US1-CTX-PROMPT-ORDER-001` | Canonical prompt layering order | `packages/coding-agent/src/core/system-prompt.ts` | T322 / CLI-557 | T332–T334 / T324 | Implemented; verified locally |
 | `US1-CTX-EXCLUDES-001` | `noxMdExcludes` pattern filters | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
+
+### US2 Slices Registry
+
+| Leaf ID | Description | nox Target | Evidence Task | Verification Task | Status |
+|---|---|---|---|---|---|
+| `US2-SESSION-001..006` | Identity, continuation, resume, fork, compaction, persistence | `packages/coding-agent/src/core/session-manager.ts` | T289 | T020, T290 / T023 | Implemented; verified locally |
+| `SUR-BG-001..009` | Background launch, list, attach, logs, stop, restart, rm, exit, recovery | `packages/coding-agent/src/core/background-session.ts` | T282–T292 | T293–T319 / T027 | Implemented; verified locally |
+| `PERM-001..026` | Permission modes, precedence, pattern matching, path containment | `packages/coding-agent/src/core/permission-manager.ts` | T021 | T021 / T024 | Implemented; verified locally |
+| `MODEL-001..017` | Model resolution, scoping, thinking budget, context usage | `packages/coding-agent/src/core/model-selection.ts` | T022 | T022 / T025 | Implemented; verified locally |
 
 ---
 

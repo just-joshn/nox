@@ -1,0 +1,12 @@
+{
+  "exit_code": 0,
+  "result": "session forked",
+  "is_error": false,
+  "leaf_id": "US2-SESSION-003",
+  "scenario": "US2-SESSION-FORK",
+  "session_format": {
+    "parent_session_referenced": true,
+    "isolated_file_created": true,
+    "original_file_unmutated": true
+  }
+}

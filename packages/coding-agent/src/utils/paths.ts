@@ -116,6 +116,11 @@ export function getCwdRelativePath(filePath: string, cwd: string): string | unde
 	return isInsideCwd ? relativePath || "." : undefined;
 }
 
+export function isSubpath(parent: string, child: string): boolean {
+	const rel = relative(resolvePath(parent), resolvePath(child));
+	return rel === "" || (rel !== ".." && !rel.startsWith(`..${sep}`) && !isAbsolute(rel));
+}
+
 export function formatPathRelativeToCwdOrAbsolute(filePath: string, cwd: string): string {
 	const absolutePath = resolvePath(filePath, cwd);
 	return (getCwdRelativePath(absolutePath, cwd) ?? absolutePath).split(sep).join("/");

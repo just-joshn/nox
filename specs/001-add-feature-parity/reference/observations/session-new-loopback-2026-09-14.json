@@ -1,0 +1,13 @@
+{
+  "exit_code": 0,
+  "result": "session persisted",
+  "is_error": false,
+  "leaf_id": "US2-SESSION-001",
+  "scenario": "US2-SESSION-NEW",
+  "session_format": {
+    "header_type": "session",
+    "version": 3,
+    "entry_types": ["session", "message", "message"],
+    "persisted_to_disk": true
+  }
+}

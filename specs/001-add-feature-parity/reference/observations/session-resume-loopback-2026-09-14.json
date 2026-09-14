@@ -1,0 +1,12 @@
+{
+  "exit_code": 0,
+  "result": "session resumed",
+  "is_error": false,
+  "leaf_id": "US2-SESSION-002",
+  "scenario": "US2-SESSION-RESUME",
+  "session_format": {
+    "reloaded_entries_count": 3,
+    "continued_turns_appended": true,
+    "history_preserved": true
+  }
+}

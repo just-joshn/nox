@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "result": "session renamed",
+  "is_error": false,
+  "leaf_id": "US2-SESSION-004",
+  "scenario": "US2-SESSION-RENAME",
+  "session_format": {
+    "session_name_updated": true,
+    "persisted_across_reopen": true
+  }
+}

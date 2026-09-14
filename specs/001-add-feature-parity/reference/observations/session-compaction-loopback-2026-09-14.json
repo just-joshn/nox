@@ -1,0 +1,12 @@
+{
+  "exit_code": 0,
+  "result": "session compacted",
+  "is_error": false,
+  "leaf_id": "US2-SESSION-005",
+  "scenario": "US2-SESSION-COMPACTION",
+  "session_format": {
+    "summary_created": true,
+    "history_compacted": true,
+    "conversation_continued": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "exit_code": 0,
+  "result": "in-memory session completed",
+  "is_error": false,
+  "leaf_id": "US2-SESSION-006",
+  "scenario": "US2-SESSION-IN-MEMORY",
+  "session_format": {
+    "no_files_on_disk": true,
+    "ephemeral": true,
+    "turns_executed": true
+  }
+}
