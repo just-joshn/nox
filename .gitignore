@@ -60,3 +60,4 @@ packages/agent/docs/extensions/pi-server-artifact/index.md
 .specify/
 specs/
 .pi/
+.agents/
