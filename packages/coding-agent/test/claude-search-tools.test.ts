@@ -754,6 +754,18 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 
+	it("Grep content mode treats a zero head limit as unbounded", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "content", head_limit: 0 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha" }]);
+	});
+
 	it.each([undefined, 1])(
 		"Grep content mode keeps the observed no-match text with head_limit %s",
 		async (head_limit) => {
