@@ -39,7 +39,7 @@ export async function executeClaudeGrepMultiline(cwd: string, input: MultilineIn
 			return `${path.relative(cwd, match[1]).replaceAll("\\", "/")}:${match[2]}:${match[3]}`;
 		});
 	return {
-		content: [{ type: "text" as const, text: lines.length ? lines.join("\n") : "No files found" }],
+		content: [{ type: "text" as const, text: lines.length ? lines.join("\n") : "No matches found" }],
 		details: undefined,
 	};
 }

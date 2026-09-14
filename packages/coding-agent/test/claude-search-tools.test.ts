@@ -215,6 +215,18 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "fixture.txt:1:alpha\nfixture.txt:2:beta" }]);
 	});
 
+	it("Grep multiline content reports no matches", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", output_mode: "content", multiline: true },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "No matches found" }]);
+	});
+
 	it.each([
 		["-A", "fixture.txt:2:alpha\nfixture.txt-3-after"],
 		["-B", "fixture.txt-1-before\nfixture.txt:2:alpha"],
