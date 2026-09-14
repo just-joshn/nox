@@ -52,6 +52,20 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep count mode reports zero occurrences without an error", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "absent-sentinel", output_mode: "count" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{ type: "text", text: "No matches found\n\nFound 0 total occurrences across 0 files." },
+		]);
+	});
+
 	it("Grep count mode reports per-file and total occurrences", async () => {
 		writeFileSync(join(cwd, "fixture.txt"), "alpha\nalpha\n");
 		writeFileSync(join(cwd, "second.txt"), "alpha\n");

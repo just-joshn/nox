@@ -75,7 +75,18 @@ export function createClaudeGrepToolDefinition(cwd: string) {
 			const result = await grep.execute(id, { ...input, ignoreCase: selected["-i"] }, signal, onUpdate, ctx);
 			const text = resultText(result);
 			if (text === "No matches found")
-				return { ...result, content: [{ type: "text" as const, text: "No files found" }] };
+				return {
+					...result,
+					content: [
+						{
+							type: "text" as const,
+							text:
+								outputMode === "count"
+									? "No matches found\n\nFound 0 total occurrences across 0 files."
+									: "No files found",
+						},
+					],
+				};
 			if (outputMode === "content") {
 				return { ...result, content: [{ type: "text" as const, text: text.replaceAll(/:(\d+): /g, ":$1:") }] };
 			}
