@@ -187,7 +187,7 @@
 - [X] T234 [US1] Observe explicit Grep count with two matching synthetic files, `head_limit: 1`, and `offset: 1` under localhost-only isolation; retain exact allowlisted file/summary text, verify harness tests, then commit locally.
 - [X] T235 [US1] Write a failing nox test for T234 count pagination, implement the observed file-row selection and whole-result summary without changing other count modes, verify focused tests and `npm run check`, then commit locally.
 - [X] T236 [US1] Observe explicit Grep count across two matching synthetic files with `head_limit: 1` and no offset under localhost-only isolation; retain exact allowlisted result, verify harness tests, then commit locally.
-- [ ] T237 [US1] Write a failing nox test for T236 count head-limit annotation, implement the observed limit marker without changing offset behavior, verify focused tests and `npm run check`, then commit locally.
+- [X] T237 [US1] Write a failing nox test for T236 count head-limit annotation, implement the observed limit marker without changing offset behavior, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
