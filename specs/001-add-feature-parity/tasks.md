@@ -40,6 +40,7 @@
 - [ ] T011 Predeclare the required Pi visual matrix in `specs/001-add-feature-parity/reference/pi-visuals.md`: every affected workflow and its relevant normal, denial, error, and recovery states across supported terminal widths and themes, including prompts, menus, tool results, and errors. Capture reference states, identify any proposed intentional departure, and require a constitution amendment before its implementation.
 - [ ] T012 Define discrepancy ownership, reproduction format, and closure evidence in `specs/001-add-feature-parity/reference/discrepancies.md`; require fresh passing reference comparison before `closed` and reopen on regression.
 - [ ] T013 Expand every family task below into explicit implementation and verification subtasks in this `tasks.md` for each reachable, observed leaf; each subtask names its leaf ID, observed contract, target file, dependency, and passing scenario before source implementation. Start with the read/search/edit/command/denial/failure/recovery leaves. Add discovery or access subtasks for gated leaves without inventing contracts. T046 cannot close until every inventory leaf has item-level task and scenario coverage.
+- [ ] T091 Establish a reproducible aggregate workspace coverage command and baseline in root `package.json` and `specs/001-add-feature-parity/reference/validation.md`: measure applicable `packages/ai`, `packages/agent`, and `packages/coding-agent` tests, document exclusions and the current percentage, and make the constitution's project-wide 80% gate measurable before source tasks are marked complete.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
@@ -150,10 +151,11 @@
 - [ ] T046 After T080, reconcile every inventory leaf ID with a nox surface, item-level implementation and verification tasks, passing normal/failure/interaction scenarios, and no open discrepancy in `specs/001-add-feature-parity/reference/reconciliation.md`; create and finish missing tasks in `specs/001-add-feature-parity/tasks.md` before closing coverage. Unobserved or gated leaves keep this task open.
 - [ ] T047 Audit developed application code, user-facing strings, command names, and configuration filenames and paths for prohibited reference-product naming; record scope and findings in `specs/001-add-feature-parity/reference/naming-audit.md`.
 - [ ] T048 Compare every required state in the predeclared Pi visual matrix and unrelated Pi workflows against `specs/001-add-feature-parity/reference/pi-visuals.md`; report tested and missing matrix cells, and require an approved constitution amendment for every intentional visual divergence.
-- [ ] T049 Re-run `npm run check`, focused modified test files, and appropriate non-e2e coverage according to `AGENTS.md` for the final integrated state; record commands, results, and unresolved failures in `specs/001-add-feature-parity/reference/validation.md`.
+- [ ] T049 Re-run `npm run check`, focused modified test files, relevant unit/integration/end-to-end checks, and the T091 aggregate coverage command; require at least 80% project coverage before application work is called complete, and record commands, results, exclusions, and unresolved failures in `specs/001-add-feature-parity/reference/validation.md`.
 - [ ] T050 Refresh the installed reference version, availability matrix, inventory, and changed observations in `specs/001-add-feature-parity/reference/snapshot.md` and `specs/001-add-feature-parity/reference/reconciliation.md` before a current-parity claim.
 - [ ] T051 Define and record matched-environment end-to-end acceptance results for all four user-story journeys, including stated error and recovery cases, in `specs/001-add-feature-parity/reference/journey-results.md`; do not count a gated or unverified journey as passing.
 - [ ] T052 Record workload, hardware, network state, warm-up, and 30-run p95 comparisons for every timing-sensitive leaf in `specs/001-add-feature-parity/reference/performance.md`; require nox completion time to be at most 10% above the matched reference p95 or record a discrepancy.
+- [ ] T092 Audit the final application diff for validated external inputs, authorization before side effects, credential and private-data redaction, applicable injection and request-forgery defenses, endpoint rate limits, and error-message leakage; record applicable and non-applicable findings with evidence in `specs/001-add-feature-parity/reference/security-audit.md`, resolve critical findings before T053, and invoke the security-reviewer role for any critical finding.
 - [ ] T053 Apply the release gate in `specs/001-add-feature-parity/reference/release-gate.md`: require all inventoried leaves and all four journeys passing, zero known discrepancies, zero gated-unverified leaves, and no unexplained candidate from the installed CLI, current official documentation, or restored source map for an unqualified 100% claim; otherwise state the precise remaining gaps.
 
 ---
@@ -162,17 +164,17 @@
 
 ```text
 Reference discovery (T001–T007 and T062, continuing as new leaves are found)
-    → Per-feature evidence (T008–T012 and T054–T061 for core workflow leaf IDs)
+    → Per-feature evidence (T008–T012, T054–T061 for core workflow leaf IDs, and T091 coverage baseline)
         → Explicit implementation and verification tasks (T013 for observed IDs)
             → US1 / US2 / US3 / US4 source and verification slices
                 → Three-source audit (T079–T080) and all leaf tasks complete (T046)
-                    → Cross-cutting release gates (T047–T053)
+                    → Cross-cutting release gates (T047–T053 and T092)
 ```
 
 - US1 and US2 are P1. Each source slice depends on evidence and explicit tasks for its own leaves, not completion of every Phase 2 item; shared `agent-session.ts` edits must be serialized or isolated.
 - US3 and US4 are P2. Each source slice depends on evidence and explicit tasks for its own leaves. US4's remote connections may consume US3 connection behavior, but its protocol and worktree slices remain independently demonstrable.
 - Within each story, observed scenarios precede behavior changes, core state changes precede UI/CLI integration, and discrepancy closure follows verification. Run `npm run check` with full output after each code-change task and fix all errors, warnings, and infos before continuing; run each created or modified focused test file until it passes. Record results in `specs/001-add-feature-parity/reference/validation.md`.
-- T062 precedes T006. T079–T080 precede T046. T046 can expose missing leaf tasks; add them in the owning story phase and complete them before T051–T052. T053 follows all validation.
+- T062 precedes T006. T079–T080 precede T046. T046 can expose missing leaf tasks; add them in the owning story phase and complete them before T051–T052. T091 precedes T049. T092 precedes T053. T053 follows all validation.
 
 ## Parallel Execution Examples
 
@@ -192,9 +194,10 @@ Reference discovery (T001–T007 and T062, continuing as new leaves are found)
 ## Notes
 
 - `[P]` marks different-file work without an incomplete task dependency.
+- T091 and T092 were appended after the original 90 IDs to preserve stable references; their phase placement and explicit dependencies define execution order.
 - Item-level acceptance derives from the pinned reference observations, not from undocumented assumptions.
 - The custom `checklists/parity.md` is reviewer-owned requirements quality review; it is not an implementation progress checklist.
-- Commits occur only on explicit user request under `AGENTS.md`.
+- The user has requested logical commits on `main` without pushing. Before each application-code commit, use the planner, test-guidance, and code-review roles when available, run a failing focused test before implementation, and check the staged diff for secrets and applicable authorization, validation, injection, request-forgery, rate-limit, and leakage risks. A critical finding invokes security review and blocks that commit until fixed.
 
 ## Core Workflow Reference Evidence Tasks
 
