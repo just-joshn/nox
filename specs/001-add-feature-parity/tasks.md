@@ -22,7 +22,7 @@
 - [ ] T002 [P] Enumerate every CLI flag, subcommand, option combination, and documented interactive command or shortcut as leaf entries in `specs/001-add-feature-parity/reference/inventory-cli.md`; reconcile local help with official command documentation and mark unobserved entries.
 - [ ] T003 [P] Enumerate settings, instruction loading, memory, permission modes, built-in tools, and model controls as leaf entries in `specs/001-add-feature-parity/reference/inventory-core.md`; record defaults, scope, precedence, and availability conditions.
 - [ ] T004 [P] Enumerate skills, custom commands, agents, teams, hooks, external connections, plugins, and marketplaces as leaf entries in `specs/001-add-feature-parity/reference/inventory-extensions.md`; include triggers, lifecycle events, and gated variants.
-- [ ] T005 [P] Enumerate background sessions, worktrees, non-interactive protocols, desktop/web/mobile/editor/browser/chat/CI workflows, diagnostics, auth, import, and update flows as leaf entries in `specs/001-add-feature-parity/reference/inventory-surfaces.md`; retain inaccessible items as `gated-unverified` and identify the outcome a nox terminal or CLI control must deliver.
+- [ ] T005 [P] Enumerate background sessions, worktrees, non-interactive protocols, desktop/web/mobile/editor/browser/chat/CI workflows, diagnostics, auth, import, and update flows as leaf entries in `specs/001-add-feature-parity/reference/inventory-surfaces.md`; for each surface leaf record entry action, intermediate interactions, resulting state, side effects, failure behavior, availability conditions, and proposed nox control. Retain inaccessible or non-equivalent items as `gated-unverified`.
 - [ ] T006 Reconcile T002–T005 against the official documentation index and installed command tree in `specs/001-add-feature-parity/reference/reconciliation.md`; list every unmatched source entry and split any broad item that can fail independently.
 - [ ] T007 Map each leaf item to a nox-native command, key, configuration path, protocol, or integration in `specs/001-add-feature-parity/reference/surface-map.md`; record naming differences and flag missing nox surfaces.
 
@@ -35,11 +35,11 @@
 **Purpose**: Make each leaf item implementable and objectively comparable before story work.
 
 - [ ] T008 Define the `Reference Snapshot`, `Capability Item`, `Scenario`, `Observation`, and `Discrepancy` fields and state-transition rules from `data-model.md` in `specs/001-add-feature-parity/reference/schema.md`; preserve the constraints that a separate input, option, transition, or gated variant gets its own leaf ID and `verified` requires passing normal, failure, and relevant interaction scenarios.
-- [ ] T009 Create normal, denial/error, persistence, interruption/recovery, and interaction scenarios for every reachable leaf ID in `specs/001-add-feature-parity/reference/scenarios.md`; record matched starting state, expected decisions, outputs, errors, side effects, and permitted normalization before implementation.
+- [ ] T009 Create normal, denial/error, persistence, interruption/recovery, and interaction scenarios for every reachable leaf ID in `specs/001-add-feature-parity/reference/scenarios.md`; record matched starting state, expected decisions, outputs, errors, side effects, and permitted normalization before implementation. For security leaves, use synthetic credentials and isolated user/project fixtures to observe reuse after restart, output/log/error redaction, permission-rule persistence, and data disclosed to extensions or remote services; record only redacted traces and leave inaccessible behavior unverified.
 - [ ] T010 Record the evidence gap and access needed for every gated or otherwise unobservable leaf ID in `specs/001-add-feature-parity/reference/gated.md`; keep those IDs `gated-unverified` and excluded from any unqualified complete-parity claim.
-- [ ] T011 Establish Pi visual reference states for affected terminal widths, themes, prompts, menus, tool results, and errors in `specs/001-add-feature-parity/reference/pi-visuals.md`; identify any proposed intentional departure and require a constitution amendment before its implementation.
+- [ ] T011 Predeclare the required Pi visual matrix in `specs/001-add-feature-parity/reference/pi-visuals.md`: every affected workflow and its relevant normal, denial, error, and recovery states across supported terminal widths and themes, including prompts, menus, tool results, and errors. Capture reference states, identify any proposed intentional departure, and require a constitution amendment before its implementation.
 - [ ] T012 Define discrepancy ownership, reproduction format, and closure evidence in `specs/001-add-feature-parity/reference/discrepancies.md`; require fresh passing reference comparison before `closed` and reopen on regression.
-- [ ] T013 Add explicit implementation and verification tasks in `specs/001-add-feature-parity/tasks.md` for each reachable, observed leaf selected for the next story slice; each task must name its ID, observed contract, target path, and dependency before source implementation of that leaf. Add discovery or access tasks for gated leaves without inventing contracts. Continue expanding the task set as inventory work proceeds; all leaves require item-level coverage before T046 can close.
+- [ ] T013 Add explicit implementation and verification tasks in `specs/001-add-feature-parity/tasks.md` for each reachable, observed leaf selected for the next story slice; each task must name its leaf ID, observed contract, target file, dependency, and passing scenario before source implementation of that leaf. Add discovery or access tasks for gated leaves without inventing contracts. Continue expanding the task set as inventory work proceeds; T046 cannot close until every inventory leaf has item-level task and scenario coverage.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
@@ -76,7 +76,7 @@
 ### Verification
 
 - [ ] T020 [P] [US2] Add faux-provider session, compaction, fork, resume, and background-state scenarios in `packages/coding-agent/test/suite/parity-session-lifecycle.test.ts`, keyed to US2 leaf IDs.
-- [ ] T021 [P] [US2] Add permission scope, precedence, persistence, prompt, denial, unattended, restricted-mode, credential reuse, and secret-redaction scenarios in `packages/coding-agent/test/suite/parity-permissions.test.ts`, keyed to observed US2 leaf IDs.
+- [ ] T021 [P] [US2] Add permission scope, precedence, persistence, prompt, denial, unattended, restricted-mode, credential reuse after restart, and output/log/error redaction scenarios in `packages/coding-agent/test/suite/parity-permissions.test.ts`, keyed to observed US2 leaf IDs and using synthetic credentials in isolated user/project fixtures.
 - [ ] T022 [P] [US2] Add model, effort, fallback, context, and budget contract scenarios in `packages/coding-agent/test/suite/parity-model-controls.test.ts`, keyed to US2 leaf IDs.
 
 ### Implementation
@@ -101,7 +101,7 @@
 ### Verification
 
 - [ ] T029 [P] [US3] Add settings, instruction, rules, and memory precedence scenarios in `packages/coding-agent/test/suite/parity-configuration.test.ts`, keyed to US3 leaf IDs.
-- [ ] T030 [P] [US3] Add skills, commands, agents, hooks, plugin, and external-connection fixture scenarios in `packages/coding-agent/test/suite/parity-extensions.test.ts`, including observed authorization, data exposure, and log-redaction cases keyed to US3 leaf IDs.
+- [ ] T030 [P] [US3] Add skills, commands, agents, hooks, plugin, and external-connection fixture scenarios in `packages/coding-agent/test/suite/parity-extensions.test.ts`, including observed authorization, exact data disclosed to extensions, and output/log/error redaction cases keyed to US3 leaf IDs; use synthetic secrets and isolated connections.
 
 ### Implementation
 
@@ -127,13 +127,13 @@
 ### Verification
 
 - [ ] T039 [P] [US4] Add non-interactive input/output, JSON validation, event-order, interruption, and exit scenarios in `packages/coding-agent/test/suite/parity-print-protocol.test.ts`, keyed to US4 leaf IDs.
-- [ ] T040 [P] [US4] Add worktree, remote, desktop/web/mobile/editor/browser/chat/CI workflow, and CLI-administration fixture scenarios in `packages/coding-agent/test/suite/parity-automation.test.ts`, including data-exposure decisions; key each to US4 leaf IDs and keep gated cases unverified until observed.
+- [ ] T040 [P] [US4] Add worktree, remote, desktop/web/mobile/editor/browser/chat/CI workflow, and CLI-administration fixture scenarios in `packages/coding-agent/test/suite/parity-automation.test.ts`; compare each surface's entry action, intermediate interactions, result, failure, and exact data disclosed to remote services using synthetic secrets and isolated connections. Key each to US4 leaf IDs and keep gated cases unverified until observed.
 
 ### Implementation
 
 - [ ] T041 [US4] Implement observed print-mode formats, structured output validation, streaming, partial events, and exit behavior in `packages/coding-agent/src/modes/print-mode.ts` and `packages/coding-agent/src/modes/rpc/rpc-mode.ts`.
 - [ ] T042 [US4] Implement observed worktree isolation, naming, and cleanup in a nox-named module at `packages/coding-agent/src/core/worktrees.ts` and expose controls in `packages/coding-agent/src/cli.ts`.
-- [ ] T043 [US4] Implement observed remote and desktop/web/mobile/editor/browser/chat/CI workflow outcomes through nox terminal or CLI controls and connected-service bridges in nox-named domain modules under `packages/coding-agent/src/core/` and `packages/coding-agent/src/cli/`; retain explicit availability and data-exposure behavior for gated services. Split this domain task into leaf tasks under T013 before source work.
+- [ ] T043 [US4] Split remote and desktop/web/mobile/editor/browser/chat/CI workflows into separate observed leaf tasks under T013, each with its own nox terminal or CLI control, target file under `packages/coding-agent/src/core/` or `packages/coding-agent/src/cli/`, interaction sequence, availability rule, data-exposure contract, and verification scenario. Implement only leaves whose required interactions have a valid observed nox equivalent; retain the rest as unverified.
 - [ ] T044 [US4] Implement observed authentication, diagnostics, import, project state, update, external-connection management, and hosted-review command behavior in `packages/coding-agent/src/cli.ts` and domain modules under `packages/coding-agent/src/cli/` as identified by the leaf inventory.
 - [ ] T045 [US4] Resolve every US4 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and record passing protocol and side-effect comparisons in `specs/001-add-feature-parity/reference/scenarios.md`.
 
@@ -145,9 +145,9 @@
 
 **Purpose**: Reconcile all leaves, protect Pi behavior, and prevent unsupported parity claims.
 
-- [ ] T046 Reconcile every inventory leaf ID with a nox surface, item-level task, passing scenario, and closed discrepancy in `specs/001-add-feature-parity/reference/reconciliation.md`; create missing tasks in `specs/001-add-feature-parity/tasks.md` before closing coverage.
+- [ ] T046 Reconcile every inventory leaf ID with a nox surface, item-level implementation and verification tasks, passing normal/failure/interaction scenarios, and closed discrepancy in `specs/001-add-feature-parity/reference/reconciliation.md`; create and finish missing tasks in `specs/001-add-feature-parity/tasks.md` before closing coverage. Unobserved or gated leaves keep this task open.
 - [ ] T047 Audit developed application code, user-facing strings, command names, and configuration filenames and paths for prohibited reference-product naming; record scope and findings in `specs/001-add-feature-parity/reference/naming-audit.md`.
-- [ ] T048 Compare affected Pi terminal states and unrelated Pi workflows against `specs/001-add-feature-parity/reference/pi-visuals.md`; require an approved constitution amendment for every intentional visual divergence.
+- [ ] T048 Compare every required state in the predeclared Pi visual matrix and unrelated Pi workflows against `specs/001-add-feature-parity/reference/pi-visuals.md`; report tested and missing matrix cells, and require an approved constitution amendment for every intentional visual divergence.
 - [ ] T049 Re-run `npm run check`, focused modified test files, and appropriate non-e2e coverage according to `AGENTS.md` for the final integrated state; record commands, results, and unresolved failures in `specs/001-add-feature-parity/reference/validation.md`.
 - [ ] T050 Refresh the installed reference version, availability matrix, inventory, and changed observations in `specs/001-add-feature-parity/reference/snapshot.md` and `specs/001-add-feature-parity/reference/reconciliation.md` before a current-parity claim.
 - [ ] T051 Define and record matched-environment end-to-end acceptance results for all four user-story journeys, including stated error and recovery cases, in `specs/001-add-feature-parity/reference/journey-results.md`; do not count a gated or unverified journey as passing.
@@ -159,16 +159,16 @@
 ## Dependencies and Execution Order
 
 ```text
-Phase 1 (T001–T007)
-    → Phase 2 (T008–T013: inventory, evidence, leaf-task coverage gate)
-        → US1 (T014–T019) ─┐
-        → US2 (T020–T028) ─┤
-        → US3 (T029–T038) ─┤→ Phase 7 (T046–T053)
-        → US4 (T039–T045) ─┘
+Reference discovery (T001–T007, continuing as new leaves are found)
+    → Per-slice evidence (T008–T012 for selected leaf IDs)
+        → Explicit leaf tasks (T013 for those IDs)
+            → US1 / US2 / US3 / US4 source and verification slices
+                → Full inventory and all leaf tasks complete (T046)
+                    → Cross-cutting release gates (T047–T053)
 ```
 
-- US1 and US2 are P1. Both depend on Phase 2, not on each other; shared `agent-session.ts` edits must be serialized or isolated.
-- US3 and US4 are P2. Both depend on Phase 2. US4's remote connections may consume US3 connection behavior, but its protocol and worktree slices remain independently demonstrable.
+- US1 and US2 are P1. Each source slice depends on evidence and explicit tasks for its own leaves, not completion of every Phase 2 item; shared `agent-session.ts` edits must be serialized or isolated.
+- US3 and US4 are P2. Each source slice depends on evidence and explicit tasks for its own leaves. US4's remote connections may consume US3 connection behavior, but its protocol and worktree slices remain independently demonstrable.
 - Within each story, observed scenarios precede behavior changes, core state changes precede UI/CLI integration, and discrepancy closure follows verification. Run `npm run check` with full output after each code-change slice and fix all errors, warnings, and infos before continuing; run each created or modified focused test file until it passes. Record results in `specs/001-add-feature-parity/reference/validation.md`.
 - T046 can expose missing leaf tasks. Such tasks are added in the owning story phase and completed before T051–T052. T053 follows all validation.
 
