@@ -126,10 +126,13 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 
 ### Context and prompt-handling slice (FR-004; not US1-CORE)
 
-- [ ] T321 [US1] Inventory context-discovery and prompt-assembly as separate leaves (project instructions, nested rules, `NOX.md`, implicit repo context) in `specs/001-add-feature-parity/reference/inventory-core.md` with nox-native names; register slice `US1-CONTEXT-PENDING` in `specs/001-add-feature-parity/reference/reconciliation.md`.
-- [ ] T322 [US1] Observe those leaves in an isolated fixture; record source order, omission, and failure in `specs/001-add-feature-parity/reference/scenarios.md`.
-- [ ] T323 [US1] After T322, T013 must emit failing-test → implement → verify tasks before any source change.
-- [ ] T324 [US1] Checkpoint — Close `US1-CONTEXT-PENDING` only after mapped verification passes; T016 stays independent.
+- [X] T321 [US1] Inventory context-discovery and prompt-assembly as separate leaves (project instructions, nested rules, `NOX.md`, implicit repo context) in `specs/001-add-feature-parity/reference/inventory-core.md` with nox-native names; register slice `US1-CONTEXT-PENDING` in `specs/001-add-feature-parity/reference/reconciliation.md`.
+- [X] T322 [US1] Observe those leaves in an isolated fixture; record source order, omission, and failure in `specs/001-add-feature-parity/reference/scenarios.md`.
+- [X] T323 [US1] After T322, T013 must emit failing-test → implement → verify tasks before any source change.
+- [X] T332 [US1] Write failing context and prompt-assembly behavior tests in `packages/coding-agent/test/suite/parity-context.test.ts` for `NOX.md`, `.nox/rules`, `.nox/local.md`, `@path` imports, and canonical prompt layering.
+- [X] T333 [US1] Implement prompt context assembly and rule matching in `packages/coding-agent/src/core/resource-loader.ts` and prompt builder, validating paths and 4-hop import limits.
+- [X] T334 [US1] Verify `US1-CTX-*` leaves with focused parity tests and `npm run check`, recording results in `specs/001-add-feature-parity/reference/validation.md`.
+- [X] T324 [US1] Checkpoint — Close `US1-CONTEXT-PENDING` only after mapped verification passes; T016 stays independent.
 
 ### Feature-family indexes
 

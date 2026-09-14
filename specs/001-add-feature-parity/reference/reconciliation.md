@@ -50,10 +50,21 @@ The capability inventory reconciles three discovery inputs: the pinned installed
 ## 4. Delivery Slice Registries
 
 ### Registered Delivery Slices
-- `US1-CORE-2026-09-14`: Immutable delivery slice containing exactly `US1-READ-001`, `US1-SEARCH-PATH-001`, `US1-SEARCH-CONTENT-001`, `US1-EDIT-001`, `US1-COMMAND-001`, `US1-DENY-001`, `US1-FAIL-001`, and `US1-RECOVER-001`.
-- `US1-CONTEXT-PENDING`: Context-discovery and prompt-handling delivery slice (T321–T324).
+- `US1-CORE-2026-09-14`: Immutable delivery slice containing exactly `US1-READ-001`, `US1-SEARCH-PATH-001`, `US1-SEARCH-CONTENT-001`, `US1-EDIT-001`, `US1-COMMAND-001`, `US1-DENY-001`, `US1-FAIL-001`, and `US1-RECOVER-001`. Closed via T016–T019.
+- `US1-CONTEXT-PENDING`: Context-discovery and prompt-handling delivery slice containing `US1-CTX-NOXMD-001`, `US1-CTX-RULES-001`, `US1-CTX-LOCAL-001`, `US1-CTX-IMPORT-001`, `US1-CTX-PROMPT-ORDER-001`, and `US1-CTX-EXCLUDES-001` (T321–T324).
 - `US3-CONFIG-PENDING`: Configuration, settings, and instructions delivery slice (T325–T327).
 - `US4-SURFACE-PENDING`: Print, worktree, and remote surfaces delivery slice (T328–T331).
+
+### US1-CONTEXT-PENDING Slice Registry
+
+| Leaf ID | Description | nox Control / Target | Evidence Task | Verification Task | Status |
+|---|---|---|---|---|---|
+| `US1-CTX-NOXMD-001` | Load `NOX.md` project instructions | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
+| `US1-CTX-RULES-001` | Load path-scoped `.nox/rules/*.md` | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
+| `US1-CTX-LOCAL-001` | Load `.nox/local.md` overrides | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
+| `US1-CTX-IMPORT-001` | Recursive `@path` markdown imports | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
+| `US1-CTX-PROMPT-ORDER-001` | Canonical prompt layering order | `packages/coding-agent/src/core/system-prompt.ts` | T322 / CLI-557 | T332–T334 / T324 | Implemented; verified locally |
+| `US1-CTX-EXCLUDES-001` | `noxMdExcludes` pattern filters | `packages/coding-agent/src/core/resource-loader.ts` | T322 | T332–T334 / T324 | Implemented; verified locally |
 
 ---
 

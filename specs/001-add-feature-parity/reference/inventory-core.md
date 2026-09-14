@@ -63,6 +63,19 @@ The [settings guide](https://code.claude.com/docs/en/configuration) supplies sco
 | CFG-035 | Legacy subdirectory and repository-root local files both define permission rules → combine the rules | Distinct from scalar precedence in CFG-025 | [Settings guide](https://code.claude.com/docs/en/configuration#where-claude-code-keeps-the-local-file-in-a-git-repository); trace pending |
 | CFG-036 | MDM or server-managed setting arrives mid-session → update on delivery schedule without `ConfigChange` hook | Managed delivery differs from file watcher event in CFG-028 | [Settings guide](https://code.claude.com/docs/en/configuration#when-edits-take-effect); managed-policy gate |
 
+## Context and prompt-handling leaves (US1-CONTEXT-PENDING)
+
+The context-discovery and prompt-assembly delivery slice (`US1-CONTEXT-PENDING`) defines nox-native prompt sources, scoping, and precedence rules before prompt dispatch.
+
+| Leaf ID | Condition / Input → Expected Behavior | Scope / Precedence / nox Control | SC-007 Timing Sensitive? | Evidence Status |
+|---|---|---|---|---|
+| `US1-CTX-NOXMD-001` | Project root contains `NOX.md` → load instructions into initial prompt context | Project scope; loaded broad-to-specific | Yes (interactive startup prompt assembly) | Documented; fixture observation pending |
+| `US1-CTX-RULES-001` | `.nox/rules/*.md` files exist with path frontmatter → load matching path rules into context | Project / path scope; evaluated on active files | Yes (affects initial context size and turn latency) | Documented; fixture observation pending |
+| `US1-CTX-LOCAL-001` | `.nox/local.md` or personal local instructions exist → load with precedence over shared `NOX.md` | Local scope; overrides shared project rules | Yes (interactive startup prompt assembly) | Documented; fixture observation pending |
+| `US1-CTX-IMPORT-001` | Instruction file contains `@path` import syntax → recursively expand up to 4 hops | Relative/absolute paths; outside repo requires confirmation | Yes (file I/O during prompt assembly) | Documented; fixture observation pending |
+| `US1-CTX-PROMPT-ORDER-001` | Multiple prompt sources present (`--system-prompt`, `NOX.md`, `.nox/rules`, `--append-system-prompt`) → assemble in strict canonical order | Canonical order: base $\to$ replacement $\to$ project $\to$ rules $\to$ append | Yes (deterministic prompt structure) | Partial loopback trace; fixture comparison pending |
+| `US1-CTX-EXCLUDES-001` | Config `noxMdExcludes` lists patterns → matching instruction files are excluded from context | Settings scope; suppresses context loading | No (configuration filter) | Documented; fixture observation pending |
+
 ## Instructions and memory leaves
 
 The [memory guide](https://code.claude.com/docs/en/memory) distinguishes instructions (context) from enforced permissions. Its reference filename is recorded here only as an observation; nox compatibility filenames are governed by the project spec.

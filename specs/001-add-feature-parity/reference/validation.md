@@ -423,3 +423,16 @@ The workflow evidence recorded by T014, T015, T058, and T060 exercised delivery 
 
 T020 captured the existing nox session lifecycle baseline in `packages/coding-agent/test/suite/parity-session-lifecycle.test.ts` and supporting injection behavior in `packages/coding-agent/test/suite/harness.ts`. The six nox scenarios pass, but US2-SESSION-001 through US2-SESSION-006 are not parity-verified; matched reference observations and comparisons remain open under T289–T290.
 
+## Context and prompt discovery parity (T332–T334, 2026-09-14)
+
+Delivery slice `US1-CONTEXT-PENDING` implementation was verified with test-first development in `packages/coding-agent/test/suite/parity-context.test.ts`:
+1. `US1-CTX-NOXMD-001`: Discovers and loads `NOX.md` in project root and parent directories; prefers `NOX.override.md` over `NOX.md`; preserves ancestor layering (broad to specific); strips block-level HTML comments `<!-- ... -->` from injected context (MEM-019).
+2. `US1-CTX-LOCAL-001`: Discovers `.nox/local.md` and `.nox/instructions.local.md` and prioritizes local overrides over shared team instructions.
+3. `US1-CTX-RULES-001`: Discovers `.nox/rules/*.md` files; extracts YAML frontmatter with `paths` globs; filters rules based on target file paths using `minimatch`; includes unconditional rules.
+4. `US1-CTX-IMPORT-001`: Inlines referenced markdown files via `@path` imports up to 4 hops deep with cycle detection and recursion protection.
+5. `US1-CTX-EXCLUDES-001`: Respects `noxMdExcludes` / `claudeMdExcludes` settings to skip excluded instruction files during discovery.
+6. `US1-CTX-PROMPT-ORDER-001`: Assembles canonical system prompt ordering: base/custom prompt -> append system prompt -> project context (`<project_context>`) -> current working directory.
+
+All 11 tests in `packages/coding-agent/test/suite/parity-context.test.ts` pass, all 41 existing resource loader tests pass in `packages/coding-agent/test/resource-loader.test.ts`, and `npm run check` passes with 0 errors.
+
+

@@ -1,12 +1,14 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { basename, dirname, join, resolve, sep } from "node:path";
 import chalk from "chalk";
-import { CONFIG_DIR_NAME } from "../config.ts";
+import { CONFIG_DIR_NAME, getAgentDir } from "../config.ts";
 import { loadThemeFromPath, type Theme } from "../modes/interactive/theme/theme.ts";
 import type { ResourceDiagnostic } from "./diagnostics.ts";
 
 export type { ResourceCollision, ResourceDiagnostic } from "./diagnostics.ts";
 
+import { minimatch } from "minimatch";
+import { parseFrontmatter } from "../utils/frontmatter.ts";
 import { canonicalizePath, isLocalPath, resolvePath } from "../utils/paths.ts";
 import { stripBom } from "../utils/text.ts";
 import { createEventBus, type EventBus } from "./event-bus.ts";
@@ -68,18 +70,76 @@ function resolvePromptInput(input: string | undefined, description: string): str
 	return input;
 }
 
+function stripHtmlComments(content: string): string {
+	return content.replace(/<!--[\s\S]*?-->/g, "").trim();
+}
+
+export function expandContextImports(
+	content: string,
+	baseDir: string,
+	depth: number = 0,
+	visited: Set<string> = new Set(),
+): string {
+	if (depth >= 4) {
+		return content;
+	}
+
+	const lines = content.split("\n");
+	const resultLines: string[] = [];
+
+	for (const line of lines) {
+		const match = line.match(/^\s*@([^\s]+\.md|[^\s]+)\s*$/);
+		if (match) {
+			const relativePath = match[1];
+			const targetPath = resolve(baseDir, relativePath);
+			if (existsSync(targetPath) && !visited.has(targetPath)) {
+				try {
+					if (statSync(targetPath).isFile()) {
+						const nextVisited = new Set(visited);
+						nextVisited.add(targetPath);
+						const raw = stripBom(readFileSync(targetPath, "utf-8"));
+						const importedContent = stripHtmlComments(raw);
+						const targetDir = dirname(targetPath);
+						const expanded = expandContextImports(importedContent, targetDir, depth + 1, nextVisited);
+						resultLines.push(expanded);
+						continue;
+					}
+				} catch {
+					// ignore read error
+				}
+			}
+		}
+		resultLines.push(line);
+	}
+
+	return resultLines.join("\n");
+}
+
 function loadContextFileFromDir(dir: string): { path: string; content: string } | null {
-	const candidates = ["AGENTS.override.md", "AGENTS.md", "AGENTS.MD", "CLAUDE.md", "CLAUDE.MD"];
-	for (const filename of candidates) {
-		const filePath = join(dir, filename);
+	const candidates = [
+		join(dir, ".nox", "local.md"),
+		join(dir, ".nox", "instructions.local.md"),
+		join(dir, "NOX.override.md"),
+		join(dir, "NOX.md"),
+		join(dir, "NOX.MD"),
+		join(dir, "AGENTS.override.md"),
+		join(dir, "AGENTS.md"),
+		join(dir, "AGENTS.MD"),
+		join(dir, "CLAUDE.md"),
+		join(dir, "CLAUDE.MD"),
+	];
+	for (const filePath of candidates) {
 		if (existsSync(filePath)) {
 			try {
 				if (!statSync(filePath).isFile()) {
 					continue;
 				}
+				const raw = stripBom(readFileSync(filePath, "utf-8"));
+				const withoutComments = stripHtmlComments(raw);
+				const expanded = expandContextImports(withoutComments, dirname(filePath));
 				return {
 					path: filePath,
-					content: stripBom(readFileSync(filePath, "utf-8")),
+					content: expanded,
 				};
 			} catch (error) {
 				console.error(chalk.yellow(`Warning: Could not read ${filePath}: ${error}`));
@@ -87,6 +147,68 @@ function loadContextFileFromDir(dir: string): { path: string; content: string } 
 		}
 	}
 	return null;
+}
+
+function loadRulesFromDir(dir: string, targetPaths?: string[]): Array<{ path: string; content: string }> {
+	const rulesDir = join(dir, ".nox", "rules");
+	if (!existsSync(rulesDir)) {
+		return [];
+	}
+	try {
+		if (!statSync(rulesDir).isDirectory()) {
+			return [];
+		}
+	} catch {
+		return [];
+	}
+
+	const results: Array<{ path: string; content: string }> = [];
+	try {
+		const entries = readdirSync(rulesDir, { withFileTypes: true });
+		for (const entry of entries) {
+			if (!entry.isFile() || !entry.name.endsWith(".md")) continue;
+			const filePath = join(rulesDir, entry.name);
+			const raw = stripBom(readFileSync(filePath, "utf-8"));
+			const { frontmatter, body } = parseFrontmatter<{ paths?: string | string[]; path?: string }>(raw);
+
+			const rulePaths = frontmatter.paths ?? frontmatter.path;
+			if (rulePaths) {
+				const patterns = Array.isArray(rulePaths) ? rulePaths : [rulePaths];
+				if (targetPaths && targetPaths.length > 0) {
+					const matches = targetPaths.some((tp) =>
+						patterns.some((pattern) => minimatch(tp, pattern, { dot: true, matchBase: true })),
+					);
+					if (!matches) continue;
+				} else {
+					continue;
+				}
+			}
+			const cleanedBody = stripHtmlComments(body);
+			const expanded = expandContextImports(cleanedBody, rulesDir);
+			results.push({
+				path: filePath,
+				content: expanded,
+			});
+		}
+	} catch {
+		// ignore read error
+	}
+	return results;
+}
+
+function isPathExcluded(filePath: string, excludes?: string[]): boolean {
+	if (!excludes || excludes.length === 0) return false;
+	const normalizedPath = filePath.replace(/\\/g, "/");
+	const base = basename(filePath);
+	return excludes.some((pattern) => {
+		const normPattern = pattern.replace(/\\/g, "/");
+		return (
+			minimatch(normalizedPath, normPattern, { dot: true, matchBase: true }) ||
+			minimatch(base, normPattern, { dot: true }) ||
+			minimatch(normalizedPath, `**/${normPattern.replace(/^\//, "")}`, { dot: true }) ||
+			minimatch(normalizedPath, normPattern, { dot: true })
+		);
+	});
 }
 
 /**
@@ -116,20 +238,33 @@ function findShadowedContextFile(cwd: string): string | undefined {
 	return worktreeContextFile ? join(mainRepoRoot, basename(worktreeContextFile.path)) : undefined;
 }
 
-export function loadProjectContextFiles(options: {
+export interface LoadProjectContextOptions {
 	cwd: string;
-	agentDir: string;
-}): Array<{ path: string; content: string }> {
+	agentDir?: string;
+	targetPaths?: string[];
+	excludes?: string[];
+}
+
+export function loadProjectContextFiles(options: LoadProjectContextOptions): Array<{ path: string; content: string }> {
 	const resolvedCwd = resolvePath(options.cwd);
-	const resolvedAgentDir = resolvePath(options.agentDir);
+	const resolvedAgentDir = resolvePath(options.agentDir ?? getAgentDir());
+	const excludes = options.excludes ?? [];
 
 	const contextFiles: Array<{ path: string; content: string }> = [];
 	const seenPaths = new Set<string>();
 
 	const globalContext = loadContextFileFromDir(resolvedAgentDir);
-	if (globalContext) {
+	if (globalContext && !isPathExcluded(globalContext.path, excludes)) {
 		contextFiles.push(globalContext);
 		seenPaths.add(globalContext.path);
+	}
+
+	const globalRules = loadRulesFromDir(resolvedAgentDir, options.targetPaths);
+	for (const rule of globalRules) {
+		if (!seenPaths.has(rule.path) && !isPathExcluded(rule.path, excludes)) {
+			contextFiles.push(rule);
+			seenPaths.add(rule.path);
+		}
 	}
 
 	const ancestorContextFiles: Array<{ path: string; content: string }> = [];
@@ -141,9 +276,22 @@ export function loadProjectContextFiles(options: {
 		const contextFile = loadContextFileFromDir(currentDir);
 		const isShadowed =
 			shadowedContextFile !== undefined && canonicalizePath(contextFile?.path ?? "") === shadowedContextFile;
-		if (contextFile && !isShadowed && !seenPaths.has(contextFile.path)) {
+		if (
+			contextFile &&
+			!isShadowed &&
+			!seenPaths.has(contextFile.path) &&
+			!isPathExcluded(contextFile.path, excludes)
+		) {
 			ancestorContextFiles.unshift(contextFile);
 			seenPaths.add(contextFile.path);
+		}
+
+		const dirRules = loadRulesFromDir(currentDir, options.targetPaths);
+		for (const rule of dirRules) {
+			if (!seenPaths.has(rule.path) && !isPathExcluded(rule.path, excludes)) {
+				ancestorContextFiles.unshift(rule);
+				seenPaths.add(rule.path);
+			}
 		}
 
 		const parentDir = dirname(currentDir);
@@ -158,7 +306,7 @@ export function loadProjectContextFiles(options: {
 
 export interface DefaultResourceLoaderOptions {
 	cwd: string;
-	agentDir: string;
+	agentDir?: string;
 	settingsManager?: SettingsManager;
 	eventBus?: EventBus;
 	additionalExtensionPaths?: string[];
@@ -253,7 +401,7 @@ export class DefaultResourceLoader implements ResourceLoader {
 
 	constructor(options: DefaultResourceLoaderOptions) {
 		this.cwd = resolvePath(options.cwd);
-		this.agentDir = resolvePath(options.agentDir);
+		this.agentDir = resolvePath(options.agentDir ?? getAgentDir());
 		this.settingsManager = options.settingsManager ?? SettingsManager.create(this.cwd, this.agentDir);
 		this.eventBus = options.eventBus ?? createEventBus();
 		this.packageManager = new DefaultPackageManager({
@@ -288,7 +436,26 @@ export class DefaultResourceLoader implements ResourceLoader {
 		this.promptDiagnostics = [];
 		this.themes = [];
 		this.themeDiagnostics = [];
-		this.agentsFiles = [];
+		const globalSettings = this.settingsManager.getGlobalSettings() as any;
+		const projectSettings = this.settingsManager.getProjectSettings() as any;
+		const excludes = (projectSettings?.noxMdExcludes ??
+			projectSettings?.claudeMdExcludes ??
+			globalSettings?.noxMdExcludes ??
+			globalSettings?.claudeMdExcludes ??
+			[]) as string[];
+		const initialAgentsFiles = {
+			agentsFiles: this.noContextFiles
+				? []
+				: loadProjectContextFiles({
+						cwd: this.cwd,
+						agentDir: this.agentDir,
+						excludes,
+					}),
+		};
+		const resolvedAgentsFiles = this.agentsFilesOverride
+			? this.agentsFilesOverride(initialAgentsFiles)
+			: initialAgentsFiles;
+		this.agentsFiles = resolvedAgentsFiles.agentsFiles;
 		this.appendSystemPrompt = [];
 		this.appendSystemPromptSourcePaths = [];
 		this.lastSkillPaths = [];
@@ -512,12 +679,20 @@ export class DefaultResourceLoader implements ResourceLoader {
 			}
 		}
 
+		const globalSettings = this.settingsManager.getGlobalSettings() as any;
+		const projectSettings = this.settingsManager.getProjectSettings() as any;
+		const excludes = (projectSettings?.noxMdExcludes ??
+			projectSettings?.claudeMdExcludes ??
+			globalSettings?.noxMdExcludes ??
+			globalSettings?.claudeMdExcludes ??
+			[]) as string[];
 		const agentsFiles = {
 			agentsFiles: this.noContextFiles
 				? []
 				: loadProjectContextFiles({
 						cwd: this.cwd,
 						agentDir: this.agentDir,
+						excludes,
 					}),
 		};
 		const resolvedAgentsFiles = this.agentsFilesOverride ? this.agentsFilesOverride(agentsFiles) : agentsFiles;
