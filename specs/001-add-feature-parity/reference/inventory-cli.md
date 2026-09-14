@@ -261,8 +261,8 @@ These IDs distinguish independently invokable paths. Their options still require
 | CLI-550 | `project help [command]` | [local help](observations/help-project-2026-09-14.txt) | [Isolated dispatch](observations/cli-nested-help-dispatch-2026-09-14.txt): `purge` and unknown-target paths observed |
 | CLI-551 | `respawn --all` | [local help](observations/help-respawn-2026-09-14.txt) | Restart every background session to use the current binary; lifecycle and no-session failure unobserved |
 | CLI-552 | `daemon -h, --help` | [local help](observations/help-daemon-2026-09-14.txt) | [Isolated `--help` result](observations/cli-daemon-help-2026-09-14.txt): exit 0, usage stdout, empty stderr, `.claude.json` created; `-h` alias untested |
-| CLI-559 | `--system-prompt-file` without an argument | [Isolated parser trace](observations/cli-prompt-files-no-value-2026-09-14.txt) | Exit 1, empty stdout, lowercase `error: option ... argument missing` on stderr, no home entries |
-| CLI-560 | `--append-system-prompt-file` without an argument | [Isolated parser trace](observations/cli-prompt-files-no-value-2026-09-14.txt) | Exit 1, empty stdout, lowercase `error: option ... argument missing` on stderr, no home entries |
+| CLI-559 | `--system-prompt-file` without an argument | [Isolated parser trace](observations/cli-prompt-files-no-value-2026-09-14.txt) | Nox process comparison matches exit 1, empty stdout, exact lowercase stderr, and no home entries; other file variants open |
+| CLI-560 | `--append-system-prompt-file` without an argument | [Isolated parser trace](observations/cli-prompt-files-no-value-2026-09-14.txt) | Nox process comparison matches exit 1, empty stdout, exact lowercase stderr, and no home entries; other file variants open |
 
 ## Documented interactive command invocations
 

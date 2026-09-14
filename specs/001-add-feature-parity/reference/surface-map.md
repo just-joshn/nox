@@ -22,5 +22,6 @@ This map records the naming rule without asserting an implementation. Every inve
 | CLI-069 / CLI-076 prompt file inputs | `nox --append-system-prompt-file <path>` and `nox --system-prompt-file <path>` | Nox parser, missing-file validation, and local prompt composition implemented; wire comparison and startup side effects open as DISC-003 |
 | CLI-261 replacement conflict | Nox rejects `--system-prompt` with `--system-prompt-file` | Decision and full diagnostic matched in isolated offline process; startup side effects differ as DISC-003 |
 | CLI-557 / CLI-558 prompt composition | Nox inline and file-backed prompt flags | Reference marker order observed with a local Messages endpoint; nox parser/loader/builder order passes offline tests, wire comparison pending |
+| CLI-559 / CLI-560 missing prompt-file values | Nox rejects either file flag without a path before settings/session startup | Exit, stdout, stderr, and empty-home side effects matched in isolated offline processes |
 
 The spec's name prohibition excludes literal compatibility paths and commands. A proposed name or delivery route does not prove the underlying feature exists or behaves the same way. Surface-specific workflows remain open until their observed contracts and nox outcomes are compared.

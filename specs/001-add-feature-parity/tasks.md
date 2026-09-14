@@ -65,7 +65,7 @@
 - [X] T112 [US4] Verify CLI-261 conflict precedence in `packages/coding-agent/test/prompt-file-cli.test.ts` with both an inline replacement and a nonexistent replacement file, compare exit/stdout/stderr and temporary-home entries to [CLI-261-SYSTEM-PROMPT-CONFLICT](reference/scenarios.md), and update the discrepancy register without closing the leaf.
 - [X] T113 [US4] Write failing isolated-process tests for CLI-559 and CLI-560 in `packages/coding-agent/test/prompt-file-cli.test.ts`: missing values must exit 1 with the observed lowercase parser diagnostic, empty stdout, and no home entries. Depend on [CLI-559-SYSTEM-PROMPT-NO-VALUE](reference/scenarios.md) and [CLI-560-APPEND-PROMPT-NO-VALUE](reference/scenarios.md).
 - [X] T114 [US4] Add a narrowly scoped prompt-file missing-value preflight in `packages/coding-agent/src/cli.ts` before settings/session initialization, preserving normal prompt text and valid file-flag handling.
-- [ ] T115 [US4] Re-run focused CLI cases and `npm run check`, compare both missing-value variants in disposable homes, update `reference/validation.md`, and keep unrelated prompt-file leaves open.
+- [X] T115 [US4] Re-run focused CLI cases and `npm run check`, compare both missing-value variants in disposable homes, update `reference/validation.md`, and keep unrelated prompt-file leaves open.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
