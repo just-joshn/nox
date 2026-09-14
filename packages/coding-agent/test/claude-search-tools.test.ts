@@ -644,6 +644,23 @@ describe("explicit Claude search tools", () => {
 		]);
 	});
 
+	it("Grep count mode names an offset page past the last file", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", output_mode: "count", head_limit: 1, offset: 1 },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([
+			{
+				type: "text",
+				text: "No entries at this offset\n\nFound 1 total occurrence across 1 file. with pagination = offset: 1",
+			},
+		]);
+	});
+
 	it.each(["Glob", "Grep"])("%s rejects an invalid bracket pattern", async (name) => {
 		const tool = createAllToolDefinitions(cwd)[name as ToolName];
 		await expect(tool.execute("call-1", { pattern: "[" }, undefined, undefined, {} as never)).rejects.toThrow();

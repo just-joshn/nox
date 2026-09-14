@@ -190,7 +190,7 @@
 - [X] T237 [US1] Write a failing nox test for T236 count head-limit annotation, implement the observed limit marker without changing offset behavior, verify focused tests and `npm run check`, then commit locally.
 - [X] T238 [US1] Observe count mode with exactly one matching synthetic file and `head_limit: 1` under localhost-only isolation; add the nox exact-limit test, verify harness/focused tests and `npm run check`, then commit locally.
 - [X] T239 [US1] Observe count mode with one matching synthetic file, `head_limit: 1`, and `offset: 1` under localhost-only isolation; retain exact allowlisted empty-page text, verify harness tests, then commit locally.
-- [ ] T240 [US1] Write a failing nox test for T239 count offset-past-end text, implement the observed row placeholder while retaining whole-result totals, verify focused tests and `npm run check`, then commit locally.
+- [X] T240 [US1] Write a failing nox test for T239 count offset-past-end text, implement the observed row placeholder while retaining whole-result totals, verify focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
