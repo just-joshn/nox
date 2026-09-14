@@ -16,23 +16,19 @@ function runCli(flag: string, before: readonly string[] = [], withoutValue = fal
 	const missing = join(root, "missing.txt");
 	try {
 		const args = withoutValue ? ["-p", "noop", flag] : ["-p", ...before, flag, missing, "noop"];
-		const result = spawnSync(
-			process.execPath,
-			["--import", sourceResolverPath, cliPath, ...args],
-			{
-				cwd: root,
-				env: {
-					HOME: root,
-					[ENV_AGENT_DIR]: join(root, "agent"),
-					[ENV_SESSION_DIR]: join(root, "sessions"),
-					PI_OFFLINE: "1",
-					NO_COLOR: "1",
-					PATH: process.env.PATH ?? "",
-				},
-				encoding: "utf8",
-				timeout: 10_000,
+		const result = spawnSync(process.execPath, ["--import", sourceResolverPath, cliPath, ...args], {
+			cwd: root,
+			env: {
+				HOME: root,
+				[ENV_AGENT_DIR]: join(root, "agent"),
+				[ENV_SESSION_DIR]: join(root, "sessions"),
+				PI_OFFLINE: "1",
+				NO_COLOR: "1",
+				PATH: process.env.PATH ?? "",
 			},
-		);
+			encoding: "utf8",
+			timeout: 10_000,
+		});
 		if (result.error) throw result.error;
 		return {
 			status: result.status,
