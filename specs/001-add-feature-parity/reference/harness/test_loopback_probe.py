@@ -169,6 +169,8 @@ class LoopbackProbeTests(unittest.TestCase):
         self.assertIn('\\"offset\\": 1', offset.decode())
         typed = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", file_type="py")
         self.assertIn('\\"type\\": \\"py\\"', typed.decode())
+        alias = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", context_alias=1)
+        self.assertIn('\\"context\\": 1', alias.decode())
         filtered = message_response("test-model", "tool", "fixture.txt", "Grep", "alpha", file_glob="*.txt")
         self.assertIn('\\"glob\\": \\"*.txt\\"', filtered.decode())
         self.assertNotIn('\\"fixture.md\\"', filtered.decode())
