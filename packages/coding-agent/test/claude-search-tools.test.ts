@@ -40,7 +40,13 @@ describe("explicit Claude search tools", () => {
 		writeFileSync(join(cwd, "nested", "fixture.txt"), "alpha\nbeta\n");
 		const tool = createAllToolDefinitions(cwd).Glob;
 		expect(Object.keys(tool.parameters.properties).sort()).toEqual(["path", "pattern"]);
-		const result = await tool.execute("call-1", { pattern: "*.txt", path: "nested" }, undefined, undefined, {} as never);
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "*.txt", path: "nested" },
+			undefined,
+			undefined,
+			{} as never,
+		);
 		expect(result.content).toEqual([{ type: "text", text: "nested/fixture.txt" }]);
 	});
 
