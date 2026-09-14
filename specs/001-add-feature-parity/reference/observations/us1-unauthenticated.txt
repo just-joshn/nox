@@ -1,0 +1,13 @@
+Reference: local CLI 2.1.270, macOS, 2026-09-13
+Fixture: disposable directory containing fixture.txt with lines alpha and beta
+
+Command: claude auth status
+Exit status: 1
+Output: suppressed to avoid capturing account data
+
+Command: claude -p --tools Read --max-budget-usd 0.01 'Read fixture.txt and report its two lines.'
+Exit status: 1
+Output:
+Not logged in · Please run /login
+
+No tool invocation or file-content result was observed. No provider call succeeded.

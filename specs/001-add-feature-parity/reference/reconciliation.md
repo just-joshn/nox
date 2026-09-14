@@ -19,4 +19,18 @@
 4. No remote, browser, IDE, desktop, mobile, enterprise, or hosted flow was exercised. Product availability cannot be inferred from documentation alone.
 5. No nox implementation has been compared against these surfaces. Every discovered capability remains unverified.
 
-T002–T006 remain open. T013 cannot yet add leaf-specific tasks for the first US1 read/search/edit/command/denial/failure/recovery slice because its stable leaf IDs, reference observations, and normal/failure scenarios have not been recorded. This blocks source work on that slice. An unqualified 100% parity claim is also blocked until every discovered leaf has passing verification.
+## First US1 slice gate
+
+Stable tracking IDs are listed in [inventory-core.md](inventory-core.md), with pending scenarios in [scenarios.md](scenarios.md). The local read request exited before tool dispatch because the host is not logged in ([observation](observations/us1-unauthenticated.txt)). This is the only observed failure path; it does not establish normal, tool-failure, denial, or recovery behavior. The target paths below are existing nox files, not claims that parity is implemented.
+
+| Leaf ID | Observation and scenario | nox target | Evidence task | Implementation and verification task |
+|---------|--------------------------|------------|---------------|--------------------------------------|
+| US1-READ-001 | `US1-READ-NORMAL` pending; shared auth failure observed | `packages/coding-agent/src/utils/tools-manager.ts` | T054 | T013 must create after normal/failure observations |
+| US1-SEARCH-001 | `US1-SEARCH-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T055 | T013 must create after normal/failure observations |
+| US1-EDIT-001 | `US1-EDIT-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T056 | T013 must create after normal/failure observations |
+| US1-COMMAND-001 | `US1-COMMAND-NORMAL` pending | `packages/coding-agent/src/utils/tools-manager.ts` | T057 | T013 must create after normal/failure observations |
+| US1-DENY-001 | `US1-DENY-FAILURE` pending | `packages/coding-agent/src/core/agent-session.ts` | T058 | T013 must create after denial observation |
+| US1-FAIL-001 | `US1-TOOL-FAILURE` pending | `packages/coding-agent/src/core/agent-session.ts` | T059 | T013 must create after tool-failure observation |
+| US1-RECOVER-001 | `US1-RECOVER-INTERACTION` pending | `packages/coding-agent/src/core/agent-session.ts` | T060 | T013 must create after recovery observation |
+
+T002–T006 remain open. T054–T060 require authorized reference access and isolated fixtures. T013 cannot yet create evidence-based implementation tasks for this slice, so T016–T018 remain blocked. An unqualified 100% parity claim is blocked until every leaf has passing verification.

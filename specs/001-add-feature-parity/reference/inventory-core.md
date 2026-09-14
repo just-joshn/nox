@@ -19,3 +19,19 @@
 | CORE-013 | Terminal accessibility and keybindings | Screen-reader output, shortcut scope, conflicts |
 
 Each row is a domain seed, not yet an independently verified leaf inventory. Settings keys, permission syntax, tool variants, and interactive shortcuts must be split into leaf entries before T003 is complete.
+
+## First US1 slice: stable tracking leaves
+
+These IDs split the initial coding journey for evidence collection. The installed CLI help names `Read`, `Edit`, and `Bash`; the [official tools reference](https://code.claude.com/docs/en/tools-reference) also documents `Grep` and `Glob`, but their availability in this installed configuration has not been observed. A print-mode read request stopped at authentication before tool dispatch ([raw observation](observations/us1-unauthenticated.txt)). The failure is a session-entry gate, not a demonstrated failure of any individual tool. No row below has a normal tool trace or passing nox comparison.
+
+| ID | Leaf behavior to observe | Discovery evidence | nox target | Current status |
+|----|--------------------------|--------------------|------------|----------------|
+| US1-READ-001 | Read an in-scope text file and report result | Installed `--tools` help names `Read`; official tools reference | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: unauthenticated host |
+| US1-SEARCH-001 | Search fixture files and contents | Official tools reference names `Glob` and `Grep`; installed availability pending | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: unauthenticated host |
+| US1-EDIT-001 | Apply a targeted edit to an in-scope file | Installed `--tools` help names `Edit`; official tools reference | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: unauthenticated host |
+| US1-COMMAND-001 | Run a fixture command and return output and exit state | Installed `--tools` help names `Bash`; official tools reference | `packages/coding-agent/src/utils/tools-manager.ts` | `gated-unverified`: unauthenticated host |
+| US1-DENY-001 | Deny a proposed protected action and preserve state | Official tools reference permission column; decision trace pending | `packages/coding-agent/src/core/agent-session.ts` | `gated-unverified`: unauthenticated host |
+| US1-FAIL-001 | Report a tool execution failure and preserve actual side effects | Domain requirement; tool-specific trace pending | `packages/coding-agent/src/core/agent-session.ts` | `gated-unverified`: unauthenticated host |
+| US1-RECOVER-001 | Continue after a denied or failed action | Domain requirement; continuation trace pending | `packages/coding-agent/src/core/agent-session.ts` | `gated-unverified`: unauthenticated host |
+
+The first-slice IDs are tracking IDs, not sufficient evidence for T013 implementation tasks. Their exact inputs, outputs, permission decisions, and interaction rules must be captured in a suitable authenticated fixture before source work.
