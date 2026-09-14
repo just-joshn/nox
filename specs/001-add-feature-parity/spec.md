@@ -109,6 +109,8 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **FR-013**: Developed nox application code, user-facing strings, command names, and configuration filenames and paths MUST contain no mention of the reference product's name. Equivalent features MUST remain available through nox-specific names. Specification and verification artifacts MAY name the reference so parity remains auditable.
 - **FR-014**: The inventory MUST be refreshed against a newly installed reference release before any claim of complete parity; changed items MUST be reverified.
 - **FR-015**: nox MUST match observed credential storage and reuse, secret redaction in output and logs, permission-rule scope and persistence, and disclosure of local or session data to remote services and extensions. For each applicable leaf, normal use, denial, failure, and restart behavior MUST be compared with the reference; unobservable security behavior MUST remain unverified.
+- **FR-016**: The capability inventory MUST reconcile three discovery inputs: the pinned installed reference, current official documentation, and the older restored source map. Every discovered candidate MUST map to a capability item, be identified as a duplicate, or be rejected as obsolete with dated evidence. Source-map-only candidates MUST NOT be treated as current behavior without current documentation or observation.
+- **FR-017**: The complete-parity effort MUST be governed by this one specification, one plan, and one task document. All feature families and delivery increments MUST remain within those artifacts; a newly discovered capability MUST be added there rather than scoped into a separate feature specification.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -129,6 +131,7 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - **SC-005**: All four end-to-end journeys in User Stories 1–4 have passing matched-environment acceptance scenarios, including each story's stated error or recovery cases; a gated or unverified journey prevents a complete-parity claim.
 - **SC-006**: A release audit finds 0 mentions of the reference product in developed nox application code, user-facing strings, command names, and configuration filenames and paths.
 - **SC-007**: For every timing-sensitive leaf, after warm-up and under matched workload, hardware, and network conditions, nox's p95 user-visible completion time across 30 runs is at most 110% of the reference p95. Inaccessible or unmeasured leaves cannot pass this criterion.
+- **SC-008**: 100% of candidate capabilities found in the installed reference, current official documentation, and older restored source map have a recorded inventory mapping, duplicate rationale, or dated obsolete rationale; no unexplained candidate remains.
 
 ## Assumptions
 

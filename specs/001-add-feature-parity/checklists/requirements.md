@@ -19,7 +19,7 @@
 - [x] Success criteria are technology-agnostic (no implementation details)
 - [x] All acceptance scenarios are defined at the user-journey level
 - [x] Edge cases are identified
-- [ ] Scope is clearly bounded
+- [x] Scope is clearly bounded by the pinned reference release and its documented gated surfaces
 - [x] Dependencies and assumptions identified
 
 ## Feature Readiness
@@ -31,6 +31,6 @@
 
 ## Notes
 
-- FR-001 defines the inventory requirement, but the exhaustive item-level inventory and parity scenarios have not yet been produced. The reference release also has account- and platform-gated features that cannot be enumerated from `--help` alone. This leaves scope and item-level acceptance incomplete.
-- SC-001 through SC-006 are targets, not achieved results. No implementation or parity verification has been completed.
-- These items require evidence gathering and spec updates before a claim of planning or implementation readiness.
+- FR-001 and FR-016 define the bounded discovery process, but exhaustive item-level inventory and parity scenarios have not yet been produced. Account- and platform-gated features cannot be enumerated from `--help` alone. Item-level acceptance remains incomplete.
+- SC-001 through SC-008 are targets, not achieved results. No implementation or parity verification has been completed.
+- The single specification is ready as a product-scope input for its existing plan. Item-level evidence is still required before implementation tasks and a parity claim can close.
