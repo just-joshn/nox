@@ -277,6 +277,10 @@
 | SUR-PLAT-017 | Mobile non-photo transfer and file reference are documentation-only | Eligible paired device and synthetic file; inspect download and failure behavior |
 | SUR-PLAT-018 | Permission-mode selector differences by session kind are documentation-only | Eligible mobile cloud and local remote sessions; compare available modes and refusal |
 | SUR-PLAT-019 | Remote push notification delivery and failure are documentation-only | Eligible paired device with controlled notification toggles and offline case |
+| SUR-PLAT-020 | Terminal `/mobile` QR behavior has no local interactive observation | Disposable interactive terminal and mobile test device; no model request |
+| SUR-PLAT-021 | Mobile Remote Control mode selector is documentation-only | Eligible paired mobile/local session; test allowed and disallowed choices |
+| SUR-PLAT-022 | Terminal `/ios` QR behavior has no local interactive observation | Disposable interactive terminal and iOS test device; no model request |
+| SUR-PLAT-023 | Terminal `/android` QR behavior has no local interactive observation | Disposable interactive terminal and Android test device; no model request |
 | SUR-CHAN-001 | Installed parser and approved plugin startup unobserved | Safe help/parser probe, then disposable channel plugin after allowance returns |
 | SUR-CHAN-002 | Managed policy enable/deny behavior unobserved | Controlled organization policy fixture; no production policy change |
 | SUR-CHAN-003 | Inbound event labeling, ordering, and malformed case unobserved | Synthetic local channel server and bounded session |
