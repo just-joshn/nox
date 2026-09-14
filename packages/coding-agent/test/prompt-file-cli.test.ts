@@ -11,13 +11,13 @@ import { buildSystemPrompt } from "../src/core/system-prompt.ts";
 const cliPath = resolve(__dirname, "../src/cli.ts");
 const sourceResolverPath = resolve(__dirname, "../src/experimental/source-resolver.ts");
 
-function runCli(flag: string) {
+function runCli(flag: string, before: readonly string[] = []) {
 	const root = mkdtempSync(join(tmpdir(), "nox-prompt-file-cli-"));
 	const missing = join(root, "missing.txt");
 	try {
 		const result = spawnSync(
 			process.execPath,
-			["--import", sourceResolverPath, cliPath, "-p", flag, missing, "noop"],
+			["--import", sourceResolverPath, cliPath, "-p", ...before, flag, missing, "noop"],
 			{
 				cwd: root,
 				env: {
@@ -46,6 +46,16 @@ function runCli(flag: string) {
 }
 
 describe("prompt file CLI preflight", () => {
+	test("rejects conflicting replacement flags before checking file existence", () => {
+		const result = runCli("--system-prompt-file", ["--system-prompt", "inline"]);
+		expect(result.status).toBe(1);
+		expect(result.stdout).toBe("");
+		expect(result.stderr).toBe(
+			"Error: Cannot use both --system-prompt and --system-prompt-file. Please use only one.\n",
+		);
+		expect(result.homeEntries).toEqual([]);
+	});
+
 	test("composes file-backed replacement before append", async () => {
 		const root = mkdtempSync(join(tmpdir(), "nox-prompt-compose-"));
 		try {

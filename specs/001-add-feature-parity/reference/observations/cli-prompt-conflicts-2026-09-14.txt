@@ -14,3 +14,8 @@ Stderr: Error: Cannot use both --append-subagent-system-prompt and --append-suba
 Home entries after exit: .claude, .claude.json, prompt.txt
 
 The absolute path is normalized to <home>; no file contents or credentials were retained.
+
+Additional precedence input: --system-prompt "inline" --system-prompt-file <home>/missing.txt
+Exit: 1; stdout empty; same mutual-exclusion stderr as the existing-file case.
+Home entries after exit: .claude, .claude.json.
+The missing file is not reported before the conflict.
