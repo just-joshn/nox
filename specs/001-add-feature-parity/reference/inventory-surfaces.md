@@ -225,3 +225,24 @@ Sources: [current CLI reference](https://code.claude.com/docs/en/cli-usage), [lo
 | SUR-MAINT-011 | Run `setup-token` | Long-lived token printed without saving it | Ineligible subscription, interrupted flow, output disclosure | Account gate; `nox setup-token` |
 
 Auth provider variants, installer channels, project-state diagnostic details, import source mappings, and state-redaction scenarios still need separate leaves before SUR-010 is complete. Purge and token generation were deliberately not invoked on the user's real home.
+
+## Artifact and deep-link leaves (SUR-012)
+
+Sources: [current artifact guide](https://code.claude.com/docs/en/artifacts) and [current link-launch guide](https://code.claude.com/docs/en/deep-links), read 2026-09-14. Artifact publishing sends content to a hosted service. A nox link scheme must use nox branding, so exact URL bytes are an intentional naming difference; the launch decisions and safety properties remain parity targets.
+
+| Leaf ID | Entry and intermediate interaction | Result and side effect | Failure or recovery to observe | Availability; proposed nox control |
+| --- | --- | --- | --- | --- |
+| SUR-ART-001 | Ask agent to create an artifact | Local self-contained page prepared; publish passes permission check and uploads to private URL | Denied publish, unavailable tool, invalid page | Account/service gate; nox artifact tool |
+| SUR-ART-002 | Republish an existing artifact by URL or attachment | Same URL updates in place; version history advances | Missing edit access, failed upload, stale source | Account/service gate; nox artifact update |
+| SUR-ART-003 | Open `/artifacts`, attach, copy link, or reopen latest | Gallery item becomes session context or browser page | Missing artifact, wrong owner, unavailable account | Account/service gate; Pi artifact picker |
+| SUR-ART-004 | Share private artifact with organization, people, or public | Audience and shared version change; viewers get access | Policy denial, recipient lacks account, revoked link | Plan/policy gate; nox share control |
+| SUR-ART-005 | Grant editor role or read a shared artifact | Authorized editor can republish; reader receives summarized content | Unauthorized edit, embedded prompt injection, stale version | Plan/policy gate; nox artifact access |
+| SUR-ART-006 | Comment on organizational artifact and send thread to agent | Activated thread reaches session; agent may reply or resolve | Public sharing forbids comments; inactive thread ignored | Team/Enterprise gate; nox comments |
+| SUR-ART-007 | Open artifact that calls a connector or offers download | Viewer-authorized live data or generated file appears | Connector denial, data leakage, missing capability approval | Service/connector gate; nox artifact capability |
+| SUR-LINK-001 | Open nox deep link with prompt and directory/repo | New local terminal session opens with inert prefilled prompt and external-link warning | Handler missing, unknown repo, absent directory | OS handler gate; `nox://open` |
+| SUR-LINK-002 | Submit or clear prefilled external prompt | Only explicit Enter sends prompt; long prompt warning persists until action | Oversized or unsafe prompt; no auto-execution | OS handler gate; Pi composer |
+| SUR-LINK-003 | Resolve `cwd` versus `repo` parameters | Valid absolute cwd wins; otherwise recent local clone for repo slug or home fallback | Network path, traversal, invisible controls, wrong clone | OS/git gate; nox link resolver |
+| SUR-LINK-004 | Register or disable deep-link handler | User-level handler opens preferred terminal after first interactive prompt | Registration disabled by policy, unsupported desktop | OS/policy gate; nox handler setting |
+| SUR-LINK-005 | Open editor-specific link | Editor tab starts with prefilled context instead of terminal | Editor absent, invalid link, permission refusal | Editor/OS gate; nox editor link |
+
+Artifact page constraints, connector authorization variants, public retention controls, link parsing limits, and platform-specific handler locations need separate leaves before SUR-012 is complete.

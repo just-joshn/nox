@@ -140,5 +140,17 @@
 | SUR-MAINT-009 | Purge preview and no-match behavior unobserved | Isolated home with synthetic project state; preview only |
 | SUR-MAINT-010 | Purge removal and confirmation behavior unobserved | Isolated home with synthetic state; explicit disposable path only |
 | SUR-MAINT-011 | Token generation and redaction unobserved | Eligible disposable account or approved token test; never record token bytes |
+| SUR-ART-001 | Publish approval and hosted page creation unobserved | Eligible account; synthetic page and explicit authorization for test publish |
+| SUR-ART-002 | Republish/version and denied edit unobserved | Eligible account; disposable artifact and authorized collaborator fixture |
+| SUR-ART-003 | Gallery/picker and attach behavior unobserved | Eligible account; disposable owned/shared artifacts |
+| SUR-ART-004 | Audience, version, and recipient access unobserved | Eligible test accounts with public/organization policy; no real user data |
+| SUR-ART-005 | Shared read/edit and prompt-injection handling unobserved | Disposable collaborator and synthetic hostile page text |
+| SUR-ART-006 | Thread activation, reply, resolve, and public restriction unobserved | Team/Enterprise test account and disposable artifact |
+| SUR-ART-007 | Live connector and download authorization unobserved | Synthetic connector and file only; verify viewer identity boundary |
+| SUR-LINK-001 | Handler launch, fallback, and warning unobserved | Disposable OS profile or isolated handler test; synthetic path and prompt |
+| SUR-LINK-002 | Explicit-send and long-prompt warning unobserved | Isolated terminal with synthetic 1,000/5,000-character prompts |
+| SUR-LINK-003 | Path precedence, traversal, and clone resolution unobserved | Disposable local clones and malformed URL parameters |
+| SUR-LINK-004 | Handler registration/disablement unobserved | Disposable OS user profile; managed-policy fixture if available |
+| SUR-LINK-005 | Editor-specific handler and failure unobserved | Compatible disposable editor profile and invalid-link fixture |
 
 The [surface inventory](inventory-surfaces.md) still contains broad account-, platform-, policy-, and service-gated seeds, including remote control, hosted review, integrations, and runners. T005 must split these into independently testable leaf IDs; T010 then adds each inaccessible leaf here with its specific gate and required observation. The background-session rows above retain `gated-unverified` status even where help is visible: no model-backed session behavior has been compared, and some safe metadata probes remain pending. T002–T004 may expose further gated leaves. This register does not mark any source task complete and must be reconciled against the final inventory before T046 or T053 can close.
