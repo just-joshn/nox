@@ -26,7 +26,12 @@ function runCli(args: string[]) {
 			timeout: 10_000,
 		});
 		if (result.error) throw result.error;
-		return { status: result.status, stdout: result.stdout, stderr: result.stderr, sessionCreated: existsSync(sessionDir) };
+		return {
+			status: result.status,
+			stdout: result.stdout,
+			stderr: result.stderr,
+			sessionCreated: existsSync(sessionDir),
+		};
 	} finally {
 		rmSync(root, { recursive: true, force: true });
 	}
