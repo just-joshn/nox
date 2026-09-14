@@ -7,6 +7,14 @@
 **Usage availability**: The user reports that the weekly usage cap is reached until its next reset. No model or tool-behavior probes were attempted after that report. The cap was not independently probed; treat affected behavior as unverified.
 **Policy and connected-service capabilities**: Not inspected; treat gated behavior as unverified.
 
+## Snapshot refresh: 2026-09-14
+
+- Installed release remains 2.1.270 on Darwin arm64. Raw [version](observations/version-2026-09-14.txt) and [top-level help](observations/cli-help-2026-09-14.txt) were captured without a model call.
+- The earlier authenticated status and user-reported weekly usage cap remain the last available account observations. Neither status nor remaining quota was re-probed in this refresh. Policy and connected-service availability remain unknown.
+- The [current official documentation index](https://code.claude.com/docs/llms.txt) was inspected on 2026-09-14. Its live pages can be newer than the installed binary; every such candidate needs a version and availability check.
+- The older [restored source tree](https://github.com/ChinaSiro/claude-code-sourcemap/tree/main/restored-src/src) was inspected remotely for module-family discovery. It was not cloned or copied; its files do not establish current behavior.
+- Read-only nested help was captured for [auth](observations/help-auth-2026-09-14.txt), [MCP](observations/help-mcp-2026-09-14.txt), [plugins](observations/help-plugin-2026-09-14.txt), [project](observations/help-project-2026-09-14.txt), [agents](observations/help-agents-2026-09-14.txt), [auto mode](observations/help-auto-mode-2026-09-14.txt), [gateway](observations/help-gateway-2026-09-14.txt), [import](observations/help-import-2026-09-14.txt), and [ultrareview](observations/help-ultrareview-2026-09-14.txt). Help text only establishes command discovery, not functional parity.
+
 ## Evidence sources
 
 - Raw local top-level help: [observations/cli-help.txt](observations/cli-help.txt).

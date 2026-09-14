@@ -1,8 +1,11 @@
 node_modules/
 dist/
+build/
 .artifacts/
 *.log
+*.tmp
 .DS_Store
+Thumbs.db
 *.tsbuildinfo
 # packages/*/node_modules/
 packages/*/dist/
@@ -14,6 +17,7 @@ packages/ai/src/providers/.model-generation-*/
 
 # Environment
 .env
+.env*
 
 # Editor files
 .vscode/

@@ -9,6 +9,7 @@
 | [Official CLI reference](https://code.claude.com/docs/en/cli-usage) | 12 documented-only flags seeded in [inventory-cli.md](inventory-cli.md) | Full line-by-line flag reconciliation; CLI docs explicitly state help is incomplete |
 | [Official interactive commands](https://code.claude.com/docs/en/commands) | Core command domains noted in [inventory-core.md](inventory-core.md) | Every command, alias, argument, gating rule, and keyboard shortcut as a leaf |
 | [Official documentation index](https://code.claude.com/docs/llms.txt) | 147 linked pages captured in [inventory-docs.md](inventory-docs.md), plus domain seeds in the three capability files | Classify every page, map applicable content to leaf IDs, and resolve version-specific behavior |
+| [Older restored source tree](https://github.com/ChinaSiro/claude-code-sourcemap/tree/main/restored-src/src) | Top-level and selected tool/command directory seeds recorded in [source-reconciliation.md](source-reconciliation.md) | Enumerate remaining candidate files remotely, map to current capabilities or dated obsolete/duplicate rationale; no code copying |
 | Pi baseline | Existing TUI source paths identified in [plan.md](../plan.md) | Terminal-state captures and explicit visual comparison matrix |
 
 ## Open evidence and access gaps

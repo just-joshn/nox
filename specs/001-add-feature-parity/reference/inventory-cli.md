@@ -1,6 +1,6 @@
 # CLI Discovery Inventory
 
-**Reference**: installed 2.1.270 on 2026-09-13. `observed-help` means only that the entry appeared in local help; it is not a passing behavior comparison. `documented` means the live official CLI reference lists it but local help did not. Every row still needs option-level semantics, nox mapping, and scenarios before T002 can close.
+**Reference**: installed 2.1.270, refreshed 2026-09-14. `observed-help` means only that the entry appeared in local help; it is not a passing behavior comparison. `documented` means the live official CLI reference lists it but local help did not. Every row still needs option-level semantics, nox mapping, and scenarios before T002 can close.
 
 Sources: [local help](observations/cli-help.txt), [official CLI reference](https://code.claude.com/docs/en/cli-usage), [interactive commands](https://code.claude.com/docs/en/commands).
 
@@ -118,6 +118,28 @@ Sources: [local help](observations/cli-help.txt), [official CLI reference](https
 - `auto-mode`: `config`, `critique`, `defaults`, `reset`.
 - `agents`: JSON listing and dispatch options.
 - `gateway`, `import`, `ultrareview`: distinct option sets remain to be expanded.
+
+## Nested option seeds from 2026-09-14 local help
+
+The [raw nested help captures](snapshot.md#snapshot-refresh-2026-09-14) establish candidate clusters, not final leaf IDs. Split each option or independently failing combination into its own `CLI-` leaf during T002; defaults beyond those printed, effects, and errors remain unobserved.
+
+| ID | Surface | Discovery | nox equivalent | Behavior evidence |
+|----|---------|-----------|----------------|-------------------|
+| CAND-001 | `agents --json` and `--all` | observed-help | Pending | Pending |
+| CAND-002 | `agents --cwd`, `--add-dir` | observed-help | Pending | Pending |
+| CAND-003 | `agents --model`, `--effort`, `--agent` | observed-help | Pending | Pending |
+| CAND-004 | `agents --permission-mode`, `--restricted` | observed-help | Pending | Pending |
+| CAND-005 | `agents --settings`, `--setting-sources` | observed-help | Pending | Pending |
+| CAND-006 | `agents --mcp-config`, `--strict-mcp-config`, `--plugin-dir` | observed-help | Pending | Pending |
+| CAND-007 | `gateway --config` | observed-help | Pending | Pending |
+| CAND-008 | `import --dry-run`, `--yes` | observed-help | Pending | Pending |
+| CAND-009 | `ultrareview --json`, `--post`, `--no-post`, `--timeout` | observed-help | Pending | Pending |
+| CAND-010 | `plugin eval` | observed-help | Pending | Pending |
+| CAND-011 | `plugin tag`, `plugin prune`, `plugin details` | observed-help | Pending | Pending |
+| CAND-012 | `mcp add-json` transport variants | observed-help | Pending | Pending |
+| CAND-013 | `mcp reset-project-choices`, `mcp serve` | observed-help | Pending | Pending |
+| CAND-014 | `auto-mode config`, `defaults`, `critique`, `reset` | observed-help | Pending | Pending |
+| CAND-015 | `project purge` | observed-help | Pending | Pending |
 
 ## Missing discovery work
 
