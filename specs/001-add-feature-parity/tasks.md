@@ -216,6 +216,7 @@
 - [X] T263 [US1] Observe Grep content with `-B: -1` under localhost-only isolation; verify nox's existing sided-context error, harness/focused tests and `npm run check`, then commit locally.
 - [X] T264 [US1] Observe an empty Grep pattern against a single synthetic file with explicit `content` mode under localhost-only isolation; retain exact allowlisted output and unchanged state, verify harness tests, then commit locally.
 - [X] T265 [US1] Compare nox's empty-pattern single-file Grep content with T264; write a failing test if needed, implement the observed file-target output shape, verify focused tests and `npm run check`, then commit locally.
+- [X] T266 [US1] Observe nonempty Grep content on a single synthetic file under localhost-only isolation; verify nox's direct-file formatting, harness/focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
