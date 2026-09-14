@@ -1,0 +1,11 @@
+Snapshot: installed CLI 2.1.270, macOS, isolated temporary home, 2026-09-14
+Input: claude udpate
+Exit: 1
+Stdout: empty
+Stderr:
+✘ unknown command "udpate"
+  └ Did you mean claude update?
+
+Run claude --help to list commands, or claude -p "udpate" to send as a prompt.
+Temporary-home entries: .claude.json, backups
+Session started: no observable session or prompt

@@ -40,3 +40,7 @@ The harness test for missing-path error shape failed before implementation becau
 ## Synthetic loopback outside-workspace Read observation (2026-09-14)
 
 The outside-workspace trace test failed before the harness mode was added. With the mode and redacted diagnostic classification in place, all nine harness tests passed. `python3 specs/001-add-feature-parity/reference/harness/loopback_probe.py <installed-cli> outside` used a temporary workspace and a sibling synthetic file, with no `--allowedTools` rule. The [redacted trace](observations/read-outside-loopback-2026-09-14.json) records a `Read` tool result with `is_error: true` and `error_kind: access_denied`; both files remained unchanged and the final synthetic completion exited 0. This identifies a local CLI permission boundary but does not capture the interactive prompt, exact error wording, or real-service behavior. T054 remains open.
+
+## CLI typo dispatch observation (2026-09-14)
+
+In a temporary home, installed CLI 2.1.270 invoked with `udpate` exited 1 with empty stdout and a stderr suggestion for `update`; no interactive session or prompt was observed. The CLI created `.claude.json` and `backups/` in that home before exiting. The [isolated trace](observations/cli-typo-2026-09-14.txt) records only the diagnostic and entry names. This is a reference observation for CLI-519, not a nox parity result.
