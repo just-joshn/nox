@@ -150,6 +150,8 @@
 - [X] T197 [US1] Observe reference Glob `**/*.txt` with a synthetic matching file inside disposable `.git` metadata under localhost-only isolation; retain exact allowlisted result and unchanged state before choosing a broad no-ignore option.
 - [X] T198 [US1] Observe reference Grep `alpha` with a matching synthetic `.gitignore`-excluded file under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's explicit adapter.
 - [X] T199 [US1] Observe reference Grep `alpha` with a matching synthetic `.ignore`-excluded file under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's explicit adapter.
+- [X] T200 [US1] Observe reference Grep `alpha` with a synthetic matching file inside disposable `.git` metadata under localhost-only isolation; retain exact allowlisted result and unchanged state, then compare nox's explicit adapter.
+- [ ] T201 [US1] Observe reference Grep `alpha` with a synthetic hidden non-metadata matching file under localhost-only isolation; retain exact allowlisted result and unchanged state before correcting nox's `.git` exclusion.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

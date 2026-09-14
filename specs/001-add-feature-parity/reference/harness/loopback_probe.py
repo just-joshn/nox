@@ -24,7 +24,7 @@ SEARCH_MODES = frozenset({
     "grep-context-alias", "grep-multiline", "grep-multiline-no-match", "grep-multiline-files",
     "grep-multiline-explicit-files", "grep-multiline-count", "glob-two-files", "glob-recursive",
     "glob-hidden", "glob-mtime", "glob-mtime-tie", "glob-ignored", "glob-fd-ignore",
-    "glob-git-metadata", "grep-ignored", "grep-fd-ignore",
+    "glob-git-metadata", "grep-ignored", "grep-fd-ignore", "grep-git-metadata",
 })
 NORMAL_MODES = SEARCH_MODES | {"default-tools", "glob-tools", "grep-tools"}
 CATALOG_MODES = NORMAL_MODES | {"bare-tools"}
@@ -315,7 +315,7 @@ def prepare_workspace(root: str, mode: str) -> tuple[Path, Path, Path | None]:
     if mode in {"glob-fd-ignore", "grep-fd-ignore"}:
         (workspace / ".ignore").write_text("ignored.txt\n")
         (workspace / "ignored.txt").write_text(FIXTURE_CONTENT)
-    if mode == "glob-git-metadata":
+    if mode in {"glob-git-metadata", "grep-git-metadata"}:
         (workspace / ".git" / "inner.txt").write_text(FIXTURE_CONTENT)
     if mode == "grep-glob-filter":
         (workspace / "fixture.md").write_text(FIXTURE_CONTENT)
@@ -406,7 +406,7 @@ def main(executable: str, mode: str = "normal") -> int:
                                          (workspace / "ignored.txt").read_text() == FIXTURE_CONTENT)
                                         if mode in {"glob-fd-ignore", "grep-fd-ignore"} else None,
                 "metadata_unchanged": (workspace / ".git" / "inner.txt").read_text() == FIXTURE_CONTENT
-                                      if mode == "glob-git-metadata" else None,
+                                      if mode in {"glob-git-metadata", "grep-git-metadata"} else None,
                 "nested_unchanged": (workspace / "nested" / "fixture.txt").read_text() == FIXTURE_CONTENT
                                     if mode in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} else None,
                 "outside_unchanged": outside.read_text() == "synthetic outside content\n" if outside else None,
@@ -433,7 +433,7 @@ def main(executable: str, mode: str = "normal") -> int:
                    and (mode != "glob-mtime-tie" or summary.get("mtime_tie_unchanged") is True)
                    and (mode not in {"glob-ignored", "grep-ignored"} or summary.get("ignored_unchanged") is True)
                    and (mode not in {"glob-fd-ignore", "grep-fd-ignore"} or summary.get("fd_ignore_unchanged") is True)
-                   and (mode != "glob-git-metadata" or summary.get("metadata_unchanged") is True)
+                   and (mode not in {"glob-git-metadata", "grep-git-metadata"} or summary.get("metadata_unchanged") is True)
                    and (mode not in {"glob-path", "glob-recursive", "grep-path", "grep-path-files"} or summary.get("nested_unchanged") is True)
                    and summary.get("exit_code") == 0 and summary.get("result") == EXPECTED_COMPLETION
                    and summary.get("stderr_empty") is True and summary.get("fixture_unchanged") is True
