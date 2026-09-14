@@ -20,6 +20,7 @@ EXPECTED_COMPLETION = "synthetic completion"
 class ProbeState:
     requests: list[dict] = field(default_factory=list)
     read_path: str = "fixture.txt"
+    catalog: bool = False
 
 
 def sse(event: str, payload: dict) -> str:
@@ -83,6 +84,10 @@ def error_kind(text: str) -> str:
     if any(term in lower for term in ("not found", "no such file", "does not exist")):
         return "not_found"
     return "other"
+
+
+def catalog_summary(names: list[str]) -> dict[str, bool]:
+    return {name: name in names for name in ("Read", "Bash", "Edit", "Glob", "Grep")}
 
 
 def summarize_result(result: dict) -> dict:
@@ -159,7 +164,8 @@ def make_handler(state: ProbeState):
                  and len(request["model"]) < 80 and all(char.isalnum() or char == "-" for char in request["model"])
                  else "<redacted>",
                  "tool_names": [name if name in {"Read", "Edit", "Bash"} else "<redacted>" for name in names],
-                 "response": kind, "tool_results": [summarize_result(item) for item in results]}
+                 "response": kind, "tool_results": [summarize_result(item) for item in results],
+                 **({"catalog": catalog_summary(names)} if state.catalog else {})}
             )
             body = message_response(request["model"], kind, state.read_path)
             self.send_response(200)
@@ -190,7 +196,7 @@ def main(executable: str, mode: str = "normal") -> int:
     with tempfile.TemporaryDirectory(prefix="nox-loopback-read-") as root:
         workspace, fixture, outside = prepare_workspace(root, mode)
         read_path = "../outside.txt" if outside else "missing.txt" if mode == "missing" else "fixture.txt"
-        state = ProbeState(read_path=read_path)
+        state = ProbeState(read_path=read_path, catalog=mode == "bare-tools")
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(state))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         env = {
@@ -230,10 +236,17 @@ def main(executable: str, mode: str = "normal") -> int:
             server.server_close()
     print(json.dumps(summary, indent=2))
     matched = is_denied_trace(summary) if mode == "outside" else is_missing_trace(summary) if mode == "missing" else is_expected_trace(summary)
+    if mode == "bare-tools":
+        matched = matched and any(
+            request.get("catalog", {}).get("Read") is True
+            and request["catalog"].get("Glob") is False
+            and request["catalog"].get("Grep") is False
+            for request in summary.get("requests", [])
+        )
     return 0 if matched else 1
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside"}):
-        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside]")
+    if len(sys.argv) not in (2, 3) or (len(sys.argv) == 3 and sys.argv[2] not in {"missing", "outside", "bare-tools"}):
+        raise SystemExit("Usage: loopback_probe.py <cli-executable> [missing|outside|bare-tools]")
     raise SystemExit(main(sys.argv[1], mode=sys.argv[2] if len(sys.argv) == 3 else "normal"))

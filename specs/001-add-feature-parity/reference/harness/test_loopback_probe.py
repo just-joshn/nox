@@ -5,7 +5,7 @@ from http.server import ThreadingHTTPServer
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from loopback_probe import ProbeState, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, summarize_result
+from loopback_probe import ProbeState, catalog_summary, is_denied_trace, is_expected_trace, is_missing_trace, make_handler, summarize_result
 
 
 class LoopbackProbeTests(unittest.TestCase):
@@ -136,6 +136,11 @@ class LoopbackProbeTests(unittest.TestCase):
         self.assertEqual(result["error_kind"], "access_denied")
         self.assertEqual(result["text"], "<redacted>")
         self.assertNotIn("synthetic-private-marker", json.dumps(result))
+
+    def test_catalog_summary_retains_only_expected_tool_presence(self):
+        result = catalog_summary(["Read", "Bash", "Edit", "private-tool-name"])
+        self.assertEqual(result, {"Read": True, "Bash": True, "Edit": True, "Glob": False, "Grep": False})
+        self.assertNotIn("private-tool-name", json.dumps(result))
 
 
 if __name__ == "__main__":

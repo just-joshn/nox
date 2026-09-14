@@ -69,6 +69,7 @@
 - [X] T116 [US4] Write failing isolated-process tests for CLI-561 and CLI-562 directory inputs in `packages/coding-agent/test/prompt-file-cli.test.ts`; compare same-OS EISDIR read diagnostics, empty stdout, and exit 1. Depend on [CLI-561-SYSTEM-PROMPT-DIRECTORY](reference/scenarios.md) and [CLI-562-APPEND-PROMPT-DIRECTORY](reference/scenarios.md).
 - [X] T117 [US4] Validate explicit prompt files by attempting to read them in `packages/coding-agent/src/cli/args.ts`, mapping missing files to the observed not-found diagnostic and other read errors to the observed `Error reading ... file` shape. Preserve successful file-source handling.
 - [X] T118 [US4] Run focused CLI and resource-loader tests plus `npm run check`, record the directory comparison and remaining startup side-effect mismatch in `reference/validation.md` and DISC-003, then commit locally.
+- [X] T119 [US1] Observe TOOL-002 and TOOL-003 bare-mode exposure with a disposable local Messages endpoint in `reference/harness/loopback_probe.py`: retain `--bare`, record only tool-name booleans, verify the trace in `reference/harness/test_loopback_probe.py`, and retain a redacted observation. Depend on [TOOL-BARE-CATALOG](reference/scenarios.md); do not use account-backed model calls or infer default-session exposure.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 
