@@ -829,6 +829,18 @@ describe("explicit Claude search tools", () => {
 		expect(result.content).toEqual([{ type: "text", text: "1:alpha" }]);
 	});
 
+	it("Grep file-list mode names a direct file once", async () => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		const result = await tool.execute(
+			"call-1",
+			{ pattern: "alpha", path: "fixture.txt", output_mode: "files_with_matches" },
+			undefined,
+			undefined,
+			{} as never,
+		);
+		expect(result.content).toEqual([{ type: "text", text: "Found 1 file\nfixture.txt" }]);
+	});
+
 	it.each([undefined, 1])(
 		"Grep content mode keeps the observed no-match text with head_limit %s",
 		async (head_limit) => {
