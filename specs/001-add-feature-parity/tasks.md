@@ -206,6 +206,7 @@
 - [X] T253 [US1] Make nox count-page file ordering deterministic according to T252, verify pagination tests and `npm run check`, then commit locally with the T251 numeric guard.
 - [X] T254 [US1] Observe Grep content with `head_limit: 0` under localhost-only isolation; add the nox boundary test, verify harness/focused tests and `npm run check`, then commit locally.
 - [X] T255 [US1] Observe Grep content with fractional `head_limit: 1.5` under localhost-only isolation; verify nox's integer guard, harness/focused tests and `npm run check`, then commit locally.
+- [X] T256 [US1] Observe Grep content with fractional `offset: 1.5` under localhost-only isolation; verify nox's integer guard, harness/focused tests and `npm run check`, then commit locally.
 
 **Checkpoint**: A source slice starts only after its own inventory IDs, observed contracts, and explicit leaf tasks exist. Gated or undiscovered work does not block an independent observed slice, but remains open and blocks a universal parity claim.
 

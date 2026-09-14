@@ -716,12 +716,12 @@ describe("explicit Claude search tools", () => {
 		).rejects.toThrow();
 	});
 
-	it("Grep rejects a negative offset", async () => {
+	it.each([-1, 1.5])("Grep rejects an invalid offset %s", async (offset) => {
 		const tool = createAllToolDefinitions(cwd).Grep;
 		await expect(
 			tool.execute(
 				"call-1",
-				{ pattern: "alpha", output_mode: "content", offset: -1 },
+				{ pattern: "alpha", output_mode: "content", offset },
 				undefined,
 				undefined,
 				{} as never,
