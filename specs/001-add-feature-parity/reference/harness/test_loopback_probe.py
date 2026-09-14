@@ -169,6 +169,7 @@ class LoopbackProbeTests(unittest.TestCase):
             self.assertEqual(summarize_search_result({"content": value + " private"}, tool)["result_format"], "<redacted>")
         self.assertEqual(summarize_search_result({"content": "nested/fixture.txt"}, "Glob")["result_format"], "nested_match")
         self.assertEqual(summarize_search_result({"content": "fixture.txt:1:alpha"}, "Grep")["result_format"], "content_match")
+        self.assertEqual(summarize_search_result({"content": "fixture.txt:alpha"}, "Grep")["result_format"], "content_no_line")
         self.assertEqual(summarize_search_result({"content": "fixture.txt:1\n\nFound 1 total occurrence across 1 file."}, "Grep")["result_format"], "count_match")
         self.assertEqual(summarize_search_result({"content": "second.txt:1\nfixture.txt:2\n\nFound 3 total occurrences across 2 files."}, "Grep")["result_format"], "count_multiple")
         self.assertEqual(summarize_search_result({"content": "No matches found\n\nFound 0 total occurrences across 0 files."}, "Grep")["result_format"], "count_no_match")
