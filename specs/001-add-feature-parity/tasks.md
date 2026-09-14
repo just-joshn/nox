@@ -49,7 +49,7 @@ If two indexes list the same leaf, the **owning closer** column wins. The other 
 **Purpose**: Establish a reproducible reference snapshot and the complete feature boundary.
 
 - [X] T001 Record installed reference version, platform, date, account and policy conditions, and safe CLI observations in `specs/001-add-feature-parity/reference/snapshot.md`; preserve raw outputs under `specs/001-add-feature-parity/reference/observations/`. Inspect the older restored source map remotely for feature discovery, but do not clone or copy it into nox.
-- [ ] T002 [P] Enumerate every CLI flag, subcommand, option combination, and documented interactive command or shortcut as leaf entries in `specs/001-add-feature-parity/reference/inventory-cli.md`; reconcile local help with official command documentation and mark unobserved entries. For each leaf, record SC-007 timing-sensitivity (yes/no + reason).
+- [ ] T002 [P] Enumerate every CLI flag, subcommand, option combination, and documented interactive command or shortcut as leaf entries in `specs/001-add-feature-parity/reference/inventory-cli.md`; reconcile local help with official command documentation and mark unobserved entries. For each leaf, record SC-007 timing-sensitivity (yes/no + reason). Include documented interactive extras (vim mode, voice, accessibility, notifications) so T068 is not an empty index for those names.
 - [ ] T003 [P] Enumerate settings, instruction loading, memory, permission modes, built-in tools, and model controls as leaf entries in `specs/001-add-feature-parity/reference/inventory-core.md`; record defaults, scope, precedence, availability conditions, and SC-007 timing-sensitivity (yes/no + reason). Include computer-use, browser-use, context-window, caching, image, large-input, context-reduction, goal, agent-view, cross-session-message, and dynamic-workflow candidates so T081, T082, and T086 are not empty indexes.
 - [ ] T004 [P] Enumerate skills, custom commands, agents, teams, hooks, external connections, plugins, and marketplaces as leaf entries in `specs/001-add-feature-parity/reference/inventory-extensions.md`; include triggers, lifecycle events, gated variants, plugin-evaluation candidates so T084 is not an empty index, and SC-007 timing-sensitivity (yes/no + reason).
 - [ ] T005 [P] Enumerate background sessions, worktrees, non-interactive protocols, desktop/web/mobile/editor/browser/chat/CI workflows, diagnostics, auth, import, and update flows as leaf entries in `specs/001-add-feature-parity/reference/inventory-surfaces.md`; for each surface leaf record entry action, intermediate interactions, resulting state, side effects, failure behavior, availability conditions, proposed nox control, and SC-007 timing-sensitivity (yes/no + reason). Mark inaccessible observations `gated-unverified`. Identify observed non-equivalence with its leaf ID and reproduction steps; record it in `specs/001-add-feature-parity/reference/discrepancies.md` after T012 defines the register.
@@ -131,7 +131,7 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 - [ ] T323 [US1] After T322, T013 must emit failing-test → implement → verify tasks before any source change.
 - [ ] T324 [US1] Checkpoint — Close `US1-CONTEXT-PENDING` only after mapped verification passes; T016 stays independent.
 
-### Feature-family checkpoints
+### Feature-family indexes
 
 - [ ] T063 [US1] Index — Agent-execution leaves. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T016–T019 and later US1 slices covering this family are closed or remaining leaves are gated.
 - [ ] T064 [US1] Index — Built-in-tool leaves. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T016–T019 are closed or remaining leaves are gated.
@@ -368,7 +368,7 @@ These observations precede T013 for the selected US1 leaves. Model-backed probes
 
 **Background dependency chain**: T281 → T282–T288/T291/T292 observations → each leaf's failing test → implementation → verification → T027. T289 → T290 independently verifies the foreground session baseline captured by T020. Observation tasks for independent leaves may run in parallel; tasks sharing `packages/coding-agent/test/suite/parity-session-lifecycle.test.ts`, `packages/coding-agent/src/core/background-session.ts`, or `packages/coding-agent/src/cli.ts` run sequentially.
 
-### Feature-family checkpoints
+### Feature-family indexes
 
 - [ ] T065 [US2] Index — Same model/provider population as T025. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T025 is closed and extra leaves are mapped or gated.
 - [ ] T066 [US2] Index — Same permission/security population as T024. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T024 is closed and extra leaves are mapped or gated.
@@ -410,7 +410,7 @@ Delivery slice `US3-CONFIG-PENDING` is unregistered until T003/T004/T007 assign 
 - [ ] T037 [US3] Checkpoint — Do not start until T327 has emitted leaf task IDs. Verify every plugin discovery, enablement, namespace, installation, and update leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
 - [ ] T038 [US3] Resolve every US3 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and document precedence and failure outcomes in `specs/001-add-feature-parity/reference/scenarios.md`.
 
-### Feature-family checkpoints
+### Feature-family indexes
 
 - [ ] T069 [US3] Index — Same settings/instruction/rules/memory population as T031–T032. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T031–T032 are closed and extra leaves are mapped or gated.
 - [ ] T070 [US3] Index — Same skill and command population as T033. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T033 is closed and extra leaves are mapped or gated.
@@ -452,7 +452,7 @@ Delivery slice `US4-SURFACE-PENDING` is unregistered until T005/T007 assign leaf
 - [ ] T044 [US4] Checkpoint — BLOCKED until T002+T007 assign authentication, diagnostic, import, project-state, update, external-management, and hosted-review leaf IDs. T328 does not own this population. Do not start until T013 has emitted those leaf task IDs. Verify every such leaf has observed evidence, an executable test-first implementation sequence, and passing verification mapped in `specs/001-add-feature-parity/reference/reconciliation.md`.
 - [ ] T045 [US4] Resolve every US4 discrepancy in `specs/001-add-feature-parity/reference/discrepancies.md` and record passing protocol and side-effect comparisons in `specs/001-add-feature-parity/reference/scenarios.md`.
 
-### Feature-family checkpoints
+### Feature-family indexes
 
 - [ ] T074 [US4] Index — Same noninteractive/programmatic population as T041. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T041 is closed and extra leaves are mapped or gated.
 - [ ] T075 [US4] Index — Same CLI and administration population as T044. Record missing T013 mappings in `specs/001-add-feature-parity/reference/reconciliation.md`; do not independently verify. Close when T044 is closed and extra leaves are mapped or gated.

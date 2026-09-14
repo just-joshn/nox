@@ -95,6 +95,8 @@ A user runs nox without an interactive terminal, feeds streamed input, requests 
 - An external tool, plugin, hook, editor, browser, or remote session disconnects mid-operation.
 - An input contains a crafted command, path, or payload intended to cross an authorization boundary or expose a secret.
 
+These cases are discovered as leaf IDs during T002–T005 (and T086 for image/large-input). Until then they remain unnamed and cannot close T081/T082/T086. Record gated or unobservable variants in `reference/gated.md`.
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
@@ -134,8 +136,10 @@ T009 MUST register these IDs in `reference/scenarios.md` before SC-009 is evalua
 | SEC-PATH-001 | Path outside the authorized workspace | Any file read/write | Real absolute paths beyond the fixture |
 | SEC-CMD-001 | Crafted command/payload crossing an authorization boundary | Process start or shell | Synthetic credentials |
 | SEC-SET-001 | Malformed or unauthorized settings/integration payload | Persisted config or extension load | Private session values |
-| SEC-SECRET-001 | Restart after synthetic credential use | N/A (compare reuse vs redaction) | The synthetic secret |
+| SEC-SECRET-001 | Restart after synthetic credential use | Not a refuse-before row: compare credential reuse vs redaction after restart | The synthetic secret |
 | SEC-EXT-001 | Extension or remote disclosure | Data sent to the extension/remote | Synthetic secret or private session values |
+
+SEC-PATH-001, SEC-CMD-001, SEC-SET-001, and SEC-EXT-001 count toward SC-009’s refuse-before-side-effect denominator. SEC-SECRET-001 is a redaction/reuse check and does not use that denominator.
 
 ### Key Entities *(include if feature involves data)*
 
