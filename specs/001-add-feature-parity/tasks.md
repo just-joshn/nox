@@ -87,7 +87,7 @@
 - [X] T134 [US1] Verify the SDK's provider-facing active catalog for explicit `Glob` and `Grep` in an offline in-memory session, including default exclusion and single-tool selection; record and commit the result.
 - [X] T135 [US1] Capture fixed-field input-schema presence for reference Glob/Grep from the localhost-only synthetic endpoint, compare nox's advertised fields, and list any unsupported options as separate observed work.
 - [X] T136 [US1] Probe reference Glob's optional `path` and Grep's `output_mode` variants in disposable synthetic repositories, retaining only fixed expected output formats and errors; then add exact schema and mapping tasks for nox.
-- [ ] T137 [US1] Write failing nox tests for Glob `path: nested` and Grep `output_mode: files_with_matches|content`, including advertised schema presence and exact synthetic outputs.
+- [X] T137 [US1] Write failing nox tests for Glob `path: nested` and Grep `output_mode: files_with_matches|content`, including advertised schema presence and exact synthetic outputs.
 - [ ] T138 [US1] Add the observed Glob/Grep schema fields and output-mode mapping without changing lower-case Pi tools; keep unobserved Grep options out of the new adapter schema.
 - [ ] T139 [US1] Verify focused tool and catalog tests plus `npm run check`, record remaining schema gaps, and commit locally.
 

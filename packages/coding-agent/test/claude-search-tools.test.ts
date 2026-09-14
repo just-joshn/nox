@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -33,5 +33,24 @@ describe("explicit Claude search tools", () => {
 	it.each(["Glob", "Grep"])("%s rejects an invalid bracket pattern", async (name) => {
 		const tool = createAllToolDefinitions(cwd)[name as ToolName];
 		await expect(tool.execute("call-1", { pattern: "[" }, undefined, undefined, {} as never)).rejects.toThrow();
+	});
+
+	it("Glob preserves the search path in its result", async () => {
+		mkdirSync(join(cwd, "nested"));
+		writeFileSync(join(cwd, "nested", "fixture.txt"), "alpha\nbeta\n");
+		const tool = createAllToolDefinitions(cwd).Glob;
+		expect(Object.keys(tool.parameters.properties).sort()).toEqual(["path", "pattern"]);
+		const result = await tool.execute("call-1", { pattern: "*.txt", path: "nested" }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: "nested/fixture.txt" }]);
+	});
+
+	it.each([
+		["files_with_matches", "Found 1 file\nfixture.txt"],
+		["content", "fixture.txt:1:alpha"],
+	])("Grep output_mode %s returns the observed format", async (output_mode, expected) => {
+		const tool = createAllToolDefinitions(cwd).Grep;
+		expect(tool.parameters.properties).toHaveProperty("output_mode");
+		const result = await tool.execute("call-1", { pattern: "alpha", output_mode }, undefined, undefined, {} as never);
+		expect(result.content).toEqual([{ type: "text", text: expected }]);
 	});
 });
